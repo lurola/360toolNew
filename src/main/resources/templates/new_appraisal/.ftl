@@ -1,0 +1,1 @@
+Own appraisals
