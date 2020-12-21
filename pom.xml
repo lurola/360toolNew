@@ -5,15 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.guides.springboot2</groupId>
-	<artifactId>springboot2-mssql-jpa-hibernate-crud-example</artifactId>
+	<artifactId>360evaluationtools</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>Spring Boot Security Example</name>
-	<url>http://kielczewski.eu/2014/12/spring-boot-security-application/</url>
-
-	<!-- <name>springboot2-mssql-jpa-hibernate-crud-example</name> -->
-	<!-- <description>springboot2-mssql-jpa-hibernate-crud-example</description> -->
+	<name>ig-evaluationtools360-eu</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
