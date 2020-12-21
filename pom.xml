@@ -7,7 +7,7 @@
 	<groupId>net.guides.springboot2</groupId>
 	<artifactId>360evaluationtools</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>pom</packaging> 
 
 	<name>ig-evaluationtools360-eu</name>
 
