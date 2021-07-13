@@ -37,7 +37,7 @@
 	
 	<button class="btn btn-primary" type="submit" id="createOfficeBtn">Save</button>
 	
-	<a href="/" class="btn btn-info" style="background-color: #4f5b69;color:#00CCFF;">Back</a>
+	<a href="/" class="btn btn-info" style="background-color: #4f5b69;color:#00CCFF;">Atras</a>
 	
 </div>
 

@@ -19,7 +19,7 @@ public class IndexController {
 	
 //	private String redirectTo = "";
     
-    @GetMapping({"/login"})
+    @PostMapping({"/login"})
     public ModelAndView getLoginPage() {
     	return new ModelAndView("/login");
     }
@@ -34,5 +34,10 @@ public class IndexController {
     	return new ModelAndView("/home", "error", error);
     }
        
+    
+    @GetMapping({"/login"})
+    public ModelAndView getLoginPage1() {
+    	return new ModelAndView("/login");
+    }
 }
 

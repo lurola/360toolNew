@@ -100,7 +100,7 @@ function assignMentor() {
 </div>
 
 <div id="btnContainer" class="container" style="display:none" >
-	<button onclick="assignMentor();" class="btn btn-primary" id="sendManualAssignmentBtn">Asignar</button>
+	<button onclick="assignMentor();" class="btn btn-primary" style="background-color: #4f5b69;color:#00CCFF;"  id="sendManualAssignmentBtn">Asignar</button>
 	<a href="/" class="btn btn-info" style="background-color: #4f5b69;color:#00CCFF;">Home</a>
 </div>
 

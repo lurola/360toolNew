@@ -25,11 +25,11 @@
 
 <form >
 
-	<input style="visibility: hidden" type="text" value="${currentUser.id}" name="userId" id="userId"/>
+	
 
 
 <div class="nav-side-menu">
-    <div class="brand">${currentUser.name} ${currentUser.surname}</div>
+
     <div class="brand"> <a style="color: 00CCFF" href="/logout">Logout</a> </div>
     
 
@@ -40,7 +40,7 @@
             <ul id="menu-content" class="menu-content collapse out">
             
             
-            <#if currentUser.role == 'ADMIN'>
+            
             
                 <li  data-toggle="collapse" data-target="#administration" class="collapsed">
                   <a href="#"><i class="fa fa-gift fa-lg"></i>Administration<span class="arrow"></span></a>
@@ -48,25 +48,23 @@
                  
                  <ul class="sub-menu collapse" id="administration">
                  
-                    <li><a href="/user/create">Nuevo usuario</a></li>
-                    <li><a href="/office/loadCreateScreen">Nueva oficina</a></li>
-                    <li><a href="/team/loadCreateScreen">Nuevo equipo</a></li>
-                    <li><a href="/group/loadCreateScreen">Nuevo grupo</a></li>
+                    <li><a href="/user/create">New user</a></li>
+                    <li><a href="/office/loadCreateScreen">New office</a></li>
+                    <li><a href="/team/loadCreateScreen">New team</a></li>
+                    <li><a href="/group/loadCreateScreen">New group</a></li>
                     <li><a href="/user/loadAssignMentorScreen">Assign mentor</a></li>                    
  
                 </ul>
                 
-                </#if>
+                
                 
 
                 <li  data-toggle="collapse" data-target="#Profile" class="collapsed">
                   <a href="#"><i class="fa fa-user fa-lg"></i>Perfil<span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="Profile">
-                    <li class="active"><a href="/user/updateprofile/${currentUser.id}">Actualizar mi usuario</a></li>
-                    <#if currentUser.role == 'ADMIN'>
-                   		<li><a href="/user/loadChangePasswordScreen/${currentUser.id}">Cambiar contraseña</a></li>
-					</#if>
+                 
+                    
                 </ul>
 
 
@@ -75,16 +73,17 @@
                 </li>  
                 <ul class="sub-menu collapse" id="appraisals">
                 
-                	<#if currentUser.role == 'ADMIN'>
-                        <li><a href="/appraisal/assignAppraisers/1">Generate evaluaciones para Cordoba</a></li>
-	                  	<li><a href="/appraisal/expireAppraisals/1">Expirar evaluaciones no terminadas</a></li>
-	                  	<li><a href="/appraisal/loadManualAssignment">Asignacion manual de evaluacion</a></li>
-	                  	<li><a href="/appraisal/seeOtherAppraisals/${currentUser.id}">Ver otras evaluaciones</a></li>
-	                  	<li><a href="/appraisal/loadInternalCriteriaScreen/${currentUser.id}">Ver criterios internos</a></li>
-                	</#if>
+                	
+                        <li><a href="/appraisal/assignAppraisers/1">Generate appraisals for Cordoba</a></li>
+	                  	<li><a href="/appraisal/loadManualAssignment">Assign appraisal manually</a></li>
+	                  	<li><a href="/appraisal/seeOtherAppraisals/7">See other appraisals</a></li>
+	                  	<li><a href="/appraisal/loadInternalCriteriaScreen/7">See internal criteria</a></li>
+	                  	<li><a href="/appraisal/expireAppraisals/1">Expire appraisals not finished</a></li>
+                	
 
-				  <li><button style="width: 80%" formaction="/appraisal/getFinishedAppraisalsByUser" formmethod="post"  class="menuButton">Mis evaluaciones</button></li>
-                  <li><button style="width: 80%" formaction="/appraisal/getRemainingAppraisalsForAUser" formmethod="post" class="menuButton">Evaluaciones pendientes</button></li>
+				  <li><button  formaction="/appraisal/getRemainingAppraisalsForAUser" formmethod="post" class="menuButton">Pending appraisals</button></li>
+				  <li><button formaction="/appraisal/getFinishedAppraisalsByUser" formmethod="post"  class="menuButton">My appraisals</button></li>
+                  
                   
                 </ul>
 

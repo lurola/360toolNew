@@ -6,11 +6,7 @@
 <meta charset="utf-8">
 <title>Log in</title>
 
-<link href="/css/buttons.css" rel="stylesheet">
-<link href="/css/main.css" rel="stylesheet">
-<link href="/css/util.css" rel="stylesheet">
-<link href="/boostrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/boostrap/js/bootstrap.min.js" rel="stylesheet">
+
 </head>
 <body>
 

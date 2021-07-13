@@ -7,18 +7,24 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-@Data
 @Entity
-@Table (name="APPRAISAL_TYPE")
-public class AppraisalType {
+@Data
+@Table (name = "INTERNAL_CRITERIA_TYPE")
+public class InternalCriteriaType {
 
-	@Id
-	private Long appraisalTypeId;
 	
-	@Column
-	private String appraisalTypeName;
+	InternalCriteriaType() {
+		
+	}
+	
+	
+	@Id
+	private Long InternalCriteriaTypeId;
 	
 	@Column
 	private Long language;
 	
+	
+	@Column
+	private String InternalCriteriaType;
 }

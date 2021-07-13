@@ -19,7 +19,7 @@ public class AppraisalItem {
 
 	public AppraisalItem () {}
 	
-	public AppraisalItem (Appraisal app) {
+	public AppraisalItem (Long app) {
 		this.appraisal = app;
 	}
 	
@@ -37,12 +37,13 @@ public class AppraisalItem {
 	@Column
 	private Integer paramValue;
 
-	@ManyToOne
+//	@ManyToOne
     @JoinColumn(name="appraisalId", nullable=false)
-	private Appraisal appraisal;
+    @Column (name = "appraisalId")
+	private Long appraisal;
 	
 	
-	public AppraisalItem (Integer appraisalTypeId, Integer subtypeId, Integer paramValue, Appraisal appraisal) {
+	public AppraisalItem (Integer appraisalTypeId, Integer subtypeId, Integer paramValue, Long appraisal) {
 		
 		this.appraisalTypeId = appraisalTypeId;
 		this.subtypeId = subtypeId;

@@ -101,7 +101,7 @@ function sendManualAssignment() {
 
 <div id="btnContainer" class="container" style="display:none" onclick="sendManualAssignment();">
 	<button class="btn btn-primary" id="sendManualAssignmentBtn" style="background-color: #4f5b69;color:#00CCFF;">Asignar</button>
-	<a href="/" class="btn btn-info" style="background-color: #4f5b69;color:#00CCFF;">Back</a>
+	<a href="/" class="btn btn-info" style="background-color: #4f5b69;color:#00CCFF;">Atras</a>
 </div>
 
 

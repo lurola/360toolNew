@@ -11,8 +11,6 @@ import javax.validation.Valid;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.appraisaltool.dto.AppItemDTO;
@@ -26,9 +24,9 @@ import com.appraisaltool.model.AppraisalAverageId;
 import com.appraisaltool.model.AppraisalItem;
 import com.appraisaltool.model.AppraisalType;
 import com.appraisaltool.model.CriteriaName;
-import com.appraisaltool.model.CurrentUser;
 import com.appraisaltool.model.GlobalAppraisalType;
-import com.appraisaltool.model.InternalGroupAppType;
+import com.appraisaltool.model.InternalCriteriaSubtype;
+import com.appraisaltool.model.InternalCriteriaType;
 import com.appraisaltool.model.InternalSpecificAppType;
 import com.appraisaltool.model.SpecificAppraisalType;
 import com.appraisaltool.model.User;
@@ -38,7 +36,8 @@ import com.appraisaltool.repository.AppraisalRepository;
 import com.appraisaltool.repository.AppraisalTypeRepository;
 import com.appraisaltool.repository.CriteriaNameRepository;
 import com.appraisaltool.repository.GlobalAppraisalTypeRepository;
-import com.appraisaltool.repository.InternalGroupAppTypeRepository;
+import com.appraisaltool.repository.InternalCriteriaSubtypeRepository;
+import com.appraisaltool.repository.InternalCriteriaTypeRepository;
 import com.appraisaltool.repository.InternalSpecificAppTypeRepository;
 import com.appraisaltool.repository.SpecificAppraisalTypeRepository;
 
@@ -51,11 +50,14 @@ public class AppraisalServiceImp implements AppraisalService{
 	@Autowired private GlobalAppraisalTypeRepository globalAppTypeRepo;
 	@Autowired private UserServiceImpl userServImpl;
 	@Autowired private TeamServiceImpl teamServImpl;
-	@Autowired private InternalGroupAppTypeRepository intGroupRepo;
 	@Autowired private InternalSpecificAppTypeRepository intSpecRepo;
 	@Autowired private AppraisalAverageRepository appAverageRepo;
 	@Autowired private CriteriaNameRepository criteriaRepo;
 	@Autowired private AppraisalTypeRepository appTypeRepo;
+	
+	@Autowired private InternalCriteriaSubtypeRepository intCritSubtypeNameRepo;
+	@Autowired private InternalCriteriaTypeRepository intCritTypeNameRepo;
+	
 	
 	private Integer INDIVIDUAL = 0;
 	private Integer TEAM = 1;
@@ -294,7 +296,7 @@ public class AppraisalServiceImp implements AppraisalService{
 				
 		for(int appType=0; appType<=9; appType++) {
 			for (int subType=1; subType<=5; subType++) {
-				appraisalItemList.add(new AppraisalItem(appType, subType, 0, app));
+				appraisalItemList.add(new AppraisalItem(appType, subType, 0, app.getAppraisalId()));
 			}
 		}
 			
@@ -415,13 +417,14 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalList
 	 * @return
 	 */
-	public List<AppraisalHeaderDTO> getAppraisalheaders(List<Appraisal> appraisalList, Long evaluatedPersonId) {
+	public List<AppraisalHeaderDTO> getAppraisalheaders(List<Appraisal> appraisalList, Long evaluatedPersonId, Long currentUserId) {
 		
 		if (appraisalList == null) {
 			return null;
 		}else {
 			
-			Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User currentUser = userServImpl.getUserByUserId(currentUserId);
 			
 			List<AppraisalHeaderDTO> appraisalHeaderDto = new ArrayList<AppraisalHeaderDTO>();
 			AppraisalHeaderDTO appraisalHeader;
@@ -436,7 +439,7 @@ public class AppraisalServiceImp implements AppraisalService{
 				appraisalHeader.setAppraisalId(currApp.getAppraisalId());
 				appraisalHeader.setEvaluatedPersonName(evaluatedPerson.getName() + " " + evaluatedPerson.getSurname());
 				
-				if( ApplicationRole.ADMIN == ((CurrentUser)currentUser).getAppRole()) {
+				if( ApplicationRole.ADMIN == (currentUser).getAppRole()) {
 					appraisalHeader.setAppraiserName(appraiser.getName() + " " + appraiser.getSurname());
 				} else {
 					appraisalHeader.setAppraiserName("?¿??¿?¿?¿?¿?¿?¿?¿");
@@ -460,7 +463,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	public AppraisalItem[][] getAppItemsByAppraisalId(Long appraisalId) {
 		
 		AppraisalItem[][] appItemListGroup = new AppraisalItem[10][5];		
-		List<AppraisalItem> appItemList = appItemRepo.findAllByAppraisalAppraisalIdOrderByAppraisalTypeIdAscSubtypeIdAsc(appraisalId);
+		List<AppraisalItem> appItemList = appItemRepo.findAllByAppraisalOrderByAppraisalTypeIdAscSubtypeIdAsc(appraisalId);
 		
 		//Pasamos los items a una matriz para tenerlos en orden y recuperarlo en la pantalla como model["appItems"][0]  etc.
 		int k=0;
@@ -485,7 +488,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	public Double[] calculateSpecificAppAverages(AppraisalItem[][] appItems) {
 		
 //		Long appraisalId = appItems[0][0].getAppraisalId();
-		Long appraisalId = appItems[0][0].getAppraisal().getAppraisalId();
+		Long appraisalId = appItems[0][0].getAppraisal();
 		Integer roleId = getEvaluatePersonRoleByAppraisalId(appraisalId);		
 		
 		Double[] average= new Double[10];
@@ -792,9 +795,13 @@ public class AppraisalServiceImp implements AppraisalService{
 		}
 		
 
-		public String[] getGroupCriteriaNames() {
+		public List<InternalCriteriaType> getInternalCriteriaTypes(Long language) {
 			String[] internalCriteriaTitle = new String[]{"Competitivo en el sector","Impacto en el clima laboral","Mejora continua","Valor individual del trabajador"};
-			return internalCriteriaTitle;
+			
+			return intCritTypeNameRepo.getInternalCriteriaTypeByLanguage(language);
+			
+			
+//			return internalCriteriaTitle;
 		}
 
 
@@ -834,14 +841,14 @@ public class AppraisalServiceImp implements AppraisalService{
 
 
 
-		public String[][] getGroupCriteriaSubtitles() {
+		public List<InternalCriteriaSubtype> getGroupCriteriaSubtitles(Long language) {
 			
 			String[][] internalCriteria = {{"Individuales", "Inherente al cargo", "Potencial", "Gestión" , "Comunicacion en ingles"}, 
 					{"Impacto en el comportamiento de los compañeros", "Actitud ante decisiones y adaptación al cambio", "Contribuye a la gestión y organización del trabajo del equipo", "Impacto en el ambiente laboral diario", "Habilidades de liderazgo demostradas a lo largo del año"}, 
 					{"Motivación y logros", "Potencial ", "Impacto general en IG", "Gestion (Manager/SM)", "Trabajo en equipo (Dev/QA)"}, 
 					{"Inherentes al cargo", "Individuales", "Potencial", "Motivación y logros" , "Organizacion personal"} };
 
-			return internalCriteria;
+			return intCritSubtypeNameRepo.getInternalCriteriaSubypeByLanguage(language);
 			
 		}
 		
@@ -1034,10 +1041,31 @@ public class AppraisalServiceImp implements AppraisalService{
 			
 			
 			app.setApprItemList(appItemList);
-	
-			
+				
 			
 			return app;
+		}
+
+
+		/**
+		 * 
+		 * @return A list with all the appraisalTypes
+		 */
+		public List<AppraisalType> getAppraisalTypes() {
+			
+			return appTypeRepo.findAll();
+
+		}
+
+
+		/**
+		 * 
+		 * @return A list with all the criterias
+		 */
+		public List<CriteriaName> getCriteriaNames() {
+
+			return criteriaRepo.findAll();
+			
 		}
 
 }
