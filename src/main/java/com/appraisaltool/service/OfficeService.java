@@ -1,19 +1,20 @@
 package com.appraisaltool.service;
 
 import java.util.List;
-
 import com.appraisaltool.model.Office;
 
 public interface OfficeService {
-	
 
-	Office getOfficeByName(String name);
+    public Office getOfficeByName(String name);
 
-	List<Office> getAllOffices();
+    public List<Office> getAllOffices();
 
-	Office getOfficeById(Long employeeId);
+    public Office getOfficeById(Long employeeId);
 
-	Office createNewOffice(Office office);
+    public Office createNewOffice(Office office);
+
+    public Office createNewOffice(String office);
+
 
 
 }

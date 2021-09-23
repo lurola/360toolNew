@@ -1,9 +1,7 @@
 package com.appraisaltool.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,18 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.Team;
-import com.appraisaltool.service.impl.OfficeServiceImp;
-import com.appraisaltool.service.impl.TeamServiceImpl;
+import com.appraisaltool.service.OfficeService;
+import com.appraisaltool.service.TeamService;
 
 @Controller
 public class TeamController {
 	
-	@Autowired TeamServiceImpl teamServ;
-	@Autowired OfficeServiceImp officeServ;
-	ModelMap model;
+    @Autowired
+    private TeamService teamServ;
+    @Autowired
+    private OfficeService officeServ;
+    private ModelMap model;
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/team/loadCreateScreen")

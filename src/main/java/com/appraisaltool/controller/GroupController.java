@@ -1,29 +1,28 @@
 package com.appraisaltool.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.appraisaltool.model.Group;
 import com.appraisaltool.model.Office;
-import com.appraisaltool.service.impl.GroupServiceImpl;
-import com.appraisaltool.service.impl.OfficeServiceImp;
+import com.appraisaltool.service.GroupService;
+import com.appraisaltool.service.OfficeService;
 
 @Controller
 public class GroupController {
 	
-	@Autowired private GroupServiceImpl groupServ;
-	@Autowired private OfficeServiceImp officeServ;
+    @Autowired
+    private GroupService groupServ;
+    @Autowired
+    private OfficeService officeServ;
+
 	public ModelMap model;
 	
 	@PreAuthorize("hasAuthority('ADMIN')")

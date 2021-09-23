@@ -1,9 +1,7 @@
 package com.appraisaltool.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.ModelMap;
@@ -13,19 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.appraisaltool.exception.ResourceNotFoundException;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.User;
-import com.appraisaltool.service.impl.OfficeServiceImp;
-import com.appraisaltool.service.impl.UserServiceImpl;
+import com.appraisaltool.service.OfficeService;
+import com.appraisaltool.service.UserService;
 
 @RestController 
 @RequestMapping("/office")
 public class OfficeController {
 
-	@Autowired private OfficeServiceImp officeService;
-	@Autowired private UserServiceImpl userService;
+    @Autowired
+    private OfficeService officeService;
+    @Autowired
+    private UserService userService;
 	
 	ModelMap model;
 

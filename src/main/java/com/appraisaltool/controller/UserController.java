@@ -1,9 +1,7 @@
 package com.appraisaltool.controller;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.ModelMap;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.appraisaltool.dto.ChangePasswordDTO;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
@@ -23,23 +20,30 @@ import com.appraisaltool.model.Office;
 import com.appraisaltool.model.User;
 import com.appraisaltool.model.UserGroupId;
 import com.appraisaltool.model.UserTeamId;
-import com.appraisaltool.service.impl.GroupServiceImpl;
-import com.appraisaltool.service.impl.OfficeServiceImp;
-import com.appraisaltool.service.impl.RoleServiceImpl;
-import com.appraisaltool.service.impl.TeamServiceImpl;
-import com.appraisaltool.service.impl.UserGroupServiceImpl;
-import com.appraisaltool.service.impl.UserServiceImpl;
-import com.appraisaltool.service.impl.UserTeamServiceImpl;
+import com.appraisaltool.service.GroupService;
+import com.appraisaltool.service.OfficeService;
+import com.appraisaltool.service.RoleService;
+import com.appraisaltool.service.TeamService;
+import com.appraisaltool.service.UserGroupService;
+import com.appraisaltool.service.UserService;
+import com.appraisaltool.service.UserTeamService;
 
 @RestController
 public class UserController {	
-	@Autowired private UserServiceImpl userService;
-	@Autowired private OfficeServiceImp officeService;
-	@Autowired private TeamServiceImpl teamService;
-	@Autowired private RoleServiceImpl roleService;
-	@Autowired private UserTeamServiceImpl userTeamServ;
-	@Autowired private UserGroupServiceImpl userGroupServ;
-	@Autowired private GroupServiceImpl groupServ;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private OfficeService officeService;
+    @Autowired
+    private TeamService teamService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private UserTeamService userTeamServ;
+    @Autowired
+    private UserGroupService userGroupServ;
+    @Autowired
+    private GroupService groupServ;
 	
 
 	ModelMap model;

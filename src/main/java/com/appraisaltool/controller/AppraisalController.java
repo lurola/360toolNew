@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.appraisaltool.dto.AppItemDTO;
 import com.appraisaltool.dto.AppraisalDTO;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
@@ -41,6 +38,8 @@ import com.appraisaltool.model.InternalCriteriaSubtype;
 import com.appraisaltool.model.InternalCriteriaType;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.User;
+import com.appraisaltool.service.OfficeService;
+import com.appraisaltool.service.UserService;
 import com.appraisaltool.service.impl.AppraisalServiceImp;
 import com.appraisaltool.service.impl.OfficeServiceImp;
 import com.appraisaltool.service.impl.UserServiceImpl;
@@ -52,8 +51,11 @@ public class AppraisalController {
 
     private final AppraisalServiceImp appraisalServ;
     private final UserController userController;
-    private final OfficeServiceImp officeServ;
-    private final UserServiceImpl userService;
+
+    @Autowired
+    private final OfficeService officeServ;
+    @Autowired
+    private final UserService userService;
 
     @Autowired
     public AppraisalController(AppraisalServiceImp appraisalServ, UserController userController,  OfficeServiceImp officeServ, UserServiceImpl userServ) {

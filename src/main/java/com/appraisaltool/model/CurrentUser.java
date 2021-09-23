@@ -1,7 +1,5 @@
 package com.appraisaltool.model;
 
-import javax.persistence.EnumType;
-
 import org.springframework.security.core.authority.AuthorityUtils;
 
 public class CurrentUser extends org.springframework.security.core.userdetails.User {
@@ -41,8 +39,6 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 
     @Override
     public String toString() {
-        return "CurrentUser{" +
-                "user=" + user +
-                "} " + super.toString();
+        return "CurrentUser{user=" + user + "} " + super.toString();
     }
 }
