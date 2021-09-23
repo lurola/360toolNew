@@ -1,4 +1,4 @@
-package com.appraisaltool.service;
+package com.appraisaltool.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,6 +40,7 @@ import com.appraisaltool.repository.InternalCriteriaSubtypeRepository;
 import com.appraisaltool.repository.InternalCriteriaTypeRepository;
 import com.appraisaltool.repository.InternalSpecificAppTypeRepository;
 import com.appraisaltool.repository.SpecificAppraisalTypeRepository;
+import com.appraisaltool.service.AppraisalService;
 
 @Service
 public class AppraisalServiceImp implements AppraisalService{

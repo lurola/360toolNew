@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.appraisaltool.exception.ResourceNotFoundException;
-import com.appraisaltool.service.RoleServiceImpl;
+import com.appraisaltool.service.impl.RoleServiceImpl;
 
 @Controller
 public class RoleController {

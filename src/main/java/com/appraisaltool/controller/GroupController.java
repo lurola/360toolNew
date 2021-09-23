@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.appraisaltool.model.Group;
 import com.appraisaltool.model.Office;
-import com.appraisaltool.service.GroupServiceImpl;
-import com.appraisaltool.service.OfficeServiceImp;
+import com.appraisaltool.service.impl.GroupServiceImpl;
+import com.appraisaltool.service.impl.OfficeServiceImp;
 
 @Controller
 public class GroupController {

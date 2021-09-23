@@ -1,4 +1,4 @@
-package com.appraisaltool.service;
+package com.appraisaltool.service.impl;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.appraisaltool.model.UserTeam;
 import com.appraisaltool.model.UserTeamId;
 import com.appraisaltool.repository.UserTeamRepository;
+import com.appraisaltool.service.UserTeamService;
 
 @Service
 public class UserTeamServiceImpl implements UserTeamService{

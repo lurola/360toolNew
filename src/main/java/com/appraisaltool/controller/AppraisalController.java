@@ -41,9 +41,9 @@ import com.appraisaltool.model.InternalCriteriaSubtype;
 import com.appraisaltool.model.InternalCriteriaType;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.User;
-import com.appraisaltool.service.AppraisalServiceImp;
-import com.appraisaltool.service.OfficeServiceImp;
-import com.appraisaltool.service.UserServiceImpl;
+import com.appraisaltool.service.impl.AppraisalServiceImp;
+import com.appraisaltool.service.impl.OfficeServiceImp;
+import com.appraisaltool.service.impl.UserServiceImpl;
 
 
 @RestController 

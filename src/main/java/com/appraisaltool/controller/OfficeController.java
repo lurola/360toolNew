@@ -17,8 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.appraisaltool.exception.ResourceNotFoundException;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.User;
-import com.appraisaltool.service.OfficeServiceImp;
-import com.appraisaltool.service.UserServiceImpl;
+import com.appraisaltool.service.impl.OfficeServiceImp;
+import com.appraisaltool.service.impl.UserServiceImpl;
 
 @RestController 
 @RequestMapping("/office")

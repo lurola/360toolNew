@@ -1,4 +1,4 @@
-package com.appraisaltool.service;
+package com.appraisaltool.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.appraisaltool.model.UserGroup;
 import com.appraisaltool.model.UserGroupId;
 import com.appraisaltool.repository.UserGroupRepository;
+import com.appraisaltool.service.UserGroupService;
 
 @Service
 public class UserGroupServiceImpl implements UserGroupService {

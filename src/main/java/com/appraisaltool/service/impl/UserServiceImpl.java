@@ -1,4 +1,4 @@
-package com.appraisaltool.service;
+package com.appraisaltool.service.impl;
 
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import com.appraisaltool.dto.NewUserDTO;
 import com.appraisaltool.model.User;
 import com.appraisaltool.repository.UserGroupRepository;
 import com.appraisaltool.repository.UserRepository;
+import com.appraisaltool.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

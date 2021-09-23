@@ -15,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.Team;
-import com.appraisaltool.service.OfficeServiceImp;
-import com.appraisaltool.service.TeamServiceImpl;
+import com.appraisaltool.service.impl.OfficeServiceImp;
+import com.appraisaltool.service.impl.TeamServiceImpl;
 
 @Controller
 public class TeamController {

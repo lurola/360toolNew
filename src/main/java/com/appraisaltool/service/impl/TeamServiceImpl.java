@@ -1,4 +1,4 @@
-package com.appraisaltool.service;
+package com.appraisaltool.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.appraisaltool.model.Team;
 import com.appraisaltool.repository.TeamRepository;
+import com.appraisaltool.service.TeamService;
 
 @Service
 public class TeamServiceImpl implements TeamService{

@@ -1,4 +1,4 @@
-package com.appraisaltool.service;
+package com.appraisaltool.service.impl;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.appraisaltool.model.Role;
 import com.appraisaltool.repository.RoleRepository;
+import com.appraisaltool.service.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService{

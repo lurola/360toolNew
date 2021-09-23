@@ -1,14 +1,12 @@
 package com.appraisaltool.controller;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.appraisaltool.ApplicationProperties;
 
 
@@ -21,9 +19,14 @@ public class IndexController {
     
     @PostMapping({"/login"})
     public ModelAndView getLoginPage() {
-    	return new ModelAndView("/login");
+        return new ModelAndView("/home");
     }
     
+    @GetMapping({
+            "/logout"})
+    public ModelAndView getLogoutPage() {
+        return new ModelAndView("/login");
+    }
     @GetMapping({"/home", "/"})
     public ModelAndView signin(@RequestParam Optional<String> error) {
     	return new ModelAndView("/home", "error", error);
