@@ -1,4 +1,4 @@
-package com.appraisaltool.service.security;
+package com.appraisaltool.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,17 +14,17 @@ import com.appraisaltool.service.UserService;
 public class CurrentUserDetailsService implements UserDetailsService {
 
 	private static final Logger logger = LogManager.getLogger(CurrentUserDetailsService.class);
-    private final UserService userervice;
+    private final UserService userService;
 
     @Autowired
     public CurrentUserDetailsService(UserService userService) {
-        this.userervice = userService;
+        this.userService = userService;
     }
 
     @Override
     public CurrentUser loadUserByUsername(String email) throws UsernameNotFoundException {
         logger.debug("Authenticating user with email={}", email.replaceFirst("@.*", "@***"));
-        User user = userervice.getUserByEmail(email)
+        User user = userService.getUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found", email)));
         return new CurrentUser(user);
     }

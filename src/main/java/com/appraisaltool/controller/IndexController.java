@@ -15,18 +15,12 @@ public class IndexController {
 	
 	@Autowired ApplicationProperties properties;
 	
-//	private String redirectTo = "";
-    
-    @PostMapping({"/login"})
-    public ModelAndView getLoginPage() {
-        return new ModelAndView("/home");
-    }
-    
     @GetMapping({
             "/logout"})
-    public ModelAndView getLogoutPage() {
-        return new ModelAndView("/login");
+    public ModelAndView getLogoutPage(@RequestParam Optional<String> error) {
+        return new ModelAndView("/login", "error", error);
     }
+
     @GetMapping({"/home", "/"})
     public ModelAndView signin(@RequestParam Optional<String> error) {
     	return new ModelAndView("/home", "error", error);
@@ -38,9 +32,10 @@ public class IndexController {
     }
        
     
-    @GetMapping({"/login"})
-    public ModelAndView getLoginPage1() {
-    	return new ModelAndView("/login");
+    @GetMapping({
+            "/login"})
+    public ModelAndView getLoginPage(@RequestParam Optional<String> error) {
+        return new ModelAndView("login", "error", error);
     }
 }
 

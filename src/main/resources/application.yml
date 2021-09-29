@@ -13,6 +13,6 @@ spring:
     suffix: .ftl
   resources.add-mappings: true
   
-  #Security
-  #Disable spring seecurity
-  autoconfigure.exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+#  #Security
+#  #Disable spring seecurity
+#  autoconfigure.exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
