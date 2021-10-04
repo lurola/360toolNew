@@ -17,7 +17,7 @@ import com.appraisaltool.model.User;
 import com.appraisaltool.service.OfficeService;
 import com.appraisaltool.service.UserService;
 
-@RestController 
+@RestController
 @RequestMapping("/office")
 public class OfficeController {
 
@@ -39,8 +39,8 @@ public class OfficeController {
 		 return officeService.getOfficeById(id);
 	}
 	
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/office/loadCreateScreen")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/loadCreateScreen")
 	public ModelAndView loadNewOfficeScreen()  {
 		//Get users with no office
 		List<User> userList = userService.getUserSByOfficeId(null);
@@ -57,8 +57,8 @@ public class OfficeController {
 	 * 
 	 * @return
 	 */
-//	@PreAuthorize("hasAuthority('ADMIN')")
-	@PostMapping("/office/create")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/create")
 	public ModelAndView createOffice(@Valid @ModelAttribute("officeName") String officeName) {
 		officeService.createNewOffice(officeName);
 		return new ModelAndView("/home", "model", model);

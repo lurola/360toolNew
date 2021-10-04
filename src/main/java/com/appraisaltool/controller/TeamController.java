@@ -4,18 +4,20 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.Team;
 import com.appraisaltool.service.OfficeService;
 import com.appraisaltool.service.TeamService;
 
-@Controller
+@RestController
+@RequestMapping("team")
 public class TeamController {
 	
     @Autowired
@@ -25,7 +27,7 @@ public class TeamController {
     private ModelMap model;
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/team/loadCreateScreen")
+    @GetMapping("/loadCreateScreen")
 	public ModelAndView loadCreateRoleScreen() {
 	
 		List<Office> officeList = officeServ.getAllOffices();
@@ -43,7 +45,7 @@ public class TeamController {
 	 * @return
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/team/create") 
+    @GetMapping("/create")
 	@ResponseBody
 	public Long createTeam(@Valid @ModelAttribute("teamName") String teamName) {
 		Team newTeam = teamServ.createNewTeam(teamName);

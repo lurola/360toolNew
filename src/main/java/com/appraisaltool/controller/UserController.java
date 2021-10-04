@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +30,7 @@ import com.appraisaltool.service.UserService;
 import com.appraisaltool.service.UserTeamService;
 
 @RestController
+@RequestMapping("user")
 public class UserController {	
     @Autowired
     private UserService userService;
@@ -53,7 +55,7 @@ public class UserController {
 	 * @return
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/user/create")
+    @GetMapping("/create")
 	public ModelAndView getUserCreationForm() {
 		
 		fillComboValluesToModelMap();
@@ -67,7 +69,7 @@ public class UserController {
 	 * @param form
 	 * @return
 	 */
-	@PostMapping(value = "/user/create")
+    @PostMapping(value = "/create")
     public ModelAndView createUser(@Valid @ModelAttribute("userForm") NewUserDTO form) {
 		
         userService.createNewUser(form);
@@ -80,7 +82,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/user/signup")
+    @GetMapping("/signup")
 	public ModelAndView loadSignUpScreen() {
 		
 		fillComboValluesToModelMap();
@@ -96,7 +98,7 @@ public class UserController {
 	 * @param form
 	 * @return
 	 */
-	@PostMapping(value = "/user/signup")
+    @PostMapping(value = "/signup")
     public ModelAndView signup(@Valid @ModelAttribute("userForm") NewUserDTO form) {
 		
         userService.createNewUser(form);
@@ -113,7 +115,7 @@ public class UserController {
 	 * @param bindingResult
 	 * @return
 	 */
-	@GetMapping("/user/updateprofile/{id}")
+    @GetMapping("/updateprofile/{id}")
     public ModelAndView getUserUpdateForm(@Valid @ModelAttribute("id") Long id , BindingResult bindingResult) {
 		
 		NewUserDTO userForm = userService.getUserCreateFormByUserId(id);
@@ -130,7 +132,7 @@ public class UserController {
 	 * @param updateUserform
 	 * @return
 	 */
-	@PostMapping("/user/updateprofile/{id}")
+    @PostMapping("/updateprofile/{id}")
 	public ModelAndView updateUser(@Valid @ModelAttribute("userForm") NewUserDTO updateUserform) {
 	
 		userService.updateUser(updateUserform);
@@ -139,7 +141,7 @@ public class UserController {
 	}
 
 	
-	@GetMapping("/user/remindpassword")
+    @GetMapping("/remindpassword")
 	public ModelAndView remindForgotPassword() {
 
 		return new ModelAndView("/remind_password_form"); 
@@ -185,7 +187,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/user/getUserByOfficeId")
+    @GetMapping("/getUserByOfficeId")
 	@ResponseBody
 	public List<User> getUsersByOfficeId(@Valid @ModelAttribute("officeId") Long officeId) {
 		return userService.getUserSByOfficeId(officeId);
@@ -197,7 +199,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/user/loadChangePasswordScreen/{userId}")
+    @GetMapping("/loadChangePasswordScreen/{userId}")
 	public ModelAndView loadChangePasswordScreen(@Valid @ModelAttribute("userId") Long userId) {
 		
 		
@@ -213,7 +215,7 @@ public class UserController {
 	 * @return
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/user/loadUserSearchScreen")
+    @GetMapping("/loadUserSearchScreen")
 	public ModelAndView loadUserSearchScreen() {
 		
 		model = new ModelMap();		
@@ -228,7 +230,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@PostMapping("/user/changePassword")
+    @PostMapping("/changePassword")
 	public ModelAndView changePassword(@Valid @ModelAttribute (name= "newPassword") ChangePasswordDTO chPasswordDto) {
 		
 		if(!chPasswordDto.getNewPassword().equals(chPasswordDto.getRepeatedPassword())) {
@@ -247,7 +249,7 @@ public class UserController {
 	 * @param userGroup
 	 * @return
 	 */
-	@GetMapping("/user/assignUserToTeam")
+    @GetMapping("/assignUserToTeam")
 	@ResponseBody
 	public UserTeamId assignUserToTeam(@Valid @ModelAttribute(name = "userGroup") UserTeamId userGroup) {
 		
@@ -260,7 +262,7 @@ public class UserController {
 	
 	
 	
-	@GetMapping("/user/assignUserToGroup")
+    @GetMapping("/assignUserToGroup")
 	@ResponseBody
 	public UserGroupId assignUserToGroup(@Valid @ModelAttribute(name = "userGroup") UserGroupId userGroup) {
 		
@@ -276,7 +278,7 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@PostMapping("/user/searchByNameorSurname")
+    @PostMapping("/searchByNameorSurname")
 	public ModelAndView userSearch(@Valid @ModelAttribute(name = "user") User user) {
 
 		if(user.getOfficeId() == 0) {
@@ -291,7 +293,7 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/user/loadAssignMentorScreen")
+    @GetMapping("/loadAssignMentorScreen")
 	public ModelAndView loadAssignMentorScreen(@Valid @ModelAttribute(name = "user") MentorAssignmentDTO mentorAssignmentDto) {
 		
 		List<Office> officeList = officeService.getAllOffices();
@@ -305,7 +307,7 @@ public class UserController {
 	
 	
 	@ResponseBody
-	@GetMapping("/user/assignMentor")
+    @GetMapping("/assignMentor")
 	public String assignMentor(@Valid @ModelAttribute(name = "user") MentorAssignmentDTO mentorAssignmentDto) {
 		
 		userService.assignMentor(mentorAssignmentDto);	
@@ -314,7 +316,7 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("/user/initializeUser/{userId}")
+    @GetMapping("/initializeUser/{userId}")
 	public ModelAndView loadInitializeUserScreen(@Valid @ModelAttribute(name = "userId") Long userId) {
 		
 		model = new ModelMap();
@@ -325,7 +327,7 @@ public class UserController {
 	}
 	
 	
-	@PostMapping("/user/initializeUser")
+    @PostMapping("/initializeUser")
 	public ModelAndView initializeUser(@Valid @ModelAttribute(name = "chPasswordDto") ChangePasswordDTO usechPasswordDtorId) {
 		
 		Boolean success = userService.initilizePassword(usechPasswordDtorId); 

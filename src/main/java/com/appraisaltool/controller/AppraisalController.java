@@ -14,6 +14,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,7 +46,7 @@ import com.appraisaltool.service.impl.OfficeServiceImp;
 import com.appraisaltool.service.impl.UserServiceImpl;
 
 
-@RestController 
+@RestController
 @RequestMapping("/appraisal")
 public class AppraisalController {
 
@@ -105,7 +106,7 @@ public class AppraisalController {
 	 * 
 	 * @return
 	 */
-	//@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/manualAssignment")
 	public Appraisal manualAssignment(@Valid @ModelAttribute("manualAssignmentDto") ManualAssignmentDTO manualAssignmentDto) {
 		
@@ -281,7 +282,7 @@ public class AppraisalController {
 	 * 
 	 * @return 
 	 */
-	//@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/expireAppraisals/{officeId}")
 //	public ModelAndView expireAppraisalsNotFinished(@Valid @ModelAttribute ("officeId") Long officeId) {
 	public Integer expireAppraisalsNotFinished(@Valid @ModelAttribute ("officeId") Long officeId) {
@@ -313,7 +314,7 @@ public class AppraisalController {
 	 * 
 	 * @return 
 	 */
-//	//@PreAuthorize("hasAuthority('ADMIN')")
+    // @PreAuthorize("hasAuthority('ADMIN')")
 //	@GetMapping("/seeOtherAppraisals/{userId}")
 //	public ModelAndView seeOtherAppraisals(@Valid @ModelAttribute (name="userId") Long userId) {
 //	
@@ -401,7 +402,7 @@ public class AppraisalController {
 	 * 
 	 * @return 
 	 */
-	//@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/loadManualAssignment")
 	public ModelAndView loadManualAssignment() {
 		
@@ -420,7 +421,7 @@ public class AppraisalController {
 	 * @param userId
 	 * @return
 	 */
-	//@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/loadInternalCriteriaUsersToDisplay/{userId}")
 	public List<User> loadInternalCriteriaUsersToDisplay(@Valid @ModelAttribute (name="userId") Long userId) {
 		
@@ -446,7 +447,7 @@ public class AppraisalController {
 	 * @param userId
 	 * @return
 	 */
-	//@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/visualizeInternalCriteria/{userId}")
 	public ModelAndView visualizeInternalCriteria(@Valid @ModelAttribute (name="userId") Long userId) {
 				

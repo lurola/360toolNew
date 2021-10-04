@@ -4,18 +4,18 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.appraisaltool.model.Group;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.service.GroupService;
 import com.appraisaltool.service.OfficeService;
 
-@Controller
+@RestController
 public class GroupController {
 	
     @Autowired
