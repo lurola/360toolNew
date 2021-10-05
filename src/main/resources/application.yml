@@ -1,21 +1,33 @@
-
 spring:
+  profiles:
+    active: ${ENV_PARAM}  
+  jpa:   
+    hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+  resources.add-mappings: true        
+
+---
+        
+spring:
+  profiles: local
   datasource:
     url: jdbc:sqlserver://localhost;databasename=evaluationTool360;integratedSecurity=true
     username: sa2
     password: NewPassword
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  jpa:
-    hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
-    properties:
-      hibernate:
-        enable_lazy_load_no_trans: true
     show-sql: true
-  freemarker:
-    template-loader-path: classpath:/templates
-    suffix: .ftl
-  resources.add-mappings: true
   
-#  #Security
-#  #Disable spring seecurity
-#  autoconfigure.exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+---
+        
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:sqlserver://ig-weu-dev-gateway-data.database.windows.net;databasename=ig-evaluationtools360-eu
+    username: data_team
+    password: p666And!
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    show-sql: true
+  
+  
