@@ -1,4 +1,4 @@
-package com.appraisaltool.controller;
+package com.appraisaltool.controllerOlder;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -79,7 +79,7 @@ public class AppraisalController {
 	 * @return
 	 */
 	@GetMapping("/getAppraisal/{id}")
-	public Appraisal getAppraisalByAppraisalId(@Valid @ModelAttribute("id") Long id) {
+	public Appraisal getAppraisalByAppraisalId(@Valid @ModelAttribute("id") Integer id) {
 
 		return appraisalServ.getAppraisalById(id);
 				
@@ -110,7 +110,7 @@ public class AppraisalController {
 	@GetMapping("/manualAssignment")
 	public Appraisal manualAssignment(@Valid @ModelAttribute("manualAssignmentDto") ManualAssignmentDTO manualAssignmentDto) {
 		
-		List<Long> appraiserAlreadyAssigned = appraisalServ.getAppraiserIdByEvaluatedPersonId(manualAssignmentDto.getUserId());
+		List<Integer> appraiserAlreadyAssigned = appraisalServ.getAppraiserIdByEvaluatedPersonId(manualAssignmentDto.getUserId());
 		Appraisal newAppraisal = null;
 		
 		//Si no está asignado ya, se asigna, si no, no hacemos nada 
@@ -129,8 +129,8 @@ public class AppraisalController {
 	 * @return
 	 */
 	@GetMapping("/assignAppraisers/{id}")
-//	public ModelAndView assignAppraisers(@Valid @ModelAttribute("id") Long officeId) {
-	public Boolean assignAppraisers(@Valid @ModelAttribute("id") Long officeId) {
+//	public ModelAndView assignAppraisers(@Valid @ModelAttribute("id") Integer officeId) {
+	public Boolean assignAppraisers(@Valid @ModelAttribute("id") Integer officeId) {
 
 		//We receive the officeId and generate appraisals for the whole office automatically
 		appraisalServ.assignAppraisers(officeId);
@@ -149,7 +149,7 @@ public class AppraisalController {
 	public ArrayList<UserAppraisalDTO> getRemainingAppraisalsForAUser(@PathVariable("userId") Integer userId) {
 		
 				
-		Long id = new Long(userId);
+		Integer id = new Integer(userId);
 		
 		ArrayList<UserAppraisalDTO> peopleToBeEvaluated = new ArrayList<UserAppraisalDTO>();
 		
@@ -159,7 +159,7 @@ public class AppraisalController {
 		//Go for every person to be evaluated an get his data to show it in the remaining appraisal screen
 		for(int i=0; i<appraisalList.size(); i++) {
 			Appraisal currentAppraisal = appraisalList.get(i);
-			Long currentId= currentAppraisal.getEvaluatedPersonId();
+			Integer currentId= currentAppraisal.getEvaluatedPersonId();
 		
 			UserAppraisalDTO currentUserDTO = userController.getUserDtoData(currentId);
 			currentUserDTO.setAppraisalId(currentAppraisal.getAppraisalId());
@@ -173,16 +173,16 @@ public class AppraisalController {
 	}
 	
 	@PostMapping("/newAppraisal")
-	public ModelAndView newAppraisal(@Valid @ModelAttribute("idSelected") Long idSelected) {
+	public ModelAndView newAppraisal(@Valid @ModelAttribute("idSelected") Integer idSelected) {
 		//Get info of the appraisal if exists
 		//Go to individual appraisal screen
 		Double[] averages;
 		
-		Long appraisalId = new Long(idSelected);
+		Integer appraisalId = new Integer(idSelected);
 		
 		Appraisal appraisal = appraisalServ.getAppraisalById(appraisalId);
 		
-		CriteriaName[][] criteriaNames = appraisalServ.findAllCriterias(1L);
+        CriteriaName[][] criteriaNames = appraisalServ.findAllCriterias(1);
 		
 		//Get all the appItems in order type and subtype
 //		AppraisalItem[][] appItems = appraisalServ.getAppItemsByAppraisalId(appraisalId);
@@ -253,11 +253,11 @@ public class AppraisalController {
 	 * @return 
 	 */
 	@GetMapping("/getFinishedAppraisalsByUser/{userId}")
-	public List<AppraisalHeaderDTO> getFinishedAppraisalsByUser(@Valid @ModelAttribute ("userId") Long userId) {
+	public List<AppraisalHeaderDTO> getFinishedAppraisalsByUser(@Valid @ModelAttribute ("userId") Integer userId) {
 				
 //		Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		Long evaluatedPersonId = -1L;
+        Integer evaluatedPersonId = -1;
 		List<Appraisal> appraisalList = appraisalServ.getAppraisalByEvaluatedPersonId(userId, FINISH);
 				
 		if(appraisalList != null && appraisalList.size() != 0) {
@@ -284,8 +284,8 @@ public class AppraisalController {
 	 */
     @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/expireAppraisals/{officeId}")
-//	public ModelAndView expireAppraisalsNotFinished(@Valid @ModelAttribute ("officeId") Long officeId) {
-	public Integer expireAppraisalsNotFinished(@Valid @ModelAttribute ("officeId") Long officeId) {
+//	public ModelAndView expireAppraisalsNotFinished(@Valid @ModelAttribute ("officeId") Integer officeId) {
+	public Integer expireAppraisalsNotFinished(@Valid @ModelAttribute ("officeId") Integer officeId) {
 	
 		//Setear todos los appraisals que esten abiertos para la oficina indicada como caducados.
 		Integer recordsChanged = appraisalServ.setRemainingAppraisalsToExpired(officeId); 
@@ -303,7 +303,7 @@ public class AppraisalController {
 	 * @return
 	 */
 	@GetMapping("/seeOtherAppraisals/{userId}")
-	public List<User> getUserAppraisalsToDisplay(@ModelAttribute ("userId") Long userId) {
+	public List<User> getUserAppraisalsToDisplay(@ModelAttribute ("userId") Integer userId) {
 		//For the user received, we display the users available to see their appraisals
 		return appraisalServ.getUserAppraisalsToDisplay(userId);
 	}
@@ -316,7 +316,7 @@ public class AppraisalController {
 	 */
     // @PreAuthorize("hasAuthority('ADMIN')")
 //	@GetMapping("/seeOtherAppraisals/{userId}")
-//	public ModelAndView seeOtherAppraisals(@Valid @ModelAttribute (name="userId") Long userId) {
+//	public ModelAndView seeOtherAppraisals(@Valid @ModelAttribute (name="userId") Integer userId) {
 //	
 //		//Recuperar los users que podemos visualizar
 //		List<User> userListToDisplay = appraisalServ.getUserAppraisalsToDisplay(userId);
@@ -361,7 +361,7 @@ public class AppraisalController {
 //		
 //		return new ModelAndView("new_appraisal/visualize_appraisal", "model", model);
 		
-		return getAppraisalByAppraisalId((long)idSelected);
+		return getAppraisalByAppraisalId((Integer)idSelected);
 
 	}
 	
@@ -369,19 +369,19 @@ public class AppraisalController {
 	@GetMapping("/visualizeAllAppraisals/{integerEvalPersonId}")
 	public ModelAndView visualizeAllAppraisals(@Valid @ModelAttribute ("integerEvalPersonId") Integer integerEvalPersonId) {
 		
-		Long evalPersonId = new Long(integerEvalPersonId);
+		Integer evalPersonId = new Integer(integerEvalPersonId);
 		List<AppraisalItem[][]> appItemList = new ArrayList<AppraisalItem[][]>();
-		List<Long> appList = appraisalServ.findAllIdsByEvaluatedPersonIdAndStatus(evalPersonId, FINISH);
+		List<Integer> appList = appraisalServ.findAllIdsByEvaluatedPersonIdAndStatus(evalPersonId, FINISH);
 
 		//1 is Spanish
-		CriteriaName[][] criteriaNames = appraisalServ.findAllCriterias(1L);
+        CriteriaName[][] criteriaNames = appraisalServ.findAllCriterias(1);
 		AppraisalType[] appType = appraisalServ.findAllAppraisalTypes();
 		
 		User evaluatedPerson = userService.getUserByUserId(evalPersonId);
 		String evaluatedPersonName = evaluatedPerson.getName() + " " + evaluatedPerson.getSurname();
 		
 		//Get all the appItems in order type and subtype
-		for (Long currAppId : appList) {
+		for (Integer currAppId : appList) {
 			appItemList.add(appraisalServ.getAppItemsByAppraisalId(currAppId));		
 		}
 			
@@ -423,7 +423,7 @@ public class AppraisalController {
 	 */
     @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/loadInternalCriteriaUsersToDisplay/{userId}")
-	public List<User> loadInternalCriteriaUsersToDisplay(@Valid @ModelAttribute (name="userId") Long userId) {
+	public List<User> loadInternalCriteriaUsersToDisplay(@Valid @ModelAttribute (name="userId") Integer userId) {
 		
 		User user = userService.getUserByUserId(userId);
 		
@@ -449,13 +449,13 @@ public class AppraisalController {
 	 */
     @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/visualizeInternalCriteria/{userId}")
-	public ModelAndView visualizeInternalCriteria(@Valid @ModelAttribute (name="userId") Long userId) {
+	public ModelAndView visualizeInternalCriteria(@Valid @ModelAttribute (name="userId") Integer userId) {
 				
 		
 		Double[][] internalCriteriaResults = appraisalServ.getInternalCriteriaResults(userId);
 		//TODO: REmove 1L from language
-		List<InternalCriteriaType> criteriaTitles = appraisalServ.getInternalCriteriaTypes(1L);
-		List<InternalCriteriaSubtype> criteriaSubtypes = appraisalServ.getGroupCriteriaSubtitles(1L);
+        List<InternalCriteriaType> criteriaTitles = appraisalServ.getInternalCriteriaTypes(1);
+        List<InternalCriteriaSubtype> criteriaSubtypes = appraisalServ.getGroupCriteriaSubtitles(1);
 		
 		
 		Double[] averages = appraisalServ.getAverages(internalCriteriaResults, userId);
@@ -473,14 +473,14 @@ public class AppraisalController {
 	
 	
 	@GetMapping("/getInternalCriteriaTypes/{language}")
-	public List<InternalCriteriaType> getInternalCriteriaTypes(@Valid @ModelAttribute (name="language") Long language) {
+	public List<InternalCriteriaType> getInternalCriteriaTypes(@Valid @ModelAttribute (name="language") Integer language) {
 			
 		return appraisalServ.getInternalCriteriaTypes(language);
 	}
 	
 	
 	@GetMapping("/getInternalCriteriaSubTypes/{language}")
-	public List<InternalCriteriaSubtype> getInternalCriteriaSubTypes(@Valid @ModelAttribute (name="language") Long language) {
+	public List<InternalCriteriaSubtype> getInternalCriteriaSubTypes(@Valid @ModelAttribute (name="language") Integer language) {
 		return appraisalServ.getGroupCriteriaSubtitles(language);
 	}
 	
@@ -490,14 +490,14 @@ public class AppraisalController {
 	 * @return 
 	 */
 	@GetMapping("/getAppraisalTypes/{language}")
-	public List<AppraisalType> getAppraisalTypes(@Valid @ModelAttribute (name="language") Long language) {
+	public List<AppraisalType> getAppraisalTypes(@Valid @ModelAttribute (name="language") Integer language) {
 		return appraisalServ.getAppraisalTypes();
 	}
 	
 	
 	
 	@GetMapping("/getCriteriaNames/{language}")
-	public List<CriteriaName> getCriteriaNames(@Valid @ModelAttribute (name="language") Long language) {
+	public List<CriteriaName> getCriteriaNames(@Valid @ModelAttribute (name="language") Integer language) {
 		return appraisalServ.getCriteriaNames();
 	}
 	

@@ -1,4 +1,4 @@
-package com.appraisaltool.controller;
+package com.appraisaltool.controllerOlder;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -116,7 +116,7 @@ public class UserController {
 	 * @return
 	 */
     @GetMapping("/updateprofile/{id}")
-    public ModelAndView getUserUpdateForm(@Valid @ModelAttribute("id") Long id , BindingResult bindingResult) {
+    public ModelAndView getUserUpdateForm(@Valid @ModelAttribute("id") Integer id , BindingResult bindingResult) {
 		
 		NewUserDTO userForm = userService.getUserCreateFormByUserId(id);
 		
@@ -166,13 +166,13 @@ public class UserController {
 	 * @param userId
 	 * @return
 	 */
-	public UserAppraisalDTO getUserDtoData(Long userId) {
+	public UserAppraisalDTO getUserDtoData(Integer userId) {
 		UserAppraisalDTO userDto = new UserAppraisalDTO();
 		
 		User user = userService.getUserByUserId(userId);
 		
-		userDto.setOffice(officeService.getOfficeById(user.getOfficeId()).getOfficeName());
-		userDto.setRole(roleService.getRoleById(user.getRoleId()).getRoleName());
+        // userDto.setOffice(officeService.getOfficeById(user.getOfficeId()).getOfficeName());
+        userDto.setRole(roleService.getRoleById(user.getRole().getRoleId()).getRoleName());
 		userDto.setTeam(teamService.getTeamNamesByUserId(userId));
 		userDto.setUserName(user.getName() + " " + user.getSurname());
 		
@@ -189,7 +189,7 @@ public class UserController {
 	 */
     @GetMapping("/getUserByOfficeId")
 	@ResponseBody
-	public List<User> getUsersByOfficeId(@Valid @ModelAttribute("officeId") Long officeId) {
+	public List<User> getUsersByOfficeId(@Valid @ModelAttribute("officeId") Integer officeId) {
 		return userService.getUserSByOfficeId(officeId);
 	}
 	
@@ -200,7 +200,7 @@ public class UserController {
 	 * @return
 	 */
     @GetMapping("/loadChangePasswordScreen/{userId}")
-	public ModelAndView loadChangePasswordScreen(@Valid @ModelAttribute("userId") Long userId) {
+	public ModelAndView loadChangePasswordScreen(@Valid @ModelAttribute("userId") Integer userId) {
 		
 		
 		model = new ModelMap();
@@ -317,7 +317,7 @@ public class UserController {
 	
 	
     @GetMapping("/initializeUser/{userId}")
-	public ModelAndView loadInitializeUserScreen(@Valid @ModelAttribute(name = "userId") Long userId) {
+	public ModelAndView loadInitializeUserScreen(@Valid @ModelAttribute(name = "userId") Integer userId) {
 		
 		model = new ModelMap();
 		model.addAttribute("userId", userId);

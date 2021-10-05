@@ -1,4 +1,4 @@
-package com.appraisaltool.controller;
+package com.appraisaltool.controllerOlder;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -35,8 +35,8 @@ public class OfficeController {
 	
 	
 	@GetMapping("/officeById")
-	public Office getOfficeById(long id) throws ResourceNotFoundException {
-		 return officeService.getOfficeById(id);
+	public Office getOfficeById(Integer id) throws ResourceNotFoundException {
+        return null;// officeService.getOfficeById(id);
 	}
 	
     @PreAuthorize("hasAuthority('ADMIN')")
