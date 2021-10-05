@@ -346,7 +346,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		List <User> userToDisplay = null;
 		
 		if(u.getAppRole() == ApplicationRole.ADMIN) {
-			userToDisplay = userServImpl.getUserSByOfficeId(u.getOfficeId());
+            userToDisplay = userServImpl.getUserSByOfficeId(u.getOffice().getOfficeId());
         } else if (u.getRole().getRoleId() == SCRUM_MASTER_ROLE) {
 			List<Integer> listIdUser = userServImpl.findTeamMates(userId);
 			userToDisplay = userServImpl.getUsersInList(listIdUser);

@@ -281,11 +281,11 @@ public class UserController {
     @PostMapping("/searchByNameorSurname")
 	public ModelAndView userSearch(@Valid @ModelAttribute(name = "user") User user) {
 
-		if(user.getOfficeId() == 0) {
-			user.setOfficeId(null);
+        if (user.getOffice().getOfficeId() == 0) {
+            user.getOffice().setOfficeId(null);
 		}
 		
-		List<User> userList = userService.getByQuery(user.getName(), user.getSurname(), user.getOfficeId());
+        List<User> userList = userService.getByQuery(user.getName(), user.getSurname(), user.getOffice().getOfficeId());
 		
 		model = new ModelMap();
 		model.addAttribute("userList", userList);
