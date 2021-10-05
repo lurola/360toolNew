@@ -3,6 +3,7 @@ package com.appraisaltool.service.impl;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.response.LookupDataResults;
@@ -11,6 +12,7 @@ import com.appraisaltool.service.GroupService;
 import com.appraisaltool.service.OfficeService;
 import com.appraisaltool.service.RoleService;
 import com.appraisaltool.service.TeamService;
+import com.appraisaltool.service.UserService;
 
 @Service
 public class AdministrationServiceImpl implements AdministrationService {
@@ -26,6 +28,9 @@ public class AdministrationServiceImpl implements AdministrationService {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public LookupDataResults getLookupDataResult(LookupType lookupType) {
@@ -77,4 +82,11 @@ public class AdministrationServiceImpl implements AdministrationService {
         return lookupDataResults;
     }
 
+    public EmployeeDto getEmployeeById(Integer id) {
+        EmployeeDto employeeDto = null;
+        
+        employeeDto = AdministrationMapper.INSTANCE.map(userService.getUserByUserId(id));
+        
+        return employeeDto;
+    }
 }

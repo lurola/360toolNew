@@ -1,5 +1,6 @@
 package com.appraisaltool.model;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,8 +8,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Entity
@@ -19,7 +23,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId", nullable = false, updatable = false)
-	private Long userId;
+    private Integer userId;
 	
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -33,29 +37,37 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@Column(name = "roleId", nullable = false)
-	private Integer roleId;
-	
-	@Column(name = "officeId", nullable = false)
-	private Long officeId;
-	
+    @OneToOne
+    @JoinColumn(name = "roleId", insertable = false, updatable = false)
+    private Role role;
+
+    @OneToOne
+    @JoinColumn(name = "officeId", insertable = false, updatable = false)
+    private Office office;
+
 	@Column(name = "applicationrole", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ApplicationRole appRole;
 	
 	@Column(name = "mentorId", nullable = true)
-	private Long mentorId;
+    private Integer mentorId;
 
+    @ManyToMany
+    @JoinTable(name = "EMPLOYEE_TEAM", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "teamId"))
+    private Set<Team> employedTeam;
 
+    @ManyToMany
+    @JoinTable(name = "EMPLOYEE_GROUP", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "groupId"))
+    private Set<Group> employedGroup;
+
+    @Deprecated
 	public User() {
 		this.name="";
 		this.surname="";
 		this.email="";
 		this.password="";
-		this.roleId=1;
-		this.officeId =1L;
 		this.appRole=ApplicationRole.USER;
-		this.mentorId=0L;
+        this.mentorId = 0;
 		
 	}
 	

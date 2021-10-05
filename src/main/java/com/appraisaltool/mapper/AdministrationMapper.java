@@ -4,10 +4,12 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.model.Group;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.Role;
 import com.appraisaltool.model.Team;
+import com.appraisaltool.model.User;
 import com.appraisaltool.response.LookupData;
 
 @Mapper
@@ -37,5 +39,7 @@ public interface AdministrationMapper {
     LookupData map(Group group);
 
     List<LookupData> mapGroupList(List<Group> groupList);
+
+    EmployeeDto map(User user);
 
 }

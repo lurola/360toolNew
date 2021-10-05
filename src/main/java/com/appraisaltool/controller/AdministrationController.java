@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.response.LookupDataResults;
@@ -36,5 +37,11 @@ public class AdministrationController {
         LookupDataResults lookupDataResults = administrationService.getLookupDataResult(lookupType, id);
 
         return new ResponseEntity<GGResponse<LookupDataResults>>(new GGResponse<LookupDataResults>(lookupDataResults, null, true), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/employee/{id}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<EmployeeDto>> getEmployeeById(@PathVariable("id") Integer id) {
+        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.getEmployeeById(id), null, true), HttpStatus.OK);
     }
 }
