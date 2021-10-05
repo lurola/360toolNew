@@ -4,17 +4,14 @@ package com.appraisaltool.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.validation.Valid;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.appraisaltool.controller.CurrentUserControllerAdvice;
+import com.appraisaltool.controllerOlder.CurrentUserControllerAdvice;
 import com.appraisaltool.dto.ChangePasswordDTO;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
@@ -172,7 +169,7 @@ public class UserServiceImpl implements UserService {
 	 * @param role
 	 * @return The list of people with a specific role that belongs to a team
 	 */
-	public List<User> getUsersByTeamAndRole(List<Long> teamId, List<Integer> role) {
+    public List<User> getUsersByTeamAndRole(List<Integer> teamId, List<Integer> role) {
 		
 		return userRepository.getUsersByTeamAndRole(teamId, role);
 				
@@ -185,7 +182,7 @@ public class UserServiceImpl implements UserService {
 	 * @param userToRemove: Remove the id user in this parameter 
 	 * @return
 	 */
-	public List<User> getUsersByTeamAndRole(List<Long> teamId, Integer role) {
+    public List<User> getUsersByTeamAndRole(List<Integer> teamId, Integer role) {
 		
 		List<Integer> roleList = new ArrayList<Integer>();
 		roleList.add(role);

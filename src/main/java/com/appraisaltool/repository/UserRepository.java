@@ -2,13 +2,9 @@ package com.appraisaltool.repository;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import com.appraisaltool.dto.NewUserDTO;
 import com.appraisaltool.model.User;
 
@@ -29,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public List<User> findAllUsersByMentorId(Long mentorId);
 
 	@Query("SELECT distinct u FROM User u INNER JOIN UserTeam ut on (u.userId = ut.userId)  WHERE ut.teamId IN ?1 and u.roleId IN ?2")
-	public List<User> getUsersByTeamAndRole(List<Long> teamId, List<Integer> role);
+    public List<User> getUsersByTeamAndRole(List<Integer> teamId, List<Integer> role);
 
 	
 	@Query("SELECT  eg.userId FROM UserTeam eg WHERE  eg.teamId  IN "

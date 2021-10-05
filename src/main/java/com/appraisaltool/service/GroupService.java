@@ -10,4 +10,6 @@ public interface GroupService {
 
     public List<Group> getAllGroups();
 
+    public Group getGroupById(Integer id);
+
 }

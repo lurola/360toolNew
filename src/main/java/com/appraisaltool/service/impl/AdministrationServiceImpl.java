@@ -1,5 +1,6 @@
 package com.appraisaltool.service.impl;
 
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.dto.domain.LookupType;
@@ -43,6 +44,31 @@ public class AdministrationServiceImpl implements AdministrationService {
                 break;
             case GROUP:
                 lookupDataResults.setResults(AdministrationMapper.INSTANCE.mapGroupList(groupService.getAllGroups()));
+                break;
+            default:
+                break;
+        }
+
+        return lookupDataResults;
+    }
+
+    @Override
+    public LookupDataResults getLookupDataResult(LookupType lookupType, Integer id) {
+        LookupDataResults lookupDataResults = new LookupDataResults();
+        lookupDataResults.setLookupName(lookupType.name());
+
+        switch (lookupType) {
+            case ROLE:
+                lookupDataResults.setResults(Arrays.asList(AdministrationMapper.INSTANCE.map(roleService.getRoleById(id))));
+                break;
+            case OFFICE:
+                lookupDataResults.setResults(Arrays.asList(AdministrationMapper.INSTANCE.map(officeService.getOfficeById(id))));
+                break;
+            case TEAM:
+                lookupDataResults.setResults(Arrays.asList(AdministrationMapper.INSTANCE.map(teamService.getTeamById(id))));
+                break;
+            case GROUP:
+                lookupDataResults.setResults(Arrays.asList(AdministrationMapper.INSTANCE.map(groupService.getGroupById(id))));
                 break;
             default:
                 break;

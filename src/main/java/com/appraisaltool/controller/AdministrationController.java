@@ -30,4 +30,11 @@ public class AdministrationController {
         return new ResponseEntity<GGResponse<LookupDataResults>>( new GGResponse<LookupDataResults>(lookupDataResults, null, true), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/lookup/{lookupType}/{id}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<LookupDataResults>> getLookupById(@PathVariable("lookupType") LookupType lookupType, @PathVariable("id") Integer id) {
+        LookupDataResults lookupDataResults = administrationService.getLookupDataResult(lookupType, id);
+
+        return new ResponseEntity<GGResponse<LookupDataResults>>(new GGResponse<LookupDataResults>(lookupDataResults, null, true), HttpStatus.OK);
+    }
 }

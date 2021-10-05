@@ -6,4 +6,7 @@ import com.appraisaltool.response.LookupDataResults;
 public interface AdministrationService {
 
     public LookupDataResults getLookupDataResult(LookupType lookupType);
+
+
+    public LookupDataResults getLookupDataResult(LookupType lookupType, Integer id);
 }

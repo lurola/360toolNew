@@ -6,13 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.appraisaltool.dto.AppItemDTO;
 import com.appraisaltool.dto.AppraisalDTO;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
@@ -132,7 +129,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		appraisersList.add(user.getMentorId());
 
 		//3. Third appraiser: SCRUM MASTER
-		List<Long> teamIdList = teamServImpl.getTeamByUserId(user.getUserId());
+        List<Integer> teamIdList = teamServImpl.getTeamByUserId((user.getUserId()));
 		if(teamIdList != null && teamIdList.size() > 0) {
 			
 			List<User> scrumMaster =  userServImpl.getUsersByTeamAndRole(teamIdList, SCRUM_MASTER_ROLE);

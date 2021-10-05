@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Data
@@ -16,7 +15,7 @@ public class Office {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long officeId;
+    private Integer officeId;
 	
 	@Column(name = "OfficeName")
 	private String officeName;

@@ -1,13 +1,11 @@
 package com.appraisaltool.service.impl;
 
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import com.appraisaltool.model.Role;
 import com.appraisaltool.repository.RoleRepository;
 import com.appraisaltool.service.RoleService;
@@ -23,8 +21,7 @@ public class RoleServiceImpl implements RoleService{
 	 * Get one role by its id
 	 * @param id
 	 */
-	public Role getRoleById(@PathVariable(value = "id") Integer roleId)  {
-		logger.debug("[OfficeServiceImp] calling getOfficeById");
+    public Role getRoleById(Integer roleId) {
 		Role role = roleRepository.getOne(roleId);
 		return role;
 	}

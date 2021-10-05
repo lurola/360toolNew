@@ -9,7 +9,7 @@ public interface OfficeService {
 
     public List<Office> getAllOffices();
 
-    public Office getOfficeById(Long employeeId);
+    public Office getOfficeById(Integer employeeId);
 
     public Office createNewOffice(Office office);
 

@@ -7,6 +7,9 @@ spring:
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
     show-sql: true
   freemarker:
     template-loader-path: classpath:/templates

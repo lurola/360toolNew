@@ -13,6 +13,8 @@ public class GroupServiceImpl implements GroupService {
 
 	@Autowired GroupRepository groupRepo;
 	
+
+
 	public Group createNewGroup(@Valid Group groupName) {
 		return groupRepo.save(groupName);
 	}
@@ -24,14 +26,14 @@ public class GroupServiceImpl implements GroupService {
 		
 	}
 	
-	
 	public List<Group> getAllGroups() {
 		return groupRepo.findAll();
 	}
 
 	
-	
-	
+    public Group getGroupById(Integer id) {
+        return groupRepo.getOne(id);
+    }
 	
 	
 	

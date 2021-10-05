@@ -5,6 +5,8 @@ import com.appraisaltool.model.Team;
 
 public interface TeamService {
 	
+    public Team getTeamById(Integer teamId);
+
     public Team getTeamByName(String name);
 
     public Team createNewTeam(String teamName);
