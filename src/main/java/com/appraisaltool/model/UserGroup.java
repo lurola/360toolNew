@@ -20,10 +20,10 @@ public UserGroup() {
 private UserGroupId userGroupId;
 
 @Column(name = "userId", nullable = false, insertable = false, updatable = false)
-private Long userId;
+private Integer userId;
 
 @Column(name = "groupId", nullable = false, insertable = false, updatable = false)
-private Long groupId;
+private Integer groupId;
 
 
 	}

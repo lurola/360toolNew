@@ -9,12 +9,12 @@ import org.springframework.stereotype.Repository;
 import com.appraisaltool.model.AppraisalAverage;
 
 @Repository
-public interface AppraisalAverageRepository extends JpaRepository<AppraisalAverage, Long>{
+public interface AppraisalAverageRepository extends JpaRepository<AppraisalAverage, Integer>{
 
-	public AppraisalAverage getOneByAppAverageIdAppraisalIdAndAppAverageIdAppraisalTypeId(Long currAppId, Integer appraisalType);
+	public AppraisalAverage getOneByAppAverageIdAppraisalIdAndAppAverageIdAppraisalTypeId(Integer currAppId, Integer appraisalType);
 	
 	@Query ("SELECT app FROM AppraisalAverage app WHERE app.appAverageId.appraisalId IN (?1) AND app.appAverageId.appraisalTypeId = ?2 ")
-	public List<AppraisalAverage> findAllByAppIdListAndAppraisalType(List<Long> appIdList, Integer appraisalType);
+	public List<AppraisalAverage> findAllByAppIdListAndAppraisalType(List<Integer> appIdList, Integer appraisalType);
 
 
 }

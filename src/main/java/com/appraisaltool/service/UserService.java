@@ -10,29 +10,29 @@ import com.appraisaltool.model.User;
 
 public interface UserService {
 
-	public User getUserByUserId(long id);
+	public User getUserByUserId(Integer id);
 
     public Optional<User> getUserByEmail(String email);
 
     public Collection<User> getAllUsers();
 
-    public List<User> getUserSByOfficeId(Long officeId);
+    public List<User> getUserSByOfficeId(Integer officeId);
 
 	public NewUserDTO createNewUser(NewUserDTO user);
 	
 	public NewUserDTO updateUser(NewUserDTO userCreateForm);
 
-    public NewUserDTO getUserCreateFormByUserId(long userId);
+    public NewUserDTO getUserCreateFormByUserId(Integer userId);
 
     public void changePassword(ChangePasswordDTO chPasswordDto);
 
-    public List<User> getByQuery(String name, String surname, Long officeId);
+    public List<User> getByQuery(String name, String surname, Integer officeId);
 
     public Boolean assignMentor(MentorAssignmentDTO mentorAssigDto);
 
     public Boolean initilizePassword(ChangePasswordDTO usechPasswordDtorId);
 
-//	List<User> getUsersByTeamId(Long teamId);
+//	List<User> getUsersByTeamId(Integer teamId);
 
 //    User createUser(UserCreateForm form);
 

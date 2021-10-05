@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class AppraisalHeaderDTO {
 	
-	private Long appraisalId;
+	private Integer appraisalId;
 	private String evaluatedPersonName; 
 	private String appraiserName;
 	private Double average;
-	private Long highAverage;
+	private Integer highAverage;
 	private String highSubject;
 	
 }

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.appraisaltool.model.CriteriaName;
 
 @Repository
-public interface CriteriaNameRepository extends JpaRepository<CriteriaName, Long>{
+public interface CriteriaNameRepository extends JpaRepository<CriteriaName, Integer>{
 		
 	
-		public List<CriteriaName> findAllByLanguageOrderByCriteriaNameId(Long language);
+		public List<CriteriaName> findAllByLanguageOrderByCriteriaNameId(Integer language);
 	
 	
 	}

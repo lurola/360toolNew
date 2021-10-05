@@ -16,7 +16,7 @@ public class InternalSpecificAppType {
 	private InternalSpecificAppTypeId internalSpecificAppTypeId;
 	
 	@Column
-	private Long weight;
+	private Integer weight;
 	
 
 

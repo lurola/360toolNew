@@ -13,12 +13,12 @@ import lombok.Data;
 public class AppraisalType {
 
 	@Id
-	private Long appraisalTypeId;
+	private Integer appraisalTypeId;
 	
 	@Column
 	private String appraisalTypeName;
 	
 	@Column
-	private Long language;
+	private Integer language;
 	
 }

@@ -24,13 +24,13 @@ public class Appraisal {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long appraisalId;
+	private Integer appraisalId;
 	
 	@Column (name = "evaluatedPersonId")
-	private Long evaluatedPersonId;
+	private Integer evaluatedPersonId;
 	
 	@Column (name = "appraiserId")
-	private Long appraiserId;
+	private Integer appraiserId;
 	
 	@Column (name = "evalDate")
 	private Integer evalDate;
@@ -42,7 +42,7 @@ public class Appraisal {
 	private List<AppraisalItem> apprItemList;
 
 
-	public Appraisal (Long evaluatedPersonId, Long appraiserId, Integer status, List<AppraisalItem> apprItemList) {
+	public Appraisal (Integer evaluatedPersonId, Integer appraiserId, Integer status, List<AppraisalItem> apprItemList) {
 		this.evaluatedPersonId = evaluatedPersonId;
 		this.appraiserId = appraiserId;
 		

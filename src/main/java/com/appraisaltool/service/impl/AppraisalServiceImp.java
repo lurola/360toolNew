@@ -75,7 +75,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	private Integer SCRUM_MASTER_ROLE = 2;
 	
 	@Override
-	public Appraisal getAppraisalById(Long id) {
+	public Appraisal getAppraisalById(Integer id) {
 		
 		Appraisal appraisal = appraisalRepo.getAppraisalByAppraisalId(id);
 		return appraisal;
@@ -96,7 +96,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * 
 	 * @param officeId
 	 */
-	public void assignAppraisers(@Valid Long officeId) {
+	public void assignAppraisers(@Valid Integer officeId) {
 		
 		//We get the list of all the user in an office
 		List<User> userList = userServImpl.getUserSByOfficeId(officeId);
@@ -117,9 +117,9 @@ public class AppraisalServiceImp implements AppraisalService{
 	public void assignAppraiserToUser(User user) {
 		
 		
-		List<Long> appraiserAlreadyAssigned = appraisalRepo.getAppraiserIdByEvaluatedPersonId(user.getUserId());
+		List<Integer> appraiserAlreadyAssigned = appraisalRepo.getAppraiserIdByEvaluatedPersonId(user.getUserId());
 		
-		List<Long> appraisersList = new ArrayList<Long>();
+        List<Integer> appraisersList = new ArrayList<Integer>();
 		Boolean alreadyIncluded;
 		
 		//1. First appraiser: YOURSELF
@@ -146,9 +146,9 @@ public class AppraisalServiceImp implements AppraisalService{
 		
 
 		//4. Fourth appraiser: TEAMMATE
-		final Long teamMateChosenId;
+		final Integer teamMateChosenId;
 		
-		List<Long> teamMate = userServImpl.findTeamMatesNoGroup(user.getUserId());
+		List<Integer> teamMate = userServImpl.findTeamMatesNoGroup(user.getUserId());
 		if(teamMate != null && teamMate.size() != 0) {
 			teamMateChosenId = chooseAppraiserFromList(teamMate, appraisersList);
 			
@@ -158,8 +158,8 @@ public class AppraisalServiceImp implements AppraisalService{
 		}
 		
 		//5. Fifth appraiser: GroupMate
-		final Long groupMateChosenId;
-		List<Long> partner = userServImpl.findGroupMates(user.getUserId());
+		final Integer groupMateChosenId;
+		List<Integer> partner = userServImpl.findGroupMates(user.getUserId());
 		if(partner != null && partner.size() != 0) {
 			groupMateChosenId = chooseAppraiserFromList(partner, appraisersList);
 			
@@ -169,10 +169,10 @@ public class AppraisalServiceImp implements AppraisalService{
 		}
 		
 //		//Si alguno de los appraisal está ya incluido, lo sacamos
-		List<Long> appraisersListToIterate = appraisersList;
+		List<Integer> appraisersListToIterate = appraisersList;
 		for(int i=0; i<appraisersListToIterate.size(); i++) {
 			
-			Long currAppraiser = appraisersListToIterate.get(i);
+			Integer currAppraiser = appraisersListToIterate.get(i);
 			
 			if(appraiserAlreadyAssigned.contains(currAppraiser)) {
 				appraisersList.remove(currAppraiser);
@@ -180,20 +180,20 @@ public class AppraisalServiceImp implements AppraisalService{
 			}
 		}	
 			
-		LinkedHashSet<Long> hashSet = new LinkedHashSet<Long>(appraisersList);
-        ArrayList<Long> appListWithoutDuplicates = new ArrayList<>(hashSet);
+		LinkedHashSet<Integer> hashSet = new LinkedHashSet<Integer>(appraisersList);
+        ArrayList<Integer> appListWithoutDuplicates = new ArrayList<>(hashSet);
 			
 				
 		
 		//Create one appraisal with status 0 for each appraiser
 		for(int i=0; i<appListWithoutDuplicates.size(); i++) {
-			Long appraiserId = appListWithoutDuplicates.get(i);
+			Integer appraiserId = appListWithoutDuplicates.get(i);
 			createNewAppraisal(user.getUserId(), appraiserId, 0, null);
 		}
 		
 	}
 	
-	private Long chooseAppraiserFromList(List<Long> teamMateList, List<Long> totalAppraisersList) {
+    private Integer chooseAppraiserFromList(List<Integer> teamMateList, List<Integer> totalAppraisersList) {
 
 		List<AppraiserCountDTO> appraisalsPerAppraiser = appraisalRepo.getNumberOfAppraisalPerAppraiser(teamMateList);
 		Boolean alreadyIncluded = false;
@@ -224,7 +224,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraiserId
 	 * @return
 	 */
-	public List<Appraisal> getRemainingAppraisalsForAUserAndStatus(@Valid Long appraiserId, Integer status) {
+	public List<Appraisal> getRemainingAppraisalsForAUserAndStatus(@Valid Integer appraiserId, Integer status) {
 		List<Appraisal> appraisalList = appraisalRepo.findAllByAppraiserIdAndStatus(appraiserId, status);
 		return appraisalList;
 		
@@ -237,7 +237,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appItemTypeId
 	 * @return
 	 */
-	public List<AppraisalItem> findAppItemsByAppraisalIdAndAppItemType(Long appId, Integer appItemTypeId) {
+	public List<AppraisalItem> findAppItemsByAppraisalIdAndAppItemType(Integer appId, Integer appItemTypeId) {
 		return appItemRepo.findAppItemsByAppraisalIdAndAppItemType(appId, appItemTypeId);
 		
 	}
@@ -276,7 +276,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraiserId
 	 * @return
 	 */
-	public Appraisal createNewAppraisal(Long userId, Long appraiserId, Integer status, List<AppraisalItem> apprItemList) {
+	public Appraisal createNewAppraisal(Integer userId, Integer appraiserId, Integer status, List<AppraisalItem> apprItemList) {
 		Appraisal app = new Appraisal(userId, appraiserId, status, apprItemList);
 		app = appraisalRepo.save(app);
 		Set<AppraisalItem> appItemSet = initializeApprList(app);
@@ -302,7 +302,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	}
 	
 	
-	public List<Appraisal> getAppraisalByEvaluatedPersonId(Long userId, Integer status) {
+	public List<Appraisal> getAppraisalByEvaluatedPersonId(Integer userId, Integer status) {
 		return appraisalRepo.getAppraisalByEvaluatedPersonIdAndStatus(userId, status);
 	}
 
@@ -311,7 +311,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param officeId
 	 * @return
 	 */
-	public Integer setRemainingAppraisalsToExpired(@Valid Long officeId) {
+	public Integer setRemainingAppraisalsToExpired(@Valid Integer officeId) {
 		
 		//Get all the remaining appraisals
 		List<Appraisal> appraisalList = getAppraisalsByOfficeAndStatus(officeId, 0);
@@ -328,7 +328,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		
 	}
 	
-	public List<Appraisal> getAppraisalsByOfficeAndStatus(Long officeId, Integer statusId) {
+	public List<Appraisal> getAppraisalsByOfficeAndStatus(Integer officeId, Integer statusId) {
 
 		return appraisalRepo.getAppraisalsByOfficeIdAndStatusId(officeId, statusId);
 	}
@@ -339,7 +339,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param userId
 	 * @return
 	 */
-	public List <User> getUserAppraisalsToDisplay(@Valid Long userId) {
+	public List <User> getUserAppraisalsToDisplay(@Valid Integer userId) {
 		User u = userServImpl.getUserByUserId(userId);
 		
 		//Is the user a mentor
@@ -347,8 +347,8 @@ public class AppraisalServiceImp implements AppraisalService{
 		
 		if(u.getAppRole() == ApplicationRole.ADMIN) {
 			userToDisplay = userServImpl.getUserSByOfficeId(u.getOfficeId());
-		} else if (u.getRoleId() == SCRUM_MASTER_ROLE) {	
-			List<Long> listIdUser = userServImpl.findTeamMates(userId);
+        } else if (u.getRole().getRoleId() == SCRUM_MASTER_ROLE) {
+			List<Integer> listIdUser = userServImpl.findTeamMates(userId);
 			userToDisplay = userServImpl.getUsersInList(listIdUser);
 		} 
 		
@@ -368,7 +368,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	
 	
 	
-	public Double getTotalAverageForAnAppraisal(Long appraisalId) {
+	public Double getTotalAverageForAnAppraisal(Integer appraisalId) {
 		Double totalAverage = 0D;
 		Double sumTotal = 0D; 
 		
@@ -391,7 +391,7 @@ public class AppraisalServiceImp implements AppraisalService{
 					int[] jArray = {j+1};
 					
 					//Seleccionamos dentro de la lista de pesos, los que se corresponden con el typo y subtypo por el que vamos.
-					Long specificWeight = specificAppType.stream().filter(specificApp -> specificApp.getSpecificAppraisalTypeId().getAppraisalTypeId() == iArray[0] && specificApp.getSpecificAppraisalTypeId().getSubtypeId() == jArray[0]).collect(Collectors.toList()).get(0).getWeight();
+					Integer specificWeight = specificAppType.stream().filter(specificApp -> specificApp.getSpecificAppraisalTypeId().getAppraisalTypeId() == iArray[0] && specificApp.getSpecificAppraisalTypeId().getSubtypeId() == jArray[0]).collect(Collectors.toList()).get(0).getWeight();
 					
 					if(appItems[i][j] != null) {
 						//Multiplicamos cada criterio especifico por su peso.
@@ -399,7 +399,7 @@ public class AppraisalServiceImp implements AppraisalService{
 					}
 				}
 				//Cada grupo de criterios especificos, se multiplica por el peso global de ellos sobre el total.
-				Long currGlobalWeight = globalAppType.stream().filter(globalW -> globalW.getGlobalAppraisalTypeId().getAppraisalTypeId() == iArray[0]).collect(Collectors.toList()).get(0).getWeight();
+				Integer currGlobalWeight = globalAppType.stream().filter(globalW -> globalW.getGlobalAppraisalTypeId().getAppraisalTypeId() == iArray[0]).collect(Collectors.toList()).get(0).getWeight();
 				totalAverage = totalAverage + (sumTotal * (currGlobalWeight / (1D*100)));
 				sumTotal = 0D;
 			}
@@ -415,7 +415,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalList
 	 * @return
 	 */
-	public List<AppraisalHeaderDTO> getAppraisalheaders(List<Appraisal> appraisalList, Long evaluatedPersonId, Long currentUserId) {
+	public List<AppraisalHeaderDTO> getAppraisalheaders(List<Appraisal> appraisalList, Integer evaluatedPersonId, Integer currentUserId) {
 		
 		if (appraisalList == null) {
 			return null;
@@ -458,7 +458,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalId
 	 * @return
 	 */
-	public AppraisalItem[][] getAppItemsByAppraisalId(Long appraisalId) {
+	public AppraisalItem[][] getAppItemsByAppraisalId(Integer appraisalId) {
 		
 		AppraisalItem[][] appItemListGroup = new AppraisalItem[10][5];		
 		List<AppraisalItem> appItemList = appItemRepo.findAllByAppraisalOrderByAppraisalTypeIdAscSubtypeIdAsc(appraisalId);
@@ -485,8 +485,8 @@ public class AppraisalServiceImp implements AppraisalService{
 	 */
 	public Double[] calculateSpecificAppAverages(AppraisalItem[][] appItems) {
 		
-//		Long appraisalId = appItems[0][0].getAppraisalId();
-		Long appraisalId = appItems[0][0].getAppraisal();
+//		Integer appraisalId = appItems[0][0].getAppraisalId();
+		Integer appraisalId = appItems[0][0].getAppraisal();
 		Integer roleId = getEvaluatePersonRoleByAppraisalId(appraisalId);		
 		
 		Double[] average= new Double[10];
@@ -505,7 +505,7 @@ public class AppraisalServiceImp implements AppraisalService{
 				int[] iArray = {i};
 				int[] jArray = {j+1};
 				
-				Long specificWeight = specificAppType.stream().filter(specificApp -> specificApp.getSpecificAppraisalTypeId().getAppraisalTypeId() == iArray[0] && specificApp.getSpecificAppraisalTypeId().getSubtypeId() == jArray[0]).collect(Collectors.toList()).get(0).getWeight();
+				Integer specificWeight = specificAppType.stream().filter(specificApp -> specificApp.getSpecificAppraisalTypeId().getAppraisalTypeId() == iArray[0] && specificApp.getSpecificAppraisalTypeId().getSubtypeId() == jArray[0]).collect(Collectors.toList()).get(0).getWeight();
 				sumaTotal = sumaTotal + (appItems[i][j].getParamValue()) * ((specificWeight * 1D/100));
 			}
 			
@@ -521,13 +521,13 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalId
 	 * @return
 	 */
-	public Integer getEvaluatePersonRoleByAppraisalId(Long appraisalId) {
+	public Integer getEvaluatePersonRoleByAppraisalId(Integer appraisalId) {
 		
-		Long evaluatedPersonId = appraisalRepo.getAppraisalByAppraisalId(appraisalId).getEvaluatedPersonId();
+		Integer evaluatedPersonId = appraisalRepo.getAppraisalByAppraisalId(appraisalId).getEvaluatedPersonId();
 		User evaluatedPerson = userServImpl.getUserByUserId(evaluatedPersonId);
 		
 		if (evaluatedPerson != null) {
-			return evaluatedPerson.getRoleId();
+            return evaluatedPerson.getRole().getRoleId();
 		} else {
 			return null;
 		}
@@ -540,7 +540,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param evalPersonId
 	 * @return
 	 */
-	public List<Appraisal> findAllAppraisalsByEvalPersonId(Long evalPersonId) {
+	public List<Appraisal> findAllAppraisalsByEvalPersonId(Integer evalPersonId) {
 		return appraisalRepo.findAllByEvaluatedPersonId(evalPersonId);
 	}
 	
@@ -550,12 +550,12 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param userId
 	 * @return
 	 */
-	public Double[][] getInternalCriteriaResults(Long userId) {
+	public Double[][] getInternalCriteriaResults(Integer userId) {
 		
-		List<Long> appraisalList = appraisalRepo.findAllIdsByEvaluatedPersonIdAndStatus(userId, 1);
+		List<Integer> appraisalList = appraisalRepo.findAllIdsByEvaluatedPersonIdAndStatus(userId, 1);
 		Double[][] averagesToShow = new Double[4][5];
 		
-		Integer role = userServImpl.getUserByUserId(userId).getRoleId();
+        Integer role = userServImpl.getUserByUserId(userId).getRole().getRoleId();
 		
 		//Gets the averages for the 4 grouper specific criterias
 		averagesToShow[0] = getGroupedCompetitiveAverages(appraisalList);
@@ -571,7 +571,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalList
 	 * @return
 	 */
-	private Double[] getGroupedCompetitiveAverages(List<Long> appraisalList) {
+	private Double[] getGroupedCompetitiveAverages(List<Integer> appraisalList) {
 		
 		Double[] result = new Double[]{0D,0D,0D,0D,0D};
 
@@ -609,7 +609,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalList
 	 * @return
 	 */
-	private Double[] getGroupedImpactAverages(List<Long> appraisalList) {
+	private Double[] getGroupedImpactAverages(List<Integer> appraisalList) {
 
 		Double[] result = new Double[]{0D,0D,0D,0D,0D};
 
@@ -645,7 +645,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param role
 	 * @return
 	 */
-	private Double[] getGroupedContImprovementAverages(List<Long> appraisalList, Integer role) {
+	private Double[] getGroupedContImprovementAverages(List<Integer> appraisalList, Integer role) {
 
 		Double[] result = new Double[]{0D,0D,0D,0D,0D};
 
@@ -685,7 +685,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraisalList
 	 * @return
 	 */
-	private Double[] getGroupedValueAverages(List<Long> appraisalList) {
+	private Double[] getGroupedValueAverages(List<Integer> appraisalList) {
 		
 		Double[] result = new Double[]{0D,0D,0D,0D,0D};
 
@@ -718,7 +718,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * When an appraisal is finished, calculate the averages and save it in the database
 	 * @param appraisalId
 	 */
-	public void calculateAndInsertAverages(@Valid Long appraisalId) {
+	public void calculateAndInsertAverages(@Valid Integer appraisalId) {
 		
 		AppraisalItem[][] appItems = getAppItemsByAppraisalId(appraisalId);
 		Double[] averages = calculateSpecificAppAverages(appItems);
@@ -743,7 +743,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		
 	}
 
-		public CriteriaName[][] findAllCriterias(Long language) {
+		public CriteriaName[][] findAllCriterias(Integer language) {
 
 			List<CriteriaName> criteriaNameList = criteriaRepo.findAllByLanguageOrderByCriteriaNameId(language);
 			CriteriaName[][] criteriasName = new CriteriaName[10][5];
@@ -793,7 +793,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		}
 		
 
-		public List<InternalCriteriaType> getInternalCriteriaTypes(Long language) {
+		public List<InternalCriteriaType> getInternalCriteriaTypes(Integer language) {
 			String[] internalCriteriaTitle = new String[]{"Competitivo en el sector","Impacto en el clima laboral","Mejora continua","Valor individual del trabajador"};
 			
 			return intCritTypeNameRepo.getInternalCriteriaTypeByLanguage(language);
@@ -804,9 +804,9 @@ public class AppraisalServiceImp implements AppraisalService{
 
 
 
-		public Double[] getAverages(Double[][] internalCriteriaResultsLong , Long userId) {
+		public Double[] getAverages(Double[][] internalCriteriaResultsInteger , Integer userId) {
 
-			Integer roleId = userServImpl.getUserByUserId(userId).getRoleId();
+        Integer roleId = userServImpl.getUserByUserId(userId).getRole().getRoleId();
 			Double[] averages = new Double[4];
 			Double result = 0D; 
 			List<InternalSpecificAppType> currentWeight;
@@ -815,17 +815,17 @@ public class AppraisalServiceImp implements AppraisalService{
 			List<InternalSpecificAppType> weightList = intSpecRepo.findAllByInternalSpecificAppTypeIdRoleId(roleId);
 			
 			
-			for(int i=0; i<internalCriteriaResultsLong.length; i++) {
+			for(int i=0; i<internalCriteriaResultsInteger.length; i++) {
 				int[] iArray = {i};
 				result = 0D;
-				for(int j=0; j<internalCriteriaResultsLong[i].length; j++) {
+				for(int j=0; j<internalCriteriaResultsInteger[i].length; j++) {
 					int[] jArray = {j};
 					
 					currentWeight = weightList.stream().filter(currWeight -> currWeight.getInternalSpecificAppTypeId().getGroupId() == iArray[0]
 							&& currWeight.getInternalSpecificAppTypeId().getSubtypeId() == jArray[0]).collect(Collectors.toList());
 					
 					if(currentWeight != null && currentWeight.size() > 0) {
-						result = result + (internalCriteriaResultsLong[i][j] * currentWeight.get(0).getWeight());
+						result = result + (internalCriteriaResultsInteger[i][j] * currentWeight.get(0).getWeight());
 					}
 							
 					
@@ -839,7 +839,7 @@ public class AppraisalServiceImp implements AppraisalService{
 
 
 
-		public List<InternalCriteriaSubtype> getGroupCriteriaSubtitles(Long language) {
+		public List<InternalCriteriaSubtype> getGroupCriteriaSubtitles(Integer language) {
 			
 			String[][] internalCriteria = {{"Individuales", "Inherente al cargo", "Potencial", "Gestión" , "Comunicacion en ingles"}, 
 					{"Impacto en el comportamiento de los compañeros", "Actitud ante decisiones y adaptación al cambio", "Contribuye a la gestión y organización del trabajo del equipo", "Impacto en el ambiente laboral diario", "Habilidades de liderazgo demostradas a lo largo del año"}, 
@@ -851,12 +851,12 @@ public class AppraisalServiceImp implements AppraisalService{
 		}
 		
 		
-		public List<Long> findAllIdsByEvaluatedPersonIdAndStatus (Long evalPersonId, Integer status) {
+		public List<Integer> findAllIdsByEvaluatedPersonIdAndStatus (Integer evalPersonId, Integer status) {
 			return appraisalRepo.findAllIdsByEvaluatedPersonIdAndStatus(evalPersonId, status);
 		}
 		
 		
-		public List<Long> getAppraiserIdByEvaluatedPersonId (Long evalPersonId) {
+		public List<Integer> getAppraiserIdByEvaluatedPersonId (Integer evalPersonId) {
 			return appraisalRepo.getAppraiserIdByEvaluatedPersonId(evalPersonId);
 		}
 

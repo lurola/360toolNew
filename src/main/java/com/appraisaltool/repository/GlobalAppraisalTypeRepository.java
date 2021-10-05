@@ -10,7 +10,7 @@ import com.appraisaltool.model.GlobalAppraisalType;
 import com.appraisaltool.model.SpecificAppraisalType;
 
 @Repository
-public interface GlobalAppraisalTypeRepository  extends JpaRepository<GlobalAppraisalType, Long>{
+public interface GlobalAppraisalTypeRepository  extends JpaRepository<GlobalAppraisalType, Integer>{
 
 	public List<GlobalAppraisalType> findAllByGlobalAppraisalTypeIdRoleId(Integer roleId);
 

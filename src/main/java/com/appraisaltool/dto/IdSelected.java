@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class IdSelected {
 
-	private Long idSelected;
+	private Integer idSelected;
 }

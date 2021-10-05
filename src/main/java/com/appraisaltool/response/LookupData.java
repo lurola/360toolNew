@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class LookupData {
 
-    private Long id;
+    private Integer id;
 
     private String label;
 

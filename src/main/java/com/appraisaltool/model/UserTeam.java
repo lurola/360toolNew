@@ -19,10 +19,10 @@ public class UserTeam {
 	private UserTeamId userTeamId;
 	
 	@Column(name = "userId", nullable = false, insertable = false, updatable = false)
-	private Long userId;
+	private Integer userId;
 	
 	@Column(name = "teamId", nullable = false, insertable = false, updatable = false)
-    private Long teamId;
+    private Integer teamId;
 
 
 }

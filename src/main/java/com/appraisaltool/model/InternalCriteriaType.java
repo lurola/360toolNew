@@ -19,10 +19,10 @@ public class InternalCriteriaType {
 	
 	
 	@Id
-	private Long InternalCriteriaTypeId;
+	private Integer InternalCriteriaTypeId;
 	
 	@Column
-	private Long language;
+	private Integer language;
 	
 	
 	@Column

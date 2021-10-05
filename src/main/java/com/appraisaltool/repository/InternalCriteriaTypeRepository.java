@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.appraisaltool.model.InternalCriteriaType;
 
-public interface InternalCriteriaTypeRepository extends JpaRepository<InternalCriteriaType, Long> {
+public interface InternalCriteriaTypeRepository extends JpaRepository<InternalCriteriaType, Integer> {
 	
-	public List<InternalCriteriaType> getInternalCriteriaTypeByLanguage(Long language);
+	public List<InternalCriteriaType> getInternalCriteriaTypeByLanguage(Integer language);
 
 }

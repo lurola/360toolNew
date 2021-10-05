@@ -6,5 +6,5 @@ public interface UserGroupService {
 	
 	public UserGroup createNewUserGroup(UserGroup userGroup);
 
-    public Long addGroupToaUser(Long userId, Long groupId);
+    public Integer addGroupToaUser(Integer userId, Integer groupId);
 }

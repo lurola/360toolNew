@@ -80,13 +80,13 @@ public class TeamServiceImpl implements TeamService{
 	 * @param userId
 	 * @return
 	 */
-    public List<Integer> getTeamByUserId(Long userId) {
+    public List<Integer> getTeamByUserId(Integer userId) {
 
         List<Integer> teamIdList = teamRepository.getTeamByUserId(userId);
 		return teamIdList;
 	}
 	
-	public List<String> getTeamNamesByUserId (Long userId) {
+	public List<String> getTeamNamesByUserId (Integer userId) {
         List<Integer> idList = getTeamByUserId(userId);
 		List<String> teamNames = new ArrayList<String>();
 		

@@ -13,13 +13,13 @@ public class AppraisalAverageId implements Serializable{
 	private static final long serialVersionUID = 3233124370476846883L;
 	
 	@Column (insertable = false, updatable = false)
-	private Long appraisalId;
+	private Integer appraisalId;
  
 	@Column(insertable = false, updatable = false)
 	private Integer appraisalTypeId;
 	
 	
-    public AppraisalAverageId(Long appraisalId, Integer appraisalTypeId) {
+    public AppraisalAverageId(Integer appraisalId, Integer appraisalTypeId) {
         this.appraisalId = appraisalId;
         this.appraisalTypeId = appraisalTypeId;
 

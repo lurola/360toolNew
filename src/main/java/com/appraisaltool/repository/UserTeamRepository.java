@@ -12,14 +12,14 @@ import org.springframework.stereotype.Repository;
 import com.appraisaltool.model.UserTeam;
 
 @Repository
-public interface UserTeamRepository extends JpaRepository<UserTeam, Long>{
+public interface UserTeamRepository extends JpaRepository<UserTeam, Integer>{
 	
 	@Query("SELECT u.teamId FROM UserTeam u WHERE u.userId = ?1")
-	List<Long> findByUserTeamByUserId(Long userId);
+	List<Integer> findByUserTeamByUserId(Integer userId);
 
 	@Transactional
 	@Modifying
 	@Query("DELETE FROM UserTeam u WHERE u.userId = ?1")
-	void deleteAllByUserId(Long userId);
+	void deleteAllByUserId(Integer userId);
 
 }

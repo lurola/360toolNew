@@ -45,20 +45,20 @@ public class UserServiceImpl implements UserService {
      * @param id
      */
     @Override
-    public User getUserByUserId(long id) {
+    public User getUserByUserId(Integer id) {
         logger.debug("Getting user={}", id);
         return userRepository.findOneByUserId(id);
     }
     
     
     
-    public NewUserDTO getUserCreateFormByUserId(long userId) {
+    public NewUserDTO getUserCreateFormByUserId(Integer userId) {
         logger.debug("Getting userForm={}", userId);
         User user = userRepository.getOne(userId);
         
         NewUserDTO ucFrom = mapper.map(user, NewUserDTO.class);
-        List<Long> userTeamList = userTeamServiceImpl.getTeamsByUserId(userId);
-        List<Long> userGroupList = userGroupServ.getGroupsByUserId(userId);
+        List<Integer> userTeamList = userTeamServiceImpl.getTeamsByUserId(userId);
+        List<Integer> userGroupList = userGroupServ.getGroupsByUserId(userId);
         
         ucFrom.setTeamId(userTeamList);
         ucFrom.setGroupId(userGroupList);
@@ -121,11 +121,11 @@ public class UserServiceImpl implements UserService {
 		return userCreateFormDto;
 	}
     
-    public List<Long> findTeamMates(Long userId) {
+    public List<Integer> findTeamMates(Integer userId) {
     	return userRepository.findTeamMates(userId);
     }
     
-    public List<Long> findTeamMatesNoGroup(Long userId) {
+    public List<Integer> findTeamMatesNoGroup(Integer userId) {
     	return userRepository.findTeamMatesNoGroup(userId);
     }
 	
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 	 * @param officeId
 	 */
 	@Override
-	public List<User> getUserSByOfficeId(Long officeId) {
+	public List<User> getUserSByOfficeId(Integer officeId) {
 		return userRepository.findAllUsersByOfficeId(officeId);
 	}
 	
@@ -146,9 +146,9 @@ public class UserServiceImpl implements UserService {
 	 * @param userId
 	 * @return
 	 */
-	public User getMentor(Long userId) {
+	public User getMentor(Integer userId) {
 		
-		Long mentorId = getUserByUserId(userId).getMentorId();	
+		Integer mentorId = getUserByUserId(userId).getMentorId();	
 		return getUserByUserId(mentorId);
 	}
 	
@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 	 * Calculate the people whose mentor is the one received
 	 * @return
 	 */
-	public List<User> getMentorized(Long userId) {
+	public List<User> getMentorized(Integer userId) {
 		//Recupera todas las personas cuyo mentor es el que recibimos		
 		return userRepository.findAllUsersByMentorId(userId);
 		
@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 * @param teamId
 	 * @param role
-	 * @return The list of people with a specific role that belongs to a team
+	 * @return The list of people with a specific role that beIntegers to a team
 	 */
     public List<User> getUsersByTeamAndRole(List<Integer> teamId, List<Integer> role) {
 		
@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 * @return group mates
 	 */
-	public List<Long> findGroupMates(Long userId) {
+	public List<Integer> findGroupMates(Integer userId) {
 		return userGroupRepo.findGroupPartners(userId);
 		
 	}
@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService {
 	 * @param listIdUser
 	 * @return
 	 */
-	public List<User> getUsersInList(List<Long> listIdUser) {
+	public List<User> getUsersInList(List<Integer> listIdUser) {
 		return userRepository.getUsersInList(listIdUser);
 		
 	}
@@ -232,7 +232,7 @@ public class UserServiceImpl implements UserService {
 	 * @param officeId
 	 * @return
 	 */
-	public List<User> getByQuery(String name, String surname, Long officeId) {
+	public List<User> getByQuery(String name, String surname, Integer officeId) {
 		return userRepository.getByQuery(name, surname, officeId);
 	}
 	

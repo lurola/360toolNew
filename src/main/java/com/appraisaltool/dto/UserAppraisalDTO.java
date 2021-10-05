@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UserAppraisalDTO {
 
-	private Long appraisalId;
+	private Integer appraisalId;
 	private String userName;
 	private String office;
 	private List<String> team;

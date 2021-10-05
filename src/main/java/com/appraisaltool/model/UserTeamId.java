@@ -14,17 +14,17 @@ public class UserTeamId implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3233124370476846883L;
+	private static final Long serialVersionUID = 3233124370476846883L;
 
 	@Column (insertable = false, updatable = false)
-	private Long userId;
+	private Integer userId;
 	
 	@Column (insertable = false, updatable = false)
-    private Long teamId;
+    private Integer teamId;
  
     // default constructor
  
-    public UserTeamId(Long userId, Long teamId) {
+    public UserTeamId(Integer userId, Integer teamId) {
         this.userId = userId;
         this.teamId = teamId;
     }

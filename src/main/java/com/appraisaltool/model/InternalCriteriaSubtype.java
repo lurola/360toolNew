@@ -20,10 +20,10 @@ public class InternalCriteriaSubtype {
 		
 		
 	@Id
-	private Long InternalCriteriaSubtypeId;
+	private Integer InternalCriteriaSubtypeId;
 		
 	@Column
-	private Long language;
+	private Integer language;
 		
 		
 	@Column

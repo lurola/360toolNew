@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.appraisaltool.model.SpecificAppraisalType;
 
 @Repository
-public interface SpecificAppraisalTypeRepository  extends JpaRepository<SpecificAppraisalType, Long>{
+public interface SpecificAppraisalTypeRepository  extends JpaRepository<SpecificAppraisalType, Integer>{
 
 
 	public List<SpecificAppraisalType> findAllBySpecificAppraisalTypeIdRoleId(Integer roleId);

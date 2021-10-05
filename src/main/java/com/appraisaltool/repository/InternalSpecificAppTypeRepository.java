@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.appraisaltool.model.InternalSpecificAppType;
 
 @Repository
-public interface InternalSpecificAppTypeRepository extends JpaRepository<InternalSpecificAppType, Long>{
+public interface InternalSpecificAppTypeRepository extends JpaRepository<InternalSpecificAppType, Integer>{
 
 	public List<InternalSpecificAppType> findAllByInternalSpecificAppTypeIdRoleIdAndInternalSpecificAppTypeIdGroupId(Integer roleId, Integer groupId);
 	

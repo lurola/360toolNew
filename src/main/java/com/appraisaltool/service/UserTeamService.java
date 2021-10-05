@@ -7,10 +7,10 @@ public interface UserTeamService {
 	
 	public UserTeam createNewUserTeam(UserTeam userTeam);
 	
-	public List<Long> createNewUserTeam(Long userId, List<Long> teamIdList);
+	public List<Integer> createNewUserTeam(Integer userId, List<Integer> teamIdList);
 	
-	public List<Long> getTeamsByUserId(Long userId); 
+	public List<Integer> getTeamsByUserId(Integer userId); 
 
-    public Long addTeamToaUser(Long userId, Long teamId);
+    public Integer addTeamToaUser(Integer userId, Integer teamId);
 	
 }

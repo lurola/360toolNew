@@ -69,7 +69,7 @@ public class OfficeServiceImp implements OfficeService {
 	 * Deletes a office by its ID
 	 * @param officeId
 	 */
-	public void deleteOffice(Long officeId) {
+	public void deleteOffice(Integer officeId) {
 	}
 
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.appraisaltool.model.InternalGroupAppType;
 
 @Repository
-public interface InternalGroupAppTypeRepository extends JpaRepository<InternalGroupAppType, Long>{
+public interface InternalGroupAppTypeRepository extends JpaRepository<InternalGroupAppType, Integer>{
 
 	
 

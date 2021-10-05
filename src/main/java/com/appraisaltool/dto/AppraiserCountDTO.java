@@ -1,22 +1,21 @@
 package com.appraisaltool.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter @Setter
+@Data
 public class AppraiserCountDTO {
 
-	public AppraiserCountDTO() {
-		this.appraiserId = 0L;
-		this.count = 0L;
-	}
-	
-	public AppraiserCountDTO(Long appraisal, Long count) {
-		this.appraiserId = appraisal;
-		this.count = count;
-	}
-	
-	public Long appraiserId;
-	public Long count;
+    public AppraiserCountDTO() {
+        this.appraiserId = 0;
+        this.count = 0;
+    }
+
+    public AppraiserCountDTO(Integer appraisal, Long count) {
+        this.appraiserId = appraisal;
+        this.count = new Integer(count.intValue());
+    }
+
+	public Integer appraiserId;
+	public Integer count;
 	
 }

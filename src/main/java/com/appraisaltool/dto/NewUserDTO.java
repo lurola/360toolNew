@@ -2,21 +2,19 @@ package com.appraisaltool.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.constraints.NotEmpty;
-
 import com.appraisaltool.model.ApplicationRole;
-
 import lombok.Getter;
 import lombok.Setter;
 
 
 
 @Getter @Setter
+@Deprecated
 public class NewUserDTO {	
 	
 	
-	private Long userId;
+	private Integer userId;
 	
 	@NotEmpty
 	private String name;
@@ -34,15 +32,15 @@ public class NewUserDTO {
 	private Integer roleId;
 	
 	
-	private Long officeId;
+	private Integer officeId;
 	
-	private List<Long> groupId;
+	private List<Integer> groupId;
 	
-	private List<Long> teamId;
+	private List<Integer> teamId;
 	
 	private ApplicationRole appRole;
 	
-	private Long mentorId;
+	private Integer mentorId;
 	
 
 	public NewUserDTO() {
@@ -51,11 +49,11 @@ public class NewUserDTO {
 		this.email="";
 		this.password="";
 		this.roleId=1;
-		this.teamId = new ArrayList<Long>();
-		this.officeId =0L;
+		this.teamId = new ArrayList<Integer>();
+        this.officeId = 0;
 		this.appRole=ApplicationRole.USER;
-		this.mentorId=0L;
-		this.groupId=new ArrayList<Long>();
+        this.mentorId = 0;
+		this.groupId=new ArrayList<Integer>();
 		
 	}
 	

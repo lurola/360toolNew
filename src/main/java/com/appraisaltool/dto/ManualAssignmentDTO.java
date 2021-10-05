@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ManualAssignmentDTO {
 	
-	Long userId;
-	Long appraiserUserId;
+	Integer userId;
+	Integer appraiserUserId;
 }

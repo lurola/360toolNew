@@ -12,7 +12,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
 	public Team getTeamByTeamName(String name);
 	
 	@Query("SELECT ut.teamId FROM User u INNER JOIN UserTeam ut on (u.userId = ut.userId)  WHERE u.userId = ?1")
-    public List<Integer> getTeamByUserId(Long userId);
+    public List<Integer> getTeamByUserId(Integer userId);
 	
 	
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 public class AppItemDTO {
 
 	
-	private Long appraisalId;
+	private Integer appraisalId;
 	private Integer paramValue01;
 	private Integer paramValue02;
 	private Integer paramValue03;

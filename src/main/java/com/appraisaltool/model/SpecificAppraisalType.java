@@ -16,7 +16,7 @@ public class SpecificAppraisalType {
 	private SpecificAppraisalTypeId specificAppraisalTypeId;
 	
 	@Column
-	private Long weight;
+	private Integer weight;
 	
 
 

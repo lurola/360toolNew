@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class AppraisalDTO {
 	
-	private Long appraisalId;
-	private Long evaluatedPersonId;
-	private Long appraiserId;
+	private Integer appraisalId;
+	private Integer evaluatedPersonId;
+	private Integer appraiserId;
 	
 	private Integer paramValue00;
 	private Integer paramValue01;	

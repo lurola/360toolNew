@@ -19,14 +19,14 @@ public class AppraisalItem {
 
 	public AppraisalItem () {}
 	
-	public AppraisalItem (Long app) {
+	public AppraisalItem (Integer app) {
 		this.appraisal = app;
 	}
 	
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long appraisalItemId;
+	private Integer appraisalItemId;
 	
 	@Column
 	private Integer appraisalTypeId;
@@ -40,10 +40,10 @@ public class AppraisalItem {
 //	@ManyToOne
     @JoinColumn(name="appraisalId", nullable=false)
     @Column (name = "appraisalId")
-	private Long appraisal;
+	private Integer appraisal;
 	
 	
-	public AppraisalItem (Integer appraisalTypeId, Integer subtypeId, Integer paramValue, Long appraisal) {
+	public AppraisalItem (Integer appraisalTypeId, Integer subtypeId, Integer paramValue, Integer appraisal) {
 		
 		this.appraisalTypeId = appraisalTypeId;
 		this.subtypeId = subtypeId;

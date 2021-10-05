@@ -19,6 +19,6 @@ public class InternalGroupAppType {
 	
 	
 	@Column
-	private Long weight;
+	private Integer weight;
 
 }

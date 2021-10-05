@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class MentorAssignmentDTO {
 	
-	Long userId;
-	Long mentorUserId;
+	Integer userId;
+	Integer mentorUserId;
 }

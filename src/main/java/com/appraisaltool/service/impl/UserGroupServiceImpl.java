@@ -20,7 +20,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 	}
 	
 	
-	public Long addGroupToaUser(Long userId, Long groupId) {
+	public Integer addGroupToaUser(Integer userId, Integer groupId) {
 		
 		UserGroupId userGroupId = new UserGroupId(userId, groupId);
 		
@@ -36,14 +36,14 @@ public class UserGroupServiceImpl implements UserGroupService {
 	
 	
 	
-	public List<Long> createNewUserGroup(Long userId, List<Long> groupIdList) {
+	public List<Integer> createNewUserGroup(Integer userId, List<Integer> groupIdList) {
 		
 		UserGroupId userGroupId;
 		
 		userGroupRepo.deleteAllByUserId(userId);
 		
 		for(int i=0; i<groupIdList.size(); i++) {
-			Long currGroupId = groupIdList.get(i);
+			Integer currGroupId = groupIdList.get(i);
 			
 			userGroupId = new UserGroupId(userId, currGroupId);
 			UserGroup userGroup = new UserGroup();
@@ -57,9 +57,9 @@ public class UserGroupServiceImpl implements UserGroupService {
 	}
 
 
-	public List<Long> getGroupsByUserId(Long userId) {
+	public List<Integer> getGroupsByUserId(Integer userId) {
 		
-		List<Long> groups = userGroupRepo.getGroupsByUserId(userId);
+		List<Integer> groups = userGroupRepo.getGroupsByUserId(userId);
 		
 		return groups;
 	}

@@ -18,6 +18,6 @@ public class GlobalAppraisalType {
 	
 	
 	@Column
-	private Long weight;
+	private Integer weight;
 
 }

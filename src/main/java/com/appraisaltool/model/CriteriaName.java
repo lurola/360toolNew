@@ -17,16 +17,16 @@ public class CriteriaName {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long criteriaNameId;
+	private Integer criteriaNameId;
 	
 	@Column
-	private Long appraisalTypeId;
+	private Integer appraisalTypeId;
 	
 	@Column 
-	private Long subtypeId;
+	private Integer subtypeId;
 	
 	@Column 
-	private Long language;
+	private Integer language;
 	
 	@Column 
 	private String criteriaName;
