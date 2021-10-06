@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.domain.LookupType;
+import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.response.LookupDataResults;
 import com.appraisaltool.service.AdministrationService;
@@ -58,8 +59,8 @@ public class AdministrationController {
 
     @RequestMapping(value = "/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<EmployeeDto>> createEmployee(@RequestBody EmployeeDto employeeDto) {
-        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.createEmployee(employeeDto), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<EmployeeDto>> createEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.createEmployee(employeeRequest), null, true), HttpStatus.OK);
     }
 
 

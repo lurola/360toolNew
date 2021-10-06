@@ -59,8 +59,7 @@ public class TeamServiceImpl implements TeamService{
 	
 	public Team createNewTeam(String teamName) {
 		logger.debug("[OfficeServiceImp] calling createNewOffice (String)");
-		Team t = new Team();
-		t.setTeamName(teamName);
+        Team t = new Team(null, teamName);
 		return teamRepository.save(t);
 	}
 	

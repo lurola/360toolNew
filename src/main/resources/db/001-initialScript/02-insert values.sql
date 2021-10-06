@@ -35,187 +35,107 @@ SET
   IDENTITY_INSERT TEAM OFF;
 SET 
   IDENTITY_INSERT EMPLOYEE ON;
-INSERT INTO EMPLOYEE (
-  USER_ID, NAME, SURNAME, EMAIL, PASSWORD, 
-  ROLE_ID, OFFICE_ID, APPLICATIONROLE, 
-  MENTOR_ID
-) 
-VALUES 
-  -- Admin (1)
-  (
-    '1', 'Lourdes', 'Bermudo', 'admin@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '1', '1', 'ADMIN', '1'
-  ), 
-  -- Manager (2)
-  (
-    '2', 'Angie', 'Luque', 'angie.luque@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '1', '1', 'ADMIN', '1'
-  ), 
-  -- Arch (3-4)
-  (
-    '3', 'Jose Alberto', 'Coronado', 'jose.coronado@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '4', 'Rafael', 'Gomez Ramirez', 'rafael.gomez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  -- Garzas (5-12)
-  (
-    '5', 'Alvaro', 'Frias', 'alvaro.frias@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '2', '1', 'USER', '2'
-  ), 
-  (
-    '6', 'Jon', 'Nuño', 'jon.nuño@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '3'
-  ), 
-  (
-    '7', 'Jesus', 'Gil', 'jesus.gil@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '3'
-  ), 
-  (
-    '8', 'Manuel', 'Gonzalez', 'manuel.gonzalez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '3'
-  ), 
-  (
-    '9', 'Pedro', 'Barranco', 'pedro.barranco@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '10', 'Joaquin', 'Mohedano', 'joaquin.mohedano@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '11', 'Elena', 'Salas', 'elena.salas@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  (
-    '12', 'Angel', 'Mora', 'angel.mora@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  -- Falcon (13)
-  (
-    '13', 'Laura', 'Fernandez', 'laura.fernandez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '2', '1', 'USER', '2'
-  ), 
-  (
-    '14', 'Luis', 'Rodriguez', 'luis.rodriguez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '15', 'David', 'Montero', 'david.montero@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '16', 'Ines', 'Yepez', 'ines.yepez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  (
-    '17', 'Mairead', 'Osullivan', 'jon.nuño@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  -- Geese (16-17)
-  (
-    '18', 'Antonio', 'Arteche', 'antonio.arteche@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '2', '1', 'USER', '2'
-  ), 
-  (
-    '19', 'Rafael', 'Granados', 'rafael.granados@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '20', 'Sergio', 'Caballero', 'sergio.caballero@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '21', 'Daniel', 'Lagarda', 'daniel.lagarda@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '22', 'Rafael', 'Saez', 'rafael.saez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  --Owls (18-20)
-  (
-    '23', 'Antonio', 'Casado', 'antonio.casado@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '24', 'Juan Antonio', 'Ruz', 'juanantonio.ruz@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  --Phoenix
-  (
-    '25', 'Angel', 'Calvo', 'angel.calvo@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '3'
-  ), 
-  (
-    '26', 'Ivan', 'Martin', 'ivan.martin@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '27', 'Jose Francisco', 'Ibarra', 
-    'josefrancisco.ibarralozano@Innovation.Group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '28', 'David', 'Sanchez', 'david.sanchez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '4', '1', 'USER', '1'
-  ), 
-  (
-    '29', 'Eric', 'Ortega', 'eric.ortega@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  (
-    '30', 'Iñaki', 'De la haba', 'inaki.delahaba@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '5', '1', 'USER', '1'
-  ), 
-  --Producto (31-32)
-  (
-    '31', 'Xiomara', 'Montilla', '1iomara.montilla@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '32', 'Alejandro', 'Molina', 'alejandro.molina@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  ), 
-  (
-    '33', 'Natalia', 'Gimenez', 'natalia.gimenez@innovation.group', 
-    '$2a$10$ebyC4Z5WtCXXc.HGDc1Yoe6CLFzcntFmfse6/pTj7CeDY5I05w16C', 
-    '3', '1', 'USER', '1'
-  );
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(1, N'jlgP/6YLVVps6l/cdfb0Rg==', N'eUw4L0vFtZ8APnfEk15cNg==', N'EiOt4UMFxvszqeXD7QxXG7hEFXOEXJv36ysr9J5BSP4=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 1, 1, N'ADMIN', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(2, N'3vh0LboekDAXIIXp7RY5GA==', N'JLFc3HyJtGoXToKEbnZ4CQ==', N'ZR8bKddn+mqiPdaB2PbSHRsxWCIMXKMbNHkbh99rozs=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 1, 1, N'ADMIN', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(3, N'JS5Cxo/+htOx9lVsqfvTpA==', N'IuxmwHJ0hMrOygzNkYdiEA==', N'/HlHo4YQCcCc0/pXQZ7UKyetrnuaNi513R+wkYSzfNI=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(4, N'2JTmYt3RYqo7vkWo33uKtg==', N'6qslbFfSlq2SJtb6RN/jRw==', N'5NCcupMeSTkBPByQM1aaFSWe955vwlf2f4/RUbvdb34=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(5, N'kwVUyDqQBwnZdHLaOI4PGw==', N'1nm0tdcyIWIU40JPzg2UKw==', N'zpkMuUsiUeJeqBd46emYqyWe955vwlf2f4/RUbvdb34=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 2, 1, N'USER', 2);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(6, N'Z3BvnBHOV1NcEHQygxvDkg==', N'w+W+1zkqYQo/cX970gRASA==', N'hcc13x8T827bTr0W1q0xOgXXY3gG3r9B+1oPbgh7U8g=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 3);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(7, N'jdeb0f+0Y87q+6By89Fa+A==', N'mDvZ1nghEhFnu2Z3ENQk4w==', N'0pJ5TK107GpAHIW+PmhLJQXXY3gG3r9B+1oPbgh7U8g=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 3);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(8, N'T30NuyuzFkBwyZTvYJEaTw==', N'dcE1sbLLXEdhIkQVj03oFQ==', N'kI0Ax1potwyOihzj7JWq89bIe2lj8uohBxYHCFrCpwHrY9inV6M7IbsmOLXvCbG6', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 5);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(9, N'GTiDMg/n7gMQED+EonjBRQ==', N'23mReeF0JV6wJ8DRam2MAA==', N'cfTtQIslmoR1IEnuR5rrmaCI1wGPeVirUponaccj7bY=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(10, N'cd2MMe6+ZI5QB+baVjbXRA==', N'kLt+EGktk46SyNODjoo3jQ==', N'dxcqqe+Wt8WkqTOgF8uDRcfxc8Gerz9R1gmnlBlhqM8yPAm0MFjiSXmlC65xos6a', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(11, N'C5VKTGVS2crWDFG9vz/qRg==', N'IFEaRt8YzvDa64gVnDlBoQ==', N'yKCAsmTOzP/HlyWl7LcWwxsxWCIMXKMbNHkbh99rozs=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(12, N'GIFxarEtUe6Es+11sAq55w==', N'9/gq2NfAWHfa35bE6sjg1g==', N'L8p+4QsELmC2Y2HAn0L3qjT5PJDDj3B+c8CXGtHv+oM=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(13, N'f8RwV7wu6IJgfusEOxZJKA==', N'2GwkehJs1b3BJ2xPGQP5xw==', N'31JkDYWE0JT3L5QCtsgFudbIe2lj8uohBxYHCFrCpwHrY9inV6M7IbsmOLXvCbG6', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 2, 1, N'USER', 2);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(14, N'b4qKRx4wf0lus0WpP+DY0w==', N'Bg4qCSvLowqLq/aWRFZz8Q==', N'SBRm+y09xTKZs55tKYNySaCI1wGPeVirUponaccj7bY=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'ADMIN', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(15, N'PrTC/CIZvIoFu2qbzVIrPQ==', N'WH3jrYGWpf+uRLN+dVwHnw==', N'5DDqPYAaV/FmSLuBT6+hcyetrnuaNi513R+wkYSzfNI=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(16, N'nZ3nBgzijHZ8vwc2wNdhTg==', N'V03aXznd3XaDUATgxBmYVw==', N'jkTG7fS21hHCHGpkYJjMGTT5PJDDj3B+c8CXGtHv+oM=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(17, N'D9vmE4Rgiia3eJhuOAjF7g==', N'm35e5f4mJSho5sEe2eBzSQ==', N'hcc13x8T827bTr0W1q0xOgXXY3gG3r9B+1oPbgh7U8g=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(18, N'YGvEe/lgh5inWFWTHmcmCA==', N'es3mWmAHxXy8hEJ7oK7z7Q==', N'tQ6ET9w07jJuNmpN5wuds9bIe2lj8uohBxYHCFrCpwHrY9inV6M7IbsmOLXvCbG6', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 2, 1, N'USER', 2);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(19, N'2JTmYt3RYqo7vkWo33uKtg==', N'c27ElRzpMguL4ApaqtGjLg==', N'Ux+CY4L4VIpIINyGhIXl19bIe2lj8uohBxYHCFrCpwHrY9inV6M7IbsmOLXvCbG6', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(20, N'Ymqx8PTDpU6+arnf+naSjw==', N'USIwa/iau7S3noxyqHMLjQ==', N'uC7JyT4ryGzNdESp5ysvnMfxc8Gerz9R1gmnlBlhqM8yPAm0MFjiSXmlC65xos6a', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(21, N'XS9aA8Crfdxe6rwjjW7jnw==', N'IGxEiS/t4osFrnVLJdKdAg==', N'NKp5BhRpjU/Muz1WxwhLPKCI1wGPeVirUponaccj7bY=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(22, N'2JTmYt3RYqo7vkWo33uKtg==', N'qF5B+AsYGAUrWbLF1LHsVg==', N'J6S9vOFZOGzM4EFnsQx90RsxWCIMXKMbNHkbh99rozs=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(23, N'YGvEe/lgh5inWFWTHmcmCA==', N'EZ0KK6heyYm9sbSCMnejlQ==', N'kff2x60u30oE0wPTxGoK5KCI1wGPeVirUponaccj7bY=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(24, N'7soZ7bWFTMjgC4FkqGouBw==', N'2aEBv/riCv6oAj5fKs3rIQ==', N'M3TPhIO8lRX6BBvHIOBMPdbIe2lj8uohBxYHCFrCpwHrY9inV6M7IbsmOLXvCbG6', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(25, N'GIFxarEtUe6Es+11sAq55w==', N'44twmRcw8omRXJGuTAJXcA==', N'gklGSYe4hDRJSzv87XT9XRsxWCIMXKMbNHkbh99rozs=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 3);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(26, N'HljmHUOh4enkxGQtMjOvfg==', N'sIcpX3x+uY1LnGRtDKUPXg==', N'21qlRGRKCr66jn+tDroAuxsxWCIMXKMbNHkbh99rozs=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(27, N'6A30cfN9W/9y2g5tQGHoyQ==', N'EmrsXZ+8H1/OFLrEXR9YkA==', N'BYFmfMIB7Fkm47K+iiTHnoNxHzXrgycDZ4IisRf9jObVOK32TLT8orm8nz6fBwfy', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(28, N'PrTC/CIZvIoFu2qbzVIrPQ==', N'Hy0T9ArpYoxvvZ8eLqXwTw==', N'Y6NMh/7iRGx6MPny8YCYkietrnuaNi513R+wkYSzfNI=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 4, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(29, N'FRs+euakUKPtAoo6UmUTgg==', N'V0dS/1ObML4WnLSyIxyV3w==', N'YR3Fu4QD0GjeLhxjlWYlMxsxWCIMXKMbNHkbh99rozs=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(30, N'Eo2Q281uuSWA0NXQkGig5A==', N'mDMl/0lKBbm1o/5p0zc/LQ==', N'fLR3j2MQNufFZsKXxcSdDaCI1wGPeVirUponaccj7bY=', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 5, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(31, N'LMRR2lerwHojMgxK5z2JmA==', N'x7cp5YUbynnKQK13JI9L6w==', N'yrP2n5sdBz9CXEgcYIDXesfxc8Gerz9R1gmnlBlhqM8yPAm0MFjiSXmlC65xos6a', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(32, N'kSTZ/PTtIgMkgtGw+V9PcA==', N'WXsMo+vOTR+V1aIS+hhROA==', N'QFW5U01NADeS1fGwbS/CHMfxc8Gerz9R1gmnlBlhqM8yPAm0MFjiSXmlC65xos6a', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+INSERT INTO EMPLOYEE
+(USER_ID, NAME, SURNAME, EMAIL, PASSWORD, ROLE_ID, OFFICE_ID, APPLICATIONROLE, MENTOR_ID)
+VALUES(33, N'kvG0+er274fkzSiRH7JYog==', N'KKzvNTvBWNFT1yoyuDK3lg==', N'1n5kMas7WmSVHOgE52qLE9bIe2lj8uohBxYHCFrCpwHrY9inV6M7IbsmOLXvCbG6', N'sDoBUXW+M4Hp7UYQiC8+bQ==', 3, 1, N'USER', 1);
+
+  
 SET 
   IDENTITY_INSERT EMPLOYEE OFF;
 INSERT INTO EMPLOYEE_TEAM (USER_ID, TEAM_ID) 

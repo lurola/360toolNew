@@ -13,10 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.controllerOlder.CurrentUserControllerAdvice;
 import com.appraisaltool.dto.ChangePasswordDTO;
-import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
-import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
 import com.appraisaltool.repository.UserGroupRepository;
 import com.appraisaltool.repository.UserRepository;
@@ -106,12 +104,8 @@ public class UserServiceImpl implements UserService {
 		return userCreateFormDto;
 	}
     
-    public User createNewEmployee(EmployeeDto empl) {
-        User user = AdministrationMapper.INSTANCE.map(empl);
-
-        User userSaved = userRepository.save(user);
-
-        return userSaved;
+    public User createNewEmployee(User user) {
+        return userRepository.save(user);
     }
 
     

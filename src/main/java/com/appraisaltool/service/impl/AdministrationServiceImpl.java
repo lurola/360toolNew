@@ -1,13 +1,21 @@
 package com.appraisaltool.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.domain.LookupType;
+import com.appraisaltool.encrypting.EncrypterAES;
 import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
+import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.response.LookupDataResults;
 import com.appraisaltool.service.AdministrationService;
 import com.appraisaltool.service.GroupService;
@@ -106,8 +114,8 @@ public class AdministrationServiceImpl implements AdministrationService {
     }
 
     @Override
-    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
-        User newUser = userService.createNewEmployee(employeeDto);
+    public EmployeeDto createEmployee(EmployeeRequest employeeRequest) {
+        User newUser = userService.createNewEmployee(AdministrationMapper.INSTANCE.map(employeeRequest));
         return getEmployeeById(newUser.getUserId());
     }
 }

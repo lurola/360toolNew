@@ -20,8 +20,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	public Group createNewGroup(@Valid String groupName) {
-		Group g = new Group();
-		g.setGroupName(groupName);
+        Group g = new Group(null, groupName);
 		return groupRepo.save(g);
 		
 	}
