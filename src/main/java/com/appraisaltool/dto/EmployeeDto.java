@@ -3,9 +3,11 @@ package com.appraisaltool.dto;
 import java.util.Set;
 import com.appraisaltool.model.ApplicationRole;
 import com.appraisaltool.response.LookupData;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EmployeeDto {
 
     private Integer userId;
@@ -17,7 +19,7 @@ public class EmployeeDto {
 
     private LookupData role;
     private LookupData office;
-    private Integer mentorId;
+    private EmployeeDto mentor;
     private Set<LookupData> employedGroup;
     private Set<LookupData> employedTeam;
 

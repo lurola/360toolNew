@@ -42,4 +42,11 @@ public interface AdministrationMapper {
 
     EmployeeDto map(User user);
 
+    @Mapping(target = "email", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "appRole", ignore = true)
+    @Mapping(target = "employedGroup", ignore = true)
+    @Mapping(target = "employedTeam", ignore = true)
+    EmployeeDto mapSummary(User user);
+
 }

@@ -25,7 +25,7 @@ public interface AppraisalRepository  extends JpaRepository<Appraisal, Integer>{
 	
 	public List<Appraisal> getAppraisalByEvaluatedPersonIdAndStatus(Integer userId, Integer status);
 
-	@Query("SELECT a FROM Appraisal a INNER JOIN  User u ON (a.evaluatedPersonId = u.userId) WHERE a.status = ?2 and u.officeId = ?1")
+    @Query("SELECT a FROM Appraisal a INNER JOIN  User u ON (a.evaluatedPersonId = u.userId) WHERE a.status = ?2 and u.office.officeId = ?1")
 	public List<Appraisal> getAppraisalsByOfficeIdAndStatusId(Integer officeId, Integer statusId);
 	
 	public List<Appraisal> findAllByEvaluatedPersonId(Integer evalPersonId);

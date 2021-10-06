@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.mapper.AdministrationMapper;
+import com.appraisaltool.model.User;
 import com.appraisaltool.response.LookupDataResults;
 import com.appraisaltool.service.AdministrationService;
 import com.appraisaltool.service.GroupService;
@@ -85,8 +86,11 @@ public class AdministrationServiceImpl implements AdministrationService {
     public EmployeeDto getEmployeeById(Integer id) {
         EmployeeDto employeeDto = null;
         
-        employeeDto = AdministrationMapper.INSTANCE.map(userService.getUserByUserId(id));
-        
+        User user = userService.getUserByUserId(id);
+
+        employeeDto = AdministrationMapper.INSTANCE.map(user);
+        employeeDto.setMentor(AdministrationMapper.INSTANCE.mapSummary(userService.getUserByUserId(user.getMentorId())));
+
         return employeeDto;
     }
 }

@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -37,11 +37,11 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "roleId", insertable = false, updatable = false)
     private Role role;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "officeId", insertable = false, updatable = false)
     private Office office;
 

@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	public User findOneByUserId(Integer id);
 
+    @Query("SELECT u FROM User u WHERE u.office.officeId IN ?1")
 	public List<User> findAllUsersByOfficeId(Integer officeId);
 
 	public NewUserDTO save(NewUserDTO user);
@@ -36,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("SELECT eg.userId FROM UserTeam eg WHERE eg.teamId IN (SELECT eg.teamId FROM UserTeam eg INNER JOIN User e ON eg.userId = e.userId WHERE eg.userId = ?1) AND eg.userId != ?1 AND eg.userId not in (SELECT eg.userId FROM UserGroup eg WHERE eg.groupId IN (SELECT eg.groupId FROM UserGroup eg INNER JOIN User e ON eg.userId = e.userId WHERE eg.userId = ?1) and userId != ?1)")
 	public List<Integer> findTeamMatesNoGroup(Integer userId);
 	
-	@Query("SELECT m FROM User m where (?1 is null or upper(m.name) like concat('%', upper(?1), '%')) AND (?2 is null or upper(m.surname) like concat('%', upper(?2), '%')) AND (?3 is null or m.officeId = ?3)")
+    @Query("SELECT m FROM User m where (?1 is null or upper(m.name) like concat('%', upper(?1), '%')) AND (?2 is null or upper(m.surname) like concat('%', upper(?2), '%')) AND (?3 is null or m.office.officeId = ?3)")
 	public List<User> getByQuery(String name, String surname, Integer officeId);
 
 }
