@@ -63,7 +63,11 @@ public class AdministrationController {
         return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.createEmployee(employeeRequest), null, true), HttpStatus.OK);
     }
 
-
+    @RequestMapping(value = "/employee", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
+    public ResponseEntity<GGResponse<EmployeeDto>> updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.updateEmployee(employeeRequest), null, true), HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/office/{id}/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)

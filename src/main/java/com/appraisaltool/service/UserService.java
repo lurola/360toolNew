@@ -26,6 +26,8 @@ public interface UserService {
 
     public User createNewEmployee(User user);
 
+    public User updateUser(User user);
+
     public void changePassword(ChangePasswordDTO chPasswordDto);
 
     public List<User> getByQuery(String name, String surname, Integer officeId);
