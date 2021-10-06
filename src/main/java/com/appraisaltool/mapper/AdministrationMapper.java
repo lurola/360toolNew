@@ -1,8 +1,10 @@
 package com.appraisaltool.mapper;
 
 import java.util.List;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.model.Group;
@@ -42,6 +44,7 @@ public interface AdministrationMapper {
 
     EmployeeDto map(User user);
 
+    @Named("mapEmployeeSummary")
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "appRole", ignore = true)
@@ -49,4 +52,6 @@ public interface AdministrationMapper {
     @Mapping(target = "employedTeam", ignore = true)
     EmployeeDto mapSummary(User user);
 
+    @IterableMapping(qualifiedByName = "mapEmployeeSummary")
+    List<EmployeeDto> mapEmployeeList(List<User> userList);
 }

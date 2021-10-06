@@ -2,6 +2,7 @@ package com.appraisaltool.controller;
 
 import static com.appraisaltool.commons.Constants.ACCEPT_APPLICATION_JSON;
 import static com.appraisaltool.commons.Constants.MAPPING_APPRAISAL_TOOL;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,5 +44,18 @@ public class AdministrationController {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
     public ResponseEntity<GGResponse<EmployeeDto>> getEmployeeById(@PathVariable("id") Integer id) {
         return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.getEmployeeById(id), null, true), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/employee/{id}/summary", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<EmployeeDto>> getEmployeeSummaryById(@PathVariable("id") Integer id) {
+        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.getEmployeeSummaryById(id), null, true), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/office/{id}/employee", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<List<EmployeeDto>>> getEmployeeSummaryByOfficeId(@PathVariable("id") Integer id) {
+        return new ResponseEntity<GGResponse<List<EmployeeDto>>>(new GGResponse<List<EmployeeDto>>(administrationService.getEmployeeSummaryByOfficeId(id), null, true),
+                HttpStatus.OK);
     }
 }

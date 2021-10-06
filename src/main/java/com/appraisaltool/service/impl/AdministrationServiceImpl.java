@@ -1,6 +1,7 @@
 package com.appraisaltool.service.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.dto.EmployeeDto;
@@ -92,5 +93,15 @@ public class AdministrationServiceImpl implements AdministrationService {
         employeeDto.setMentor(AdministrationMapper.INSTANCE.mapSummary(userService.getUserByUserId(user.getMentorId())));
 
         return employeeDto;
+    }
+
+    public EmployeeDto getEmployeeSummaryById(Integer id) {
+        return AdministrationMapper.INSTANCE.mapSummary(userService.getUserByUserId(id));
+    }
+
+    @Override
+    public List<EmployeeDto> getEmployeeSummaryByOfficeId(Integer officeId) {
+        List<User> list = userService.getUserSByOfficeId(officeId);
+        return AdministrationMapper.INSTANCE.mapEmployeeList(list);
     }
 }
