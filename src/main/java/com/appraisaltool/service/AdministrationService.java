@@ -15,5 +15,7 @@ public interface AdministrationService {
 
     public EmployeeDto getEmployeeSummaryById(Integer id);
 
+    public EmployeeDto createEmployee(EmployeeDto employeeDto);
+
     public List<EmployeeDto> getEmployeeSummaryByOfficeId(Integer officeId);
 }

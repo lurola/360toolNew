@@ -17,7 +17,7 @@ public class Office {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer officeId;
 	
-	@Column(name = "OfficeName")
+    @Column(name = "OfficeName", nullable = false)
 	private String officeName;
 
 

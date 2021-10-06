@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import com.appraisaltool.dto.ChangePasswordDTO;
+import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
 import com.appraisaltool.model.User;
@@ -23,6 +24,8 @@ public interface UserService {
 	public NewUserDTO updateUser(NewUserDTO userCreateForm);
 
     public NewUserDTO getUserCreateFormByUserId(Integer userId);
+
+    public User createNewEmployee(EmployeeDto empl);
 
     public void changePassword(ChangePasswordDTO chPasswordDto);
 

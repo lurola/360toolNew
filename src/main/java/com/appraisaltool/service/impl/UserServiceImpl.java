@@ -13,32 +13,33 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.controllerOlder.CurrentUserControllerAdvice;
 import com.appraisaltool.dto.ChangePasswordDTO;
+import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
+import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
 import com.appraisaltool.repository.UserGroupRepository;
 import com.appraisaltool.repository.UserRepository;
+import com.appraisaltool.service.UserGroupService;
 import com.appraisaltool.service.UserService;
+import com.appraisaltool.service.UserTeamService;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Deprecated
 	public DozerBeanMapper mapper = new DozerBeanMapper();
 	private static final Logger logger = LogManager.getLogger(CurrentUserControllerAdvice.class);
     
-    private final UserRepository userRepository;
-    private final UserTeamServiceImpl userTeamServiceImpl;
-    private final UserGroupRepository userGroupRepo;
-    private final UserGroupServiceImpl userGroupServ;
-
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserTeamServiceImpl userTeamServiceImpl, UserGroupRepository userGroupRepo, UserGroupServiceImpl userGroupService) {
-        this.userRepository = userRepository;
-        this.userTeamServiceImpl = userTeamServiceImpl;
-        this.userGroupRepo = userGroupRepo;
-        this.userGroupServ = userGroupService;
-    }
-     
+    private UserRepository userRepository;
+    @Autowired
+    private UserTeamService userTeamService;
+    @Autowired
+    private UserGroupRepository userGroupRepo;
+    @Autowired
+    private UserGroupService userGroupServ;
+
 
     /**
      * gets an user by its id
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getOne(userId);
         
         NewUserDTO ucFrom = mapper.map(user, NewUserDTO.class);
-        List<Integer> userTeamList = userTeamServiceImpl.getTeamsByUserId(userId);
+        List<Integer> userTeamList = userTeamService.getTeamsByUserId(userId);
         List<Integer> userGroupList = userGroupServ.getGroupsByUserId(userId);
         
         ucFrom.setTeamId(userTeamList);
@@ -98,13 +99,21 @@ public class UserServiceImpl implements UserService {
 		
 		User newUser = userRepository.save(user);
 		
-		userTeamServiceImpl.createNewUserTeam(newUser.getUserId(), userCreateFormDto.getTeamId());
+        userTeamService.createNewUserTeam(newUser.getUserId(), userCreateFormDto.getTeamId());
 		
 		userGroupServ.createNewUserGroup(newUser.getUserId(), userCreateFormDto.getGroupId());
 				
 		return userCreateFormDto;
 	}
     
+    public User createNewEmployee(EmployeeDto empl) {
+        User user = AdministrationMapper.INSTANCE.map(empl);
+
+        User userSaved = userRepository.save(user);
+
+        return userSaved;
+    }
+
     
     @Override
 	public NewUserDTO updateUser(NewUserDTO userCreateFormDto) {
@@ -116,7 +125,7 @@ public class UserServiceImpl implements UserService {
     	User user = mapper.map(userCreateFormDto, User.class);
     	user.setPassword(currentUser.getPassword());
 		User newUser = userRepository.save(user);
-		userTeamServiceImpl.createNewUserTeam(newUser.getUserId(), userCreateFormDto.getTeamId());
+        userTeamService.createNewUserTeam(newUser.getUserId(), userCreateFormDto.getTeamId());
 
 		return userCreateFormDto;
 	}

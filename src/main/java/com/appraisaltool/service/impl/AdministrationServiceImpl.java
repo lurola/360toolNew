@@ -104,4 +104,10 @@ public class AdministrationServiceImpl implements AdministrationService {
         List<User> list = userService.getUserSByOfficeId(officeId);
         return AdministrationMapper.INSTANCE.mapEmployeeList(list);
     }
+
+    @Override
+    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+        User newUser = userService.createNewEmployee(employeeDto);
+        return getEmployeeById(newUser.getUserId());
+    }
 }

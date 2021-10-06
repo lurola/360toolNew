@@ -34,15 +34,28 @@ public interface AdministrationMapper {
     @Mapping(source = "teamName", target = "label")
     LookupData map(Team team);
 
+    @Mapping(source = "id", target = "teamId")
+    @Mapping(source = "label", target = "teamName")
+    Team mapToTeam(LookupData lookupData);
+
     List<LookupData> mapTeamList(List<Team> teamList);
 
     @Mapping(source = "groupId", target = "id")
     @Mapping(source = "groupName", target = "label")
     LookupData map(Group group);
 
+    @Mapping(source = "id", target = "groupId")
+    @Mapping(source = "label", target = "groupName")
+    Group mapToGroup(LookupData lookupData);
+
     List<LookupData> mapGroupList(List<Group> groupList);
 
     EmployeeDto map(User user);
+
+    @Mapping(source = "employeeDto.role.id", target = "role.roleId")
+    @Mapping(source = "employeeDto.office.id", target = "office.officeId")
+    @Mapping(source = "employeeDto.mentor.userId", target = "mentorId")
+    User map(EmployeeDto employeeDto);
 
     @Named("mapEmployeeSummary")
     @Mapping(target = "email", ignore = true)

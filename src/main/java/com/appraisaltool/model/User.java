@@ -38,11 +38,11 @@ public class User {
 	private String password;
 	
     @ManyToOne
-    @JoinColumn(name = "roleId", insertable = false, updatable = false)
+    @JoinColumn(name = "roleId", insertable = true, updatable = true)
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "officeId", insertable = false, updatable = false)
+    @JoinColumn(name = "officeId", insertable = true, updatable = true)
     private Office office;
 
 	@Column(name = "applicationrole", nullable = false)
