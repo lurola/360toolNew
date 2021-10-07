@@ -6,4 +6,7 @@ public class Constants {
 
     public static final String ACCEPT_APPLICATION_JSON = "Accept=application/json";
 
+
+    public static final String TAG_APPRAISAL = "appraisal";
+
 }

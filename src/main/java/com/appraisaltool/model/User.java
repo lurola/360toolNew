@@ -14,10 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "EMPLOYEE")
+@NoArgsConstructor
 public class User {	
 	
 	@Id
@@ -60,15 +62,4 @@ public class User {
     @JoinTable(name = "EMPLOYEE_GROUP", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "groupId"))
     private Set<Group> employedGroup;
 
-    @Deprecated
-	public User() {
-		this.name="";
-		this.surname="";
-		this.email="";
-		this.password="";
-		this.appRole=ApplicationRole.USER;
-        this.mentorId = 0;
-		
-	}
-	
 }

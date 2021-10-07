@@ -48,7 +48,7 @@ import com.appraisaltool.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/appraisal")
-public class AppraisalController {
+public class AppraisalOlderController {
 
     private final AppraisalServiceImp appraisalServ;
     private final UserController userController;
@@ -59,7 +59,7 @@ public class AppraisalController {
     private final UserService userService;
 
     @Autowired
-    public AppraisalController(AppraisalServiceImp appraisalServ, UserController userController,  OfficeServiceImp officeServ, UserServiceImpl userServ) {
+    public AppraisalOlderController(AppraisalServiceImp appraisalServ, UserController userController,  OfficeServiceImp officeServ, UserServiceImpl userServ) {
         this.appraisalServ = appraisalServ;
         this.userController = userController;
         this.officeServ = officeServ;

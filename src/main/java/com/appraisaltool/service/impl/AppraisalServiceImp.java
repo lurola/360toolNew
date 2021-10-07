@@ -122,15 +122,24 @@ public class AppraisalServiceImp implements AppraisalService{
 			}
 		}
 	}
-	
+
+    @Override
+    public Appraisal assignAppraiserToEmployee(Integer userId) {
+        User user = new User();
+        user.setUserId(userId);
+
+        return assignAppraiserToUser(user);
+
+    }
 	/**
 	 * Assigns the appraisers for a particular user
 	 * 
 	 * @param user
 	 */
-	public void assignAppraiserToUser(User user) {
+    public Appraisal assignAppraiserToUser(User user) {
 		
-		
+        Appraisal result = null;
+
 		List<Integer> appraiserAlreadyAssigned = appraisalRepo.getAppraiserIdByEvaluatedPersonId(user.getUserId());
 		
         List<Integer> appraisersList = new ArrayList<Integer>();
@@ -153,15 +162,12 @@ public class AppraisalServiceImp implements AppraisalService{
 				if(!alreadyIncluded) {
 					appraisersList.add(currentSM.getUserId());
 				}
-	
 			}
-			
 		}
-		
 
 		//4. Fourth appraiser: TEAMMATE
 		final Integer teamMateChosenId;
-		
+        // Teammates who don't belong to any group
         List<Integer> teamMate = userService.findTeamMatesNoGroup(user.getUserId());
 		if(teamMate != null && teamMate.size() != 0) {
 			teamMateChosenId = chooseAppraiserFromList(teamMate, appraisersList);
@@ -171,7 +177,7 @@ public class AppraisalServiceImp implements AppraisalService{
 			}
 		}
 		
-		//5. Fifth appraiser: GroupMate
+        // 5. Fifth appraiser: GroupMate (it can be of the same team
 		final Integer groupMateChosenId;
         List<Integer> partner = userService.findGroupMates(user.getUserId());
 		if(partner != null && partner.size() != 0) {
@@ -183,6 +189,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		}
 		
 //		//Si alguno de los appraisal está ya incluido, lo sacamos
+        // TODO cambiar lista a SET y así no habrá duplicados
 		List<Integer> appraisersListToIterate = appraisersList;
 		for(int i=0; i<appraisersListToIterate.size(); i++) {
 			
@@ -202,9 +209,10 @@ public class AppraisalServiceImp implements AppraisalService{
 		//Create one appraisal with status 0 for each appraiser
 		for(int i=0; i<appListWithoutDuplicates.size(); i++) {
 			Integer appraiserId = appListWithoutDuplicates.get(i);
-			createNewAppraisal(user.getUserId(), appraiserId, 0, null);
+            result = createNewAppraisal(user.getUserId(), appraiserId, 0, null);
 		}
 		
+        return result;
 	}
 	
     private Integer chooseAppraiserFromList(List<Integer> teamMateList, List<Integer> totalAppraisersList) {

@@ -8,5 +8,6 @@ public interface AppraisalService {
 	
 	public Appraisal createOrUpdateAppraisal(Appraisal id);
 	
+    public Appraisal assignAppraiserToEmployee(Integer userId);
 	
 }
