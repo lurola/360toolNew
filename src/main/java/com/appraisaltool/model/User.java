@@ -50,9 +50,27 @@ public class User {
 	@Column(name = "applicationrole", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ApplicationRole appRole;
-	
-	@Column(name = "mentorId", nullable = true)
-    private Integer mentorId;
+
+    @ManyToOne
+    @JoinColumn(name = "lineManagerId", insertable = true, updatable = true)
+    private User lineManager;
+
+    @ManyToOne
+    @JoinColumn(name = "teamLeadId", insertable = true, updatable = true)
+    private User teamLead;
+
+    @ManyToOne
+    @JoinColumn(name = "mentorId", insertable = true, updatable = true)
+    private User mentor;
+
+    @Column(name = "isMentor", nullable = false)
+    private Boolean isMentor = Boolean.FALSE;
+
+    @Column(name = "isTeamLead", nullable = false)
+    private Boolean isTeamLead = false;
+
+    @Column(name = "isLineManager", nullable = false)
+    private Boolean isLineManager = false;
 
     @ManyToMany
     @JoinTable(name = "EMPLOYEE_TEAM", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "teamId"))

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.commons.EncryptTool;
 import com.appraisaltool.dto.EmployeeDto;
+import com.appraisaltool.dto.EmployeeFullDetailsDto;
+import com.appraisaltool.dto.domain.EmployeeFilterList;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
@@ -87,19 +89,19 @@ public class AdministrationServiceImpl implements AdministrationService {
         return lookupDataResults;
     }
 
-    public EmployeeDto getEmployeeById(Integer id) {
-        EmployeeDto employeeDto = null;
-        
+    public EmployeeFullDetailsDto getEmployeeById(Integer id) {
         User user = userService.getUserByUserId(id);
 
-        employeeDto = AdministrationMapper.INSTANCE.map(user);
-        employeeDto.setMentor(AdministrationMapper.INSTANCE.mapSummary(userService.getUserByUserId(user.getMentorId())));
-
-        return employeeDto;
+        return AdministrationMapper.INSTANCE.map(user);
     }
 
     public EmployeeDto getEmployeeSummaryById(Integer id) {
         return AdministrationMapper.INSTANCE.mapSummary(userService.getUserByUserId(id));
+    }
+
+    @Override
+    public List<EmployeeDto> getEmployeeByFilter(EmployeeFilterList employeeFilterList) {
+        return AdministrationMapper.INSTANCE.mapEmployeeList(userService.getEmployeeByFilter(employeeFilterList));
     }
 
     @Override
@@ -109,19 +111,19 @@ public class AdministrationServiceImpl implements AdministrationService {
     }
 
     @Override
-    public EmployeeDto createEmployee(EmployeeRequest employeeRequest) {
+    public EmployeeFullDetailsDto createEmployee(EmployeeRequest employeeRequest) {
         User newUser = userService.createNewEmployee(AdministrationMapper.INSTANCE.map(employeeRequest));
         return getEmployeeById(newUser.getUserId());
     }
 
     @Override
-    public EmployeeDto updateEmployee(EmployeeRequest employeeRequest) {
+    public EmployeeFullDetailsDto updateEmployee(EmployeeRequest employeeRequest) {
         User newUser = userService.updateUser(AdministrationMapper.INSTANCE.map(employeeRequest));
         return getEmployeeById(newUser.getUserId());
     }
 
-    public GGResponse<EmployeeDto> login(String email, String password) {
-        GGResponse<EmployeeDto> response = new GGResponse<EmployeeDto>(null, null, false);
+    public GGResponse<EmployeeFullDetailsDto> login(String email, String password) {
+        GGResponse<EmployeeFullDetailsDto> response = new GGResponse<EmployeeFullDetailsDto>(null, null, false);
 
         User user = userService.getUserByEmail(EncryptTool.encode(email)).orElse(null);
         if (user == null) {

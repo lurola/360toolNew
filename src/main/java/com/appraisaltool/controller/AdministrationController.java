@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.appraisaltool.dto.EmployeeDto;
+import com.appraisaltool.dto.EmployeeFullDetailsDto;
+import com.appraisaltool.dto.domain.EmployeeFilterList;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.request.LoginRequest;
@@ -48,8 +50,8 @@ public class AdministrationController {
 
     @RequestMapping(value = "/employee/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
-    public ResponseEntity<GGResponse<EmployeeDto>> getEmployeeById(@PathVariable("id") Integer id) {
-        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.getEmployeeById(id), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> getEmployeeById(@PathVariable("id") Integer id) {
+        return new ResponseEntity<GGResponse<EmployeeFullDetailsDto>>(new GGResponse<EmployeeFullDetailsDto>(administrationService.getEmployeeById(id), null, true), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/employee/{id}/summary", produces = {
@@ -60,14 +62,23 @@ public class AdministrationController {
 
     @RequestMapping(value = "/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<EmployeeDto>> createEmployee(@RequestBody EmployeeRequest employeeRequest) {
-        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.createEmployee(employeeRequest), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> createEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return new ResponseEntity<GGResponse<EmployeeFullDetailsDto>>(new GGResponse<EmployeeFullDetailsDto>(administrationService.createEmployee(employeeRequest), null, true),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value = "/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
-    public ResponseEntity<GGResponse<EmployeeDto>> updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
-        return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.updateEmployee(employeeRequest), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return new ResponseEntity<GGResponse<EmployeeFullDetailsDto>>(new GGResponse<EmployeeFullDetailsDto>(administrationService.updateEmployee(employeeRequest), null, true),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/employee/filterBy/{EmployeeFilterList}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<List<EmployeeDto>>> getEmployeeByFilter(@PathVariable("EmployeeFilterList") EmployeeFilterList employeeFilterList) {
+        return new ResponseEntity<GGResponse<List<EmployeeDto>>>(new GGResponse<List<EmployeeDto>>(administrationService.getEmployeeByFilter(employeeFilterList), null,
+                true), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/office/{id}/employee", produces = {
@@ -79,8 +90,8 @@ public class AdministrationController {
 
     @RequestMapping(value = "/login", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<EmployeeDto>> login(@RequestBody LoginRequest loginRequest) {
-        return new ResponseEntity<GGResponse<EmployeeDto>>(administrationService.login(loginRequest.getEmail(), loginRequest.getPassword()), HttpStatus.OK);
+    public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> login(@RequestBody LoginRequest loginRequest) {
+        return new ResponseEntity<GGResponse<EmployeeFullDetailsDto>>(administrationService.login(loginRequest.getEmail(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
 }

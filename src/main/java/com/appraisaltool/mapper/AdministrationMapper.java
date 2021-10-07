@@ -8,6 +8,7 @@ import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import com.appraisaltool.commons.EncryptTool;
 import com.appraisaltool.dto.EmployeeDto;
+import com.appraisaltool.dto.EmployeeFullDetailsDto;
 import com.appraisaltool.model.Group;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.Role;
@@ -17,7 +18,7 @@ import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.response.LookupData;
 
 @Mapper(imports = {
-        EncryptTool.class})
+        EncryptTool.class}, uses = AdministrationCustomMapper.class)
 public interface AdministrationMapper {
     AdministrationMapper INSTANCE = Mappers.getMapper(AdministrationMapper.class);
 
@@ -65,7 +66,9 @@ public interface AdministrationMapper {
     @Mapping(expression = "java(EncryptTool.encode(employeeRequest.getPassword()))", target = "password")
     @Mapping(source = "employeeRequest.role", target = "role.roleId")
     @Mapping(source = "employeeRequest.office", target = "office.officeId")
-    @Mapping(source = "employeeRequest.mentor", target = "mentorId")
+    @Mapping(source = "employeeRequest.lineManager", target = "lineManager.userId")
+    @Mapping(source = "employeeRequest.teamLead", target = "teamLead.userId")
+    @Mapping(source = "employeeRequest.mentor", target = "mentor.userId")
     User map(EmployeeRequest employeeRequest);
 
 
@@ -73,21 +76,11 @@ public interface AdministrationMapper {
     @Mapping(expression = "java(EncryptTool.decode(user.getSurname()))", target = "surname")
     @Mapping(expression = "java(EncryptTool.decode(user.getEmail()))", target = "email")
     @Mapping(expression = "java(EncryptTool.decode(user.getPassword()))", target = "password")
-    EmployeeDto map(User user);
-
-    @Mapping(source = "employeeDto.role.id", target = "role.roleId")
-    @Mapping(source = "employeeDto.office.id", target = "office.officeId")
-    @Mapping(source = "employeeDto.mentor.userId", target = "mentorId")
-    User map(EmployeeDto employeeDto);
+    EmployeeFullDetailsDto map(User user);
 
     @Named("mapEmployeeSummary")
     @Mapping(expression = "java(EncryptTool.decode(user.getName()))", target = "name")
     @Mapping(expression = "java(EncryptTool.decode(user.getSurname()))", target = "surname")
-    @Mapping(target = "email", ignore = true)
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "appRole", ignore = true)
-    @Mapping(target = "employedGroup", ignore = true)
-    @Mapping(target = "employedTeam", ignore = true)
     EmployeeDto mapSummary(User user);
 
     @IterableMapping(qualifiedByName = "mapEmployeeSummary")

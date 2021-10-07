@@ -14,6 +14,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("SELECT u FROM User u WHERE u.userId IN ?1")
 	public List<User> getUsersInList(List<Integer> userId);
 	
+    @Query("SELECT u FROM User u WHERE u.isLineManager = TRUE ")
+    public List<User> getUserLineManager();
+
+    @Query("SELECT u FROM User u WHERE u.isTeamLead = TRUE ")
+    public List<User> getUserTeamLead();
+
+    @Query("SELECT u FROM User u WHERE u.isMentor = TRUE ")
+    public List<User> getUserMentor();
+
 	public Optional<User> findOneByEmail(String email);
 	
 	public User findOneByUserId(Integer id);
@@ -23,6 +32,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	public NewUserDTO save(NewUserDTO user);
 	
+    @Query("SELECT u FROM User u WHERE u.mentor.userId IN ?1")
 	public List<User> findAllUsersByMentorId(Integer mentorId);
 
     @Query("SELECT distinct u FROM User u INNER JOIN UserTeam ut on (u.userId = ut.userId)  WHERE ut.teamId IN ?1 and u.role.roleId IN ?2")

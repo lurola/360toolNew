@@ -15,6 +15,7 @@ import com.appraisaltool.controllerOlder.CurrentUserControllerAdvice;
 import com.appraisaltool.dto.ChangePasswordDTO;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
+import com.appraisaltool.dto.domain.EmployeeFilterList;
 import com.appraisaltool.model.User;
 import com.appraisaltool.repository.UserGroupRepository;
 import com.appraisaltool.repository.UserRepository;
@@ -46,6 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(Integer id) {
         logger.debug("Getting user={}", id);
+
         return userRepository.findOneByUserId(id);
     }
     
@@ -155,7 +157,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	public User getMentor(Integer userId) {
 		
-		Integer mentorId = getUserByUserId(userId).getMentorId();	
+        Integer mentorId = getUserByUserId(userId).getMentor().getUserId();
 		return getUserByUserId(mentorId);
 	}
 	
@@ -244,10 +246,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	
+    @Deprecated
 	public Boolean assignMentor(MentorAssignmentDTO mentorAssigDto) {
 		
 		User currUser = getUserByUserId(mentorAssigDto.getUserId());
-		currUser.setMentorId(mentorAssigDto.getMentorUserId());
+        // currUser.setMentorId(mentorAssigDto.getMentorUserId());
 		
 		userRepository.save(currUser);
 		
@@ -302,4 +305,19 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
+    @Override
+    public List<User> getEmployeeByFilter(EmployeeFilterList employeeFilterList) {
+        switch (employeeFilterList) {
+            case LINE_MANAGER:
+                return userRepository.getUserLineManager();
+            case TEAM_LEAD:
+                return userRepository.getUserTeamLead();
+            case MENTOR:
+                return userRepository.getUserMentor();
+            default:
+                break;
+        }
+        
+        return null;
+    }
 }
