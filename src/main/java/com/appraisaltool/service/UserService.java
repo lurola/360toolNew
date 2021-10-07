@@ -36,8 +36,15 @@ public interface UserService {
 
     public Boolean initilizePassword(ChangePasswordDTO usechPasswordDtorId);
 
-//	List<User> getUsersByTeamId(Integer teamId);
+    public List<Integer> findTeamMates(Integer userId);
 
-//    User createUser(UserCreateForm form);
+    public List<User> getUsersInList(List<Integer> listIdUser);
 
+    public List<User> getMentorized(Integer userId);
+
+    public List<Integer> findTeamMatesNoGroup(Integer userId);
+
+    public List<User> getUsersByTeamAndRole(List<Integer> teamId, Integer role);
+
+    public List<Integer> findGroupMates(Integer userId);
 }

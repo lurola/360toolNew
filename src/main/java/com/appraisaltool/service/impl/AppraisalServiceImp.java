@@ -38,41 +38,55 @@ import com.appraisaltool.repository.InternalCriteriaTypeRepository;
 import com.appraisaltool.repository.InternalSpecificAppTypeRepository;
 import com.appraisaltool.repository.SpecificAppraisalTypeRepository;
 import com.appraisaltool.service.AppraisalService;
+import com.appraisaltool.service.TeamService;
+import com.appraisaltool.service.UserService;
 
 @Service
 public class AppraisalServiceImp implements AppraisalService{
 
-	@Autowired private AppraisalRepository appraisalRepo;
-	@Autowired private AppraisalItemRepository appItemRepo;
-	@Autowired private SpecificAppraisalTypeRepository specificAppTypeRepo;
-	@Autowired private GlobalAppraisalTypeRepository globalAppTypeRepo;
-	@Autowired private UserServiceImpl userServImpl;
-	@Autowired private TeamServiceImpl teamServImpl;
-	@Autowired private InternalSpecificAppTypeRepository intSpecRepo;
-	@Autowired private AppraisalAverageRepository appAverageRepo;
-	@Autowired private CriteriaNameRepository criteriaRepo;
-	@Autowired private AppraisalTypeRepository appTypeRepo;
+    @Autowired
+    private AppraisalRepository appraisalRepo;
+    @Autowired
+    private AppraisalItemRepository appItemRepo;
+    @Autowired
+    private SpecificAppraisalTypeRepository specificAppTypeRepo;
+    @Autowired
+    private GlobalAppraisalTypeRepository globalAppTypeRepo;
+    @Autowired
+    private InternalSpecificAppTypeRepository intSpecRepo;
+    @Autowired
+    private AppraisalAverageRepository appAverageRepo;
+    @Autowired
+    private CriteriaNameRepository criteriaRepo;
+    @Autowired
+    private AppraisalTypeRepository appTypeRepo;
+    @Autowired
+    private InternalCriteriaSubtypeRepository intCritSubtypeNameRepo;
+    @Autowired
+    private InternalCriteriaTypeRepository intCritTypeNameRepo;
 	
-	@Autowired private InternalCriteriaSubtypeRepository intCritSubtypeNameRepo;
-	@Autowired private InternalCriteriaTypeRepository intCritTypeNameRepo;
-	
-	
-	private Integer INDIVIDUAL = 0;
-	private Integer TEAM = 1;
-	private Integer JOB = 2;
-	private Integer MOTIVATIONAL = 3;
-	private Integer CULTURE = 4;
-	private Integer ORGANIZATIONAL = 5;
-	private Integer MANAGEMENT = 6;
-	private Integer RELATIONAL = 7;
-	private Integer PROFESSIONAL_IMPACT = 8;
-	private Integer POTENCIAL = 9;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private TeamService teamService;
 
 	
+    private final Integer INDIVIDUAL = 0;
+    private final Integer TEAM = 1;
+    private final Integer JOB = 2;
+    private final Integer MOTIVATIONAL = 3;
+    private final Integer CULTURE = 4;
+    private final Integer ORGANIZATIONAL = 5;
+    private final Integer MANAGEMENT = 6;
+    private final Integer RELATIONAL = 7;
+    private final Integer PROFESSIONAL_IMPACT = 8;
+    private final Integer POTENCIAL = 9;
+
+    @Deprecated
 	public DozerBeanMapper mapper = new DozerBeanMapper();
 	
-	private Integer MANAGER = 1;
-	private Integer SCRUM_MASTER_ROLE = 2;
+    private final Integer MANAGER = 1;
+    private final Integer SCRUM_MASTER_ROLE = 2;
 	
 	@Override
 	public Appraisal getAppraisalById(Integer id) {
@@ -99,7 +113,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	public void assignAppraisers(@Valid Integer officeId) {
 		
 		//We get the list of all the user in an office
-		List<User> userList = userServImpl.getUserSByOfficeId(officeId);
+        List<User> userList = userService.getUserSByOfficeId(officeId);
 		
 		//For each user me call the service that assigns appraiser
 		for (User currentUser :  userList) {
@@ -129,10 +143,10 @@ public class AppraisalServiceImp implements AppraisalService{
 		appraisersList.add(user.getMentorId());
 
 		//3. Third appraiser: SCRUM MASTER
-        List<Integer> teamIdList = teamServImpl.getTeamByUserId((user.getUserId()));
+        List<Integer> teamIdList = teamService.getTeamByUserId((user.getUserId()));
 		if(teamIdList != null && teamIdList.size() > 0) {
 			
-			List<User> scrumMaster =  userServImpl.getUsersByTeamAndRole(teamIdList, SCRUM_MASTER_ROLE);
+            List<User> scrumMaster = userService.getUsersByTeamAndRole(teamIdList, SCRUM_MASTER_ROLE);
 			
 			for (User currentSM : scrumMaster) {
 				alreadyIncluded = !appraisersList.stream().filter(currId -> currId == currentSM.getUserId()).collect(Collectors.toList()).isEmpty();
@@ -148,7 +162,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		//4. Fourth appraiser: TEAMMATE
 		final Integer teamMateChosenId;
 		
-		List<Integer> teamMate = userServImpl.findTeamMatesNoGroup(user.getUserId());
+        List<Integer> teamMate = userService.findTeamMatesNoGroup(user.getUserId());
 		if(teamMate != null && teamMate.size() != 0) {
 			teamMateChosenId = chooseAppraiserFromList(teamMate, appraisersList);
 			
@@ -159,7 +173,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		
 		//5. Fifth appraiser: GroupMate
 		final Integer groupMateChosenId;
-		List<Integer> partner = userServImpl.findGroupMates(user.getUserId());
+        List<Integer> partner = userService.findGroupMates(user.getUserId());
 		if(partner != null && partner.size() != 0) {
 			groupMateChosenId = chooseAppraiserFromList(partner, appraisersList);
 			
@@ -340,25 +354,25 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @return
 	 */
 	public List <User> getUserAppraisalsToDisplay(@Valid Integer userId) {
-		User u = userServImpl.getUserByUserId(userId);
+        User u = userService.getUserByUserId(userId);
 		
 		//Is the user a mentor
 		List <User> userToDisplay = null;
 		
 		if(u.getAppRole() == ApplicationRole.ADMIN) {
-            userToDisplay = userServImpl.getUserSByOfficeId(u.getOffice().getOfficeId());
+            userToDisplay = userService.getUserSByOfficeId(u.getOffice().getOfficeId());
         } else if (u.getRole().getRoleId() == SCRUM_MASTER_ROLE) {
-			List<Integer> listIdUser = userServImpl.findTeamMates(userId);
-			userToDisplay = userServImpl.getUsersInList(listIdUser);
+            List<Integer> listIdUser = userService.findTeamMates(userId);
+            userToDisplay = userService.getUsersInList(listIdUser);
 		} 
 		
-		List<User> mentorized = userServImpl.getMentorized(userId);
+        List<User> mentorized = userService.getMentorized(userId);
 		
 		if(mentorized != null && u.getAppRole() != ApplicationRole.ADMIN) {
 			if(userToDisplay == null) {
 				userToDisplay = mentorized;
 			} else {
-				userToDisplay.addAll(userServImpl.getMentorized(userId));
+                userToDisplay.addAll(userService.getMentorized(userId));
 			}
 		}
 	
@@ -422,7 +436,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		}else {
 			
 //			Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			User currentUser = userServImpl.getUserByUserId(currentUserId);
+            User currentUser = userService.getUserByUserId(currentUserId);
 			
 			List<AppraisalHeaderDTO> appraisalHeaderDto = new ArrayList<AppraisalHeaderDTO>();
 			AppraisalHeaderDTO appraisalHeader;
@@ -431,8 +445,8 @@ public class AppraisalServiceImp implements AppraisalService{
 			for (Appraisal currApp : appraisalList) {
 				appraisalHeader = new AppraisalHeaderDTO();				
 				
-				User evaluatedPerson = userServImpl.getUserByUserId(currApp.getEvaluatedPersonId());
-				User appraiser = userServImpl.getUserByUserId(currApp.getAppraiserId());
+                User evaluatedPerson = userService.getUserByUserId(currApp.getEvaluatedPersonId());
+                User appraiser = userService.getUserByUserId(currApp.getAppraiserId());
 				
 				appraisalHeader.setAppraisalId(currApp.getAppraisalId());
 				appraisalHeader.setEvaluatedPersonName(evaluatedPerson.getName() + " " + evaluatedPerson.getSurname());
@@ -524,7 +538,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	public Integer getEvaluatePersonRoleByAppraisalId(Integer appraisalId) {
 		
 		Integer evaluatedPersonId = appraisalRepo.getAppraisalByAppraisalId(appraisalId).getEvaluatedPersonId();
-		User evaluatedPerson = userServImpl.getUserByUserId(evaluatedPersonId);
+        User evaluatedPerson = userService.getUserByUserId(evaluatedPersonId);
 		
 		if (evaluatedPerson != null) {
             return evaluatedPerson.getRole().getRoleId();
@@ -555,7 +569,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		List<Integer> appraisalList = appraisalRepo.findAllIdsByEvaluatedPersonIdAndStatus(userId, 1);
 		Double[][] averagesToShow = new Double[4][5];
 		
-        Integer role = userServImpl.getUserByUserId(userId).getRole().getRoleId();
+        Integer role = userService.getUserByUserId(userId).getRole().getRoleId();
 		
 		//Gets the averages for the 4 grouper specific criterias
 		averagesToShow[0] = getGroupedCompetitiveAverages(appraisalList);
@@ -806,7 +820,7 @@ public class AppraisalServiceImp implements AppraisalService{
 
 		public Double[] getAverages(Double[][] internalCriteriaResultsInteger , Integer userId) {
 
-        Integer roleId = userServImpl.getUserByUserId(userId).getRole().getRoleId();
+        Integer roleId = userService.getUserByUserId(userId).getRole().getRoleId();
 			Double[] averages = new Double[4];
 			Double result = 0D; 
 			List<InternalSpecificAppType> currentWeight;

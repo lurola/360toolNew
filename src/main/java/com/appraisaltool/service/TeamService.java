@@ -14,4 +14,6 @@ public interface TeamService {
     public List<Team> getAllTeams();
 
     public List<String> getTeamNamesByUserId(Integer userId);
+
+    public List<Integer> getTeamByUserId(Integer userId);
 }
