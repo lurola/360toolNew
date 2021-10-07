@@ -1,34 +1,36 @@
 package com.appraisaltool.model;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Data
 @Table (name = "APPRAISAL")
+@AllArgsConstructor()
 public class Appraisal {
-	
-	
-	public Appraisal () {}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer appraisalId;
 	
-	@Column (name = "evaluatedPersonId")
-	private Integer evaluatedPersonId;
-	
-	@Column (name = "appraiserId")
-	private Integer appraiserId;
+    @ManyToOne
+    @JoinColumn(name = "evaluatedPersonId", insertable = true, updatable = true)
+    private User evaluatedPerson;
+
+    @ManyToOne
+    @JoinColumn(name = "appraiserId", insertable = true, updatable = true)
+    private User appraiser;
 	
 	@Column (name = "evalDate")
 	private Integer evalDate;
@@ -39,19 +41,6 @@ public class Appraisal {
 	@Column (name = "status")
 	private Integer status;
 
-	@OneToMany (mappedBy = "appraisal")
+    @OneToMany(mappedBy = "appraisal", cascade = CascadeType.ALL)
 	private List<AppraisalItem> apprItemList;
-
-
-    public Appraisal(Integer evaluatedPersonId, Integer appraiserId, String type, Integer status, List<AppraisalItem> apprItemList) {
-		this.evaluatedPersonId = evaluatedPersonId;
-		this.appraiserId = appraiserId;
-        this.type = type;
-		
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		this.evalDate = cal.get(Calendar.YEAR);
-		this.status = status;
-		this.apprItemList = apprItemList;
-
-	}	
 }

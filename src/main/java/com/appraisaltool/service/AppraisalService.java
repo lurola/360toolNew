@@ -9,6 +9,6 @@ public interface AppraisalService {
 	
 	public Appraisal createOrUpdateAppraisal(Appraisal id);
 	
-    public List<Appraisal> assignAppraiserToEmployee(Integer userId);
+    public List<Appraisal> assignAppraiserToEmployee(Integer userId, Integer evalDate);
 	
 }

@@ -115,7 +115,7 @@ public class AppraisalOlderController {
 		
 		//Si no está asignado ya, se asigna, si no, no hacemos nada 
 		if(!appraiserAlreadyAssigned.contains(manualAssignmentDto.getAppraiserUserId())) {
-            newAppraisal = appraisalServ.createNewAppraisal(manualAssignmentDto.getUserId(), manualAssignmentDto.getAppraiserUserId(), "", PENDING, null);
+            // newAppraisal = appraisalServ.createNewAppraisal(manualAssignmentDto.getUserId(), manualAssignmentDto.getAppraiserUserId(), "", PENDING, null);
 		}
 		
 		
@@ -159,7 +159,7 @@ public class AppraisalOlderController {
 		//Go for every person to be evaluated an get his data to show it in the remaining appraisal screen
 		for(int i=0; i<appraisalList.size(); i++) {
 			Appraisal currentAppraisal = appraisalList.get(i);
-			Integer currentId= currentAppraisal.getEvaluatedPersonId();
+            Integer currentId = currentAppraisal.getEvaluatedPerson().getUserId();
 		
 			UserAppraisalDTO currentUserDTO = userController.getUserDtoData(currentId);
 			currentUserDTO.setAppraisalId(currentAppraisal.getAppraisalId());
@@ -261,7 +261,7 @@ public class AppraisalOlderController {
 		List<Appraisal> appraisalList = appraisalServ.getAppraisalByEvaluatedPersonId(userId, FINISH);
 				
 		if(appraisalList != null && appraisalList.size() != 0) {
-			evaluatedPersonId = appraisalList.get(0).getEvaluatedPersonId();
+            evaluatedPersonId = appraisalList.get(0).getEvaluatedPerson().getUserId();
 		}
 				
 		List<AppraisalHeaderDTO> appraisalHeaderList = appraisalServ.getAppraisalheaders(appraisalList, evaluatedPersonId, userId);

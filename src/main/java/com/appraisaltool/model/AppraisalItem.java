@@ -7,9 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Data
@@ -19,9 +17,9 @@ public class AppraisalItem {
 
 	public AppraisalItem () {}
 	
-	public AppraisalItem (Integer app) {
-		this.appraisal = app;
-	}
+    // public AppraisalItem (Integer app) {
+    // this.appraisal = app;
+    // }
 	
 	@Id
 	@Column
@@ -37,13 +35,12 @@ public class AppraisalItem {
 	@Column
 	private Integer paramValue;
 
-//	@ManyToOne
+    @ManyToOne
     @JoinColumn(name="appraisalId", nullable=false)
-    @Column (name = "appraisalId")
-	private Integer appraisal;
+    private Appraisal appraisal;
 	
 	
-	public AppraisalItem (Integer appraisalTypeId, Integer subtypeId, Integer paramValue, Integer appraisal) {
+    public AppraisalItem(Integer appraisalTypeId, Integer subtypeId, Integer paramValue, Appraisal appraisal) {
 		
 		this.appraisalTypeId = appraisalTypeId;
 		this.subtypeId = subtypeId;

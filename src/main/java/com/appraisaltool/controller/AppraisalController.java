@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,11 +30,12 @@ public class AppraisalController {
     @Autowired
     private AppraisalService appraisalService;
 
-    @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to an specific employee")
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to evaluate an specific employee")
     @RequestMapping(value = "/employee/{employeeId}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<List<Appraisal>>> createAppraisalToEmployee(@PathVariable Integer employeeId) {
-        return new ResponseEntity<GGResponse<List<Appraisal>>>(new GGResponse<List<Appraisal>>(appraisalService.assignAppraiserToEmployee(employeeId), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<List<Appraisal>>> createAppraisalToEmployee(@PathVariable Integer employeeId, @RequestBody AppraisalRequest appraisalRequest) {
+        return new ResponseEntity<GGResponse<List<Appraisal>>>(new GGResponse<List<Appraisal>>(appraisalService.assignAppraiserToEmployee(employeeId, appraisalRequest
+                .getEvalDate()), null, true), HttpStatus.OK);
     }
 
     @ApiOperation(tags = TAG_APPRAISAL, value = "Get specific apraisal")

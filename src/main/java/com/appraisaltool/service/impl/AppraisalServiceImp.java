@@ -117,16 +117,16 @@ public class AppraisalServiceImp implements AppraisalService{
 		//For each user me call the service that assigns appraiser
 		for (User currentUser :  userList) {
 			if(currentUser != null) {
-				assignAppraiserToUser(currentUser);
+                assignAppraiserToUser(currentUser, new Integer(2021));
 			}
 		}
 	}
 
     @Override
-    public List<Appraisal> assignAppraiserToEmployee(Integer userId) {
+    public List<Appraisal> assignAppraiserToEmployee(Integer userId, Integer evalDate) {
         User user = userService.getUserByUserId(userId);
 
-        return assignAppraiserToUser(user);
+        return assignAppraiserToUser(user, evalDate);
 
     }
 	/**
@@ -134,7 +134,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * 
 	 * @param user
 	 */
-    public List<Appraisal> assignAppraiserToUser(User user) {
+    public List<Appraisal> assignAppraiserToUser(User user, Integer evalDate) {
 		
         List<Appraisal> result = new ArrayList<>();
 
@@ -145,12 +145,13 @@ public class AppraisalServiceImp implements AppraisalService{
 		Boolean alreadyIncluded;
 		
 		//1. First appraiser: YOURSELF
-        result.add(createNewAppraisal(user.getUserId(), user.getUserId(), "YOURSELF", 0, null));
+        result.add(createNewAppraisal(user, user, evalDate, "YOURSELF", 0, null));
 		appraisersList.add(user.getUserId());
 		
 		//2. Second appraiser: MENTOR
 		appraisersList.add(user.getMentorId());
-        result.add(createNewAppraisal(user.getUserId(), user.getMentorId(), "MENTOR", 0, null));
+        User mentor = userService.getUserByUserId(user.getMentorId());
+        result.add(createNewAppraisal(user, mentor, evalDate, "MENTOR", 0, null));
 
 		//3. Third appraiser: SCRUM MASTER
         List<Integer> teamIdList = teamService.getTeamByUserId((user.getUserId()));
@@ -162,7 +163,7 @@ public class AppraisalServiceImp implements AppraisalService{
 				alreadyIncluded = !appraisersList.stream().filter(currId -> currId == currentSM.getUserId()).collect(Collectors.toList()).isEmpty();
 				if(!alreadyIncluded) {
 					appraisersList.add(currentSM.getUserId());
-                    result.add(createNewAppraisal(user.getUserId(), currentSM.getUserId(), "SCRUM MASTER", 0, null));
+                    result.add(createNewAppraisal(user, currentSM, evalDate, "SCRUM MASTER", 0, null));
 				}
 			}
 		}
@@ -176,7 +177,7 @@ public class AppraisalServiceImp implements AppraisalService{
 			
 			if(teamMateChosenId!= null) {
 				appraisersList.add(teamMateChosenId);
-                result.add(createNewAppraisal(user.getUserId(), teamMateChosenId, "TEAMMATE_NOGROUP", 0, null));
+                result.add(createNewAppraisal(user, userService.getUserByUserId(teamMateChosenId), evalDate, "TEAMMATE_NOGROUP", 0, null));
 			}
 		}
 		
@@ -187,7 +188,7 @@ public class AppraisalServiceImp implements AppraisalService{
 			groupMateChosenId = chooseAppraiserFromList(partner, appraisersList);
 			
 			if(groupMateChosenId != null) {
-                result.add(createNewAppraisal(user.getUserId(), groupMateChosenId, "GROUPMATE", 0, null));
+                result.add(createNewAppraisal(user, userService.getUserByUserId(groupMateChosenId), evalDate, "GROUPMATE", 0, null));
 				appraisersList.add(groupMateChosenId);
 			}
 		}
@@ -245,6 +246,8 @@ public class AppraisalServiceImp implements AppraisalService{
 	}
 		
 	
+    // Ninguna referencia en el código
+    @Deprecated
 	public AppItemDTO newOrUpdateAppraisalItem(AppItemDTO appItem ) {
 		
 		List<AppraisalItem> appItemList = findAppItemsByAppraisalIdAndAppItemType(appItem.getAppraisalId(), appItem.getCurrentPage());
@@ -278,8 +281,8 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraiserId
 	 * @return
 	 */
-    public Appraisal createNewAppraisal(Integer userId, Integer appraiserId, String type, Integer status, List<AppraisalItem> apprItemList) {
-        Appraisal app = new Appraisal(userId, appraiserId, type, status, apprItemList);
+    public Appraisal createNewAppraisal(User evaluatedPerson, User apprasier, Integer evalDate, String type, Integer status, List<AppraisalItem> apprItemList) {
+        Appraisal app = new Appraisal(null, evaluatedPerson, apprasier, evalDate, type, status, apprItemList);
 		app = appraisalRepo.save(app);
 		Set<AppraisalItem> appItemSet = initializeApprList(app);
 		appItemRepo.saveAll(appItemSet);
@@ -296,7 +299,7 @@ public class AppraisalServiceImp implements AppraisalService{
 				
 		for(int appType=0; appType<=9; appType++) {
 			for (int subType=1; subType<=5; subType++) {
-				appraisalItemList.add(new AppraisalItem(appType, subType, 0, app.getAppraisalId()));
+                appraisalItemList.add(new AppraisalItem(appType, subType, 0, app));
 			}
 		}
 			
@@ -433,8 +436,8 @@ public class AppraisalServiceImp implements AppraisalService{
 			for (Appraisal currApp : appraisalList) {
 				appraisalHeader = new AppraisalHeaderDTO();				
 				
-                User evaluatedPerson = userService.getUserByUserId(currApp.getEvaluatedPersonId());
-                User appraiser = userService.getUserByUserId(currApp.getAppraiserId());
+                User evaluatedPerson = userService.getUserByUserId(currApp.getEvaluatedPerson().getUserId());
+                User appraiser = userService.getUserByUserId(currApp.getAppraiser().getUserId());
 				
 				appraisalHeader.setAppraisalId(currApp.getAppraisalId());
 				appraisalHeader.setEvaluatedPersonName(evaluatedPerson.getName() + " " + evaluatedPerson.getSurname());
@@ -488,7 +491,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	public Double[] calculateSpecificAppAverages(AppraisalItem[][] appItems) {
 		
 //		Integer appraisalId = appItems[0][0].getAppraisalId();
-		Integer appraisalId = appItems[0][0].getAppraisal();
+        Integer appraisalId = appItems[0][0].getAppraisal().getAppraisalId();
 		Integer roleId = getEvaluatePersonRoleByAppraisalId(appraisalId);		
 		
 		Double[] average= new Double[10];
@@ -525,7 +528,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 */
 	public Integer getEvaluatePersonRoleByAppraisalId(Integer appraisalId) {
 		
-		Integer evaluatedPersonId = appraisalRepo.getAppraisalByAppraisalId(appraisalId).getEvaluatedPersonId();
+        Integer evaluatedPersonId = appraisalRepo.getAppraisalByAppraisalId(appraisalId).getEvaluatedPerson().getUserId();
         User evaluatedPerson = userService.getUserByUserId(evaluatedPersonId);
 		
 		if (evaluatedPerson != null) {
