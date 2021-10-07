@@ -3,6 +3,7 @@ package com.appraisaltool.controller;
 import static com.appraisaltool.commons.Constants.ACCEPT_APPLICATION_JSON;
 import static com.appraisaltool.commons.Constants.MAPPING_APPRAISAL_TOOL;
 import static com.appraisaltool.commons.Constants.TAG_APPRAISAL;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,8 +32,8 @@ public class AppraisalController {
     @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to an specific employee")
     @RequestMapping(value = "/employee/{employeeId}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<Appraisal>> createAppraisalToEmployee(@PathVariable Integer employeeId) {
-        return new ResponseEntity<GGResponse<Appraisal>>(new GGResponse<Appraisal>(appraisalService.assignAppraiserToEmployee(employeeId), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<List<Appraisal>>> createAppraisalToEmployee(@PathVariable Integer employeeId) {
+        return new ResponseEntity<GGResponse<List<Appraisal>>>(new GGResponse<List<Appraisal>>(appraisalService.assignAppraiserToEmployee(employeeId), null, true), HttpStatus.OK);
     }
 
     @ApiOperation(tags = TAG_APPRAISAL, value = "Get specific apraisal")

@@ -2,7 +2,6 @@ package com.appraisaltool.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -124,9 +123,8 @@ public class AppraisalServiceImp implements AppraisalService{
 	}
 
     @Override
-    public Appraisal assignAppraiserToEmployee(Integer userId) {
-        User user = new User();
-        user.setUserId(userId);
+    public List<Appraisal> assignAppraiserToEmployee(Integer userId) {
+        User user = userService.getUserByUserId(userId);
 
         return assignAppraiserToUser(user);
 
@@ -136,20 +134,23 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * 
 	 * @param user
 	 */
-    public Appraisal assignAppraiserToUser(User user) {
+    public List<Appraisal> assignAppraiserToUser(User user) {
 		
-        Appraisal result = null;
+        List<Appraisal> result = new ArrayList<>();
 
 		List<Integer> appraiserAlreadyAssigned = appraisalRepo.getAppraiserIdByEvaluatedPersonId(user.getUserId());
 		
         List<Integer> appraisersList = new ArrayList<Integer>();
+        Set<Integer> appraisalToCreate = new HashSet<>();
 		Boolean alreadyIncluded;
 		
 		//1. First appraiser: YOURSELF
+        result.add(createNewAppraisal(user.getUserId(), user.getUserId(), "YOURSELF", 0, null));
 		appraisersList.add(user.getUserId());
 		
 		//2. Second appraiser: MENTOR
 		appraisersList.add(user.getMentorId());
+        result.add(createNewAppraisal(user.getUserId(), user.getMentorId(), "MENTOR", 0, null));
 
 		//3. Third appraiser: SCRUM MASTER
         List<Integer> teamIdList = teamService.getTeamByUserId((user.getUserId()));
@@ -161,6 +162,7 @@ public class AppraisalServiceImp implements AppraisalService{
 				alreadyIncluded = !appraisersList.stream().filter(currId -> currId == currentSM.getUserId()).collect(Collectors.toList()).isEmpty();
 				if(!alreadyIncluded) {
 					appraisersList.add(currentSM.getUserId());
+                    result.add(createNewAppraisal(user.getUserId(), currentSM.getUserId(), "SCRUM MASTER", 0, null));
 				}
 			}
 		}
@@ -174,6 +176,7 @@ public class AppraisalServiceImp implements AppraisalService{
 			
 			if(teamMateChosenId!= null) {
 				appraisersList.add(teamMateChosenId);
+                result.add(createNewAppraisal(user.getUserId(), teamMateChosenId, "TEAMMATE_NOGROUP", 0, null));
 			}
 		}
 		
@@ -184,32 +187,9 @@ public class AppraisalServiceImp implements AppraisalService{
 			groupMateChosenId = chooseAppraiserFromList(partner, appraisersList);
 			
 			if(groupMateChosenId != null) {
+                result.add(createNewAppraisal(user.getUserId(), groupMateChosenId, "GROUPMATE", 0, null));
 				appraisersList.add(groupMateChosenId);
 			}
-		}
-		
-//		//Si alguno de los appraisal está ya incluido, lo sacamos
-        // TODO cambiar lista a SET y así no habrá duplicados
-		List<Integer> appraisersListToIterate = appraisersList;
-		for(int i=0; i<appraisersListToIterate.size(); i++) {
-			
-			Integer currAppraiser = appraisersListToIterate.get(i);
-			
-			if(appraiserAlreadyAssigned.contains(currAppraiser)) {
-				appraisersList.remove(currAppraiser);
-				i--;
-			}
-		}	
-			
-		LinkedHashSet<Integer> hashSet = new LinkedHashSet<Integer>(appraisersList);
-        ArrayList<Integer> appListWithoutDuplicates = new ArrayList<>(hashSet);
-			
-				
-		
-		//Create one appraisal with status 0 for each appraiser
-		for(int i=0; i<appListWithoutDuplicates.size(); i++) {
-			Integer appraiserId = appListWithoutDuplicates.get(i);
-            result = createNewAppraisal(user.getUserId(), appraiserId, 0, null);
 		}
 		
         return result;
@@ -298,8 +278,8 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraiserId
 	 * @return
 	 */
-	public Appraisal createNewAppraisal(Integer userId, Integer appraiserId, Integer status, List<AppraisalItem> apprItemList) {
-		Appraisal app = new Appraisal(userId, appraiserId, status, apprItemList);
+    public Appraisal createNewAppraisal(Integer userId, Integer appraiserId, String type, Integer status, List<AppraisalItem> apprItemList) {
+        Appraisal app = new Appraisal(userId, appraiserId, type, status, apprItemList);
 		app = appraisalRepo.save(app);
 		Set<AppraisalItem> appItemSet = initializeApprList(app);
 		appItemRepo.saveAll(appItemSet);

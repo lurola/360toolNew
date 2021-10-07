@@ -3,7 +3,6 @@ package com.appraisaltool.model;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Entity
@@ -35,6 +33,9 @@ public class Appraisal {
 	@Column (name = "evalDate")
 	private Integer evalDate;
 	
+    @Column(name = "type")
+    private String type;
+
 	@Column (name = "status")
 	private Integer status;
 
@@ -42,9 +43,10 @@ public class Appraisal {
 	private List<AppraisalItem> apprItemList;
 
 
-	public Appraisal (Integer evaluatedPersonId, Integer appraiserId, Integer status, List<AppraisalItem> apprItemList) {
+    public Appraisal(Integer evaluatedPersonId, Integer appraiserId, String type, Integer status, List<AppraisalItem> apprItemList) {
 		this.evaluatedPersonId = evaluatedPersonId;
 		this.appraiserId = appraiserId;
+        this.type = type;
 		
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		this.evalDate = cal.get(Calendar.YEAR);

@@ -115,7 +115,7 @@ public class AppraisalOlderController {
 		
 		//Si no está asignado ya, se asigna, si no, no hacemos nada 
 		if(!appraiserAlreadyAssigned.contains(manualAssignmentDto.getAppraiserUserId())) {
-			newAppraisal = appraisalServ.createNewAppraisal(manualAssignmentDto.getUserId(), manualAssignmentDto.getAppraiserUserId(), PENDING, null);
+            newAppraisal = appraisalServ.createNewAppraisal(manualAssignmentDto.getUserId(), manualAssignmentDto.getAppraiserUserId(), "", PENDING, null);
 		}
 		
 		
