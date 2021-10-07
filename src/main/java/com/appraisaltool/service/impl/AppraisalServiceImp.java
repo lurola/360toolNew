@@ -109,6 +109,7 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * 
 	 * @param officeId
 	 */
+    @Deprecated
 	public void assignAppraisers(@Valid Integer officeId) {
 		
 		//We get the list of all the user in an office
@@ -127,8 +128,21 @@ public class AppraisalServiceImp implements AppraisalService{
         User user = userService.getUserByUserId(userId);
 
         return assignAppraiserToUser(user, evalDate);
-
     }
+
+    @Override
+    public List<Appraisal> assignAppraiserToEmployeeFromOffice(Integer officeId, Integer evalDate) {
+        List<Appraisal> result = new ArrayList<>();
+        // We get the list of all the user in an office
+        List<User> userList = userService.getUserSByOfficeId(officeId);
+
+        // For each user me call the service that assigns appraiser
+        for (User user : userList) {
+            result.addAll(assignAppraiserToUser(user, evalDate));
+        }
+        return result;
+    }
+
 	/**
 	 * Assigns the appraisers for a particular user
 	 * 
@@ -138,21 +152,21 @@ public class AppraisalServiceImp implements AppraisalService{
 		
         List<Appraisal> result = new ArrayList<>();
 
-		List<Integer> appraiserAlreadyAssigned = appraisalRepo.getAppraiserIdByEvaluatedPersonId(user.getUserId());
-		
         List<Integer> appraisersList = new ArrayList<Integer>();
-        Set<Integer> appraisalToCreate = new HashSet<>();
 		Boolean alreadyIncluded;
 		
 		//1. First appraiser: YOURSELF
         result.add(createNewAppraisal(user, user, evalDate, "YOURSELF", 0, null));
 		appraisersList.add(user.getUserId());
 		
-		//2. Second appraiser: MENTOR
-		appraisersList.add(user.getMentorId());
-        User mentor = userService.getUserByUserId(user.getMentorId());
-        result.add(createNewAppraisal(user, mentor, evalDate, "MENTOR", 0, null));
+        // AÑADIR LIDER OFICINA
 
+        // 2. Second appraiser: MENTOR (discard when the user has the mentor himself)
+        if (user.getUserId().compareTo(user.getMentor().getUserId()) != 0) {
+            appraisersList.add(user.getMentor().getUserId());
+            User mentor = userService.getUserByUserId(user.getMentor().getUserId());
+            result.add(createNewAppraisal(user, mentor, evalDate, "MENTOR", 0, null));
+        }
 		//3. Third appraiser: SCRUM MASTER
         List<Integer> teamIdList = teamService.getTeamByUserId((user.getUserId()));
 		if(teamIdList != null && teamIdList.size() > 0) {
@@ -181,7 +195,7 @@ public class AppraisalServiceImp implements AppraisalService{
 			}
 		}
 		
-        // 5. Fifth appraiser: GroupMate (it can be of the same team
+        // 5. Fifth appraiser: GroupMate (it can be of the same team DISCARD TEAMMATES
 		final Integer groupMateChosenId;
         List<Integer> partner = userService.findGroupMates(user.getUserId());
 		if(partner != null && partner.size() != 0) {

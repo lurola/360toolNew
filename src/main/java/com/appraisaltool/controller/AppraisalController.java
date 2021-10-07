@@ -44,4 +44,12 @@ public class AppraisalController {
     public ResponseEntity<GGResponse<Appraisal>> getAppraisal(@PathVariable Integer appraisalId) {
         return new ResponseEntity<GGResponse<Appraisal>>(new GGResponse<Appraisal>(appraisalService.getAppraisalById(appraisalId), null, true), HttpStatus.OK);
     }
+
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to evaluate to all employed from one office")
+    @RequestMapping(value = "/office/{officeId}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
+    public ResponseEntity<GGResponse<List<Appraisal>>> createAppraisalToEmployeeFromOffice(@PathVariable Integer officeId, @RequestBody AppraisalRequest appraisalRequest) {
+        return new ResponseEntity<GGResponse<List<Appraisal>>>(new GGResponse<List<Appraisal>>(appraisalService.assignAppraiserToEmployeeFromOffice(officeId, appraisalRequest
+                .getEvalDate()), null, true), HttpStatus.OK);
+    }
 }
