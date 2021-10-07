@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class GGResponse<T> {
     private T data;
-    private List<Error> errors;
+    private List<String> errors;
     private Boolean success;
 
 }

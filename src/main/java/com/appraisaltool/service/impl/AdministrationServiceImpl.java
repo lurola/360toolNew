@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.appraisaltool.commons.EncryptTool;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
 import com.appraisaltool.request.EmployeeRequest;
+import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.response.LookupDataResults;
 import com.appraisaltool.service.AdministrationService;
 import com.appraisaltool.service.GroupService;
@@ -116,5 +118,22 @@ public class AdministrationServiceImpl implements AdministrationService {
     public EmployeeDto updateEmployee(EmployeeRequest employeeRequest) {
         User newUser = userService.updateUser(AdministrationMapper.INSTANCE.map(employeeRequest));
         return getEmployeeById(newUser.getUserId());
+    }
+
+    public GGResponse<EmployeeDto> login(String email, String password) {
+        GGResponse<EmployeeDto> response = new GGResponse<EmployeeDto>(null, null, false);
+
+        User user = userService.getUserByEmail(EncryptTool.encode(email)).orElse(null);
+        if (user == null) {
+            response.setErrors(Arrays.asList("No user register with this email"));
+            return response;
+        }
+        if (user.getPassword().compareTo(EncryptTool.encode(password)) != 0) {
+            response.setErrors(Arrays.asList("Wrong pass"));
+        }
+        response.setData(AdministrationMapper.INSTANCE.map(user));
+        response.setSuccess(true);
+
+        return response;
     }
 }
