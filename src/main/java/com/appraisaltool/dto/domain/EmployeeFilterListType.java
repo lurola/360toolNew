@@ -1,6 +1,6 @@
 package com.appraisaltool.dto.domain;
 
-public enum EmployeeFilterList {
+public enum EmployeeFilterListType {
     LINE_MANAGER,
     TEAM_LEAD,
     MENTOR;

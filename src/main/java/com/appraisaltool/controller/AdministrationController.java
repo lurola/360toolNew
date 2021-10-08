@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
-import com.appraisaltool.dto.domain.EmployeeFilterList;
+import com.appraisaltool.dto.domain.EmployeeFilterListType;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.request.LoginRequest;
@@ -76,7 +76,7 @@ public class AdministrationController {
 
     @RequestMapping(value = "/employee/filterBy/{EmployeeFilterList}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
-    public ResponseEntity<GGResponse<List<EmployeeDto>>> getEmployeeByFilter(@PathVariable("EmployeeFilterList") EmployeeFilterList employeeFilterList) {
+    public ResponseEntity<GGResponse<List<EmployeeDto>>> getEmployeeByFilter(@PathVariable("EmployeeFilterList") EmployeeFilterListType employeeFilterList) {
         return new ResponseEntity<GGResponse<List<EmployeeDto>>>(new GGResponse<List<EmployeeDto>>(administrationService.getEmployeeByFilter(employeeFilterList), null,
                 true), HttpStatus.OK);
     }
@@ -94,4 +94,15 @@ public class AdministrationController {
         return new ResponseEntity<GGResponse<EmployeeFullDetailsDto>>(administrationService.login(loginRequest.getEmail(), loginRequest.getPassword()), HttpStatus.OK);
     }
 
+    // @RequestMapping(value = "/encrypt", produces = {
+    // MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
+    // public ResponseEntity<GGResponse<Boolean>> encrypt() {
+    // return new ResponseEntity<GGResponse<Boolean>>(new GGResponse<Boolean>(administrationService.encrypt(true), null, true), HttpStatus.OK);
+    // }
+    //
+    // @RequestMapping(value = "/decrypt", produces = {
+    // MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
+    // public ResponseEntity<GGResponse<Boolean>> decrypt() {
+    // return new ResponseEntity<GGResponse<Boolean>>(new GGResponse<Boolean>(administrationService.encrypt(false), null, true), HttpStatus.OK);
+    // }
 }

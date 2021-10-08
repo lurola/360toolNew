@@ -1,6 +1,7 @@
 package com.appraisaltool.request;
 
 import java.util.Set;
+import com.appraisaltool.dto.domain.EmployeeStatusType;
 import com.appraisaltool.model.ApplicationRole;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class EmployeeRequest {
     private String email;
     private String password;
     private ApplicationRole appRole;
+    private EmployeeStatusType status;
 
     private Integer role;
     private Integer office;

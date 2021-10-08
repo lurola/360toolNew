@@ -11,11 +11,12 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.appraisaltool.commons.EncryptTool;
 import com.appraisaltool.controllerOlder.CurrentUserControllerAdvice;
 import com.appraisaltool.dto.ChangePasswordDTO;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
-import com.appraisaltool.dto.domain.EmployeeFilterList;
+import com.appraisaltool.dto.domain.EmployeeFilterListType;
 import com.appraisaltool.model.User;
 import com.appraisaltool.repository.UserGroupRepository;
 import com.appraisaltool.repository.UserRepository;
@@ -106,11 +107,25 @@ public class UserServiceImpl implements UserService {
 		return userCreateFormDto;
 	}
     
+    private void checkReferences(User user) {
+        if (user.getLineManager() != null && user.getLineManager().getUserId() == null) {
+            user.setLineManager(null);
+        }
+        if (user.getTeamLead() != null && user.getTeamLead().getUserId() == null) {
+            user.setTeamLead(null);
+        }
+        if (user.getMentor() != null && user.getMentor().getUserId() == null) {
+            user.setMentor(null);
+        }
+    }
+
     public User createNewEmployee(User user) {
+        checkReferences(user);
         return userRepository.save(user);
     }
 
     public User updateUser(User user) {
+        checkReferences(user);
         return userRepository.save(user);
     }
 
@@ -306,7 +321,7 @@ public class UserServiceImpl implements UserService {
 	}
 
     @Override
-    public List<User> getEmployeeByFilter(EmployeeFilterList employeeFilterList) {
+    public List<User> getEmployeeByFilter(EmployeeFilterListType employeeFilterList) {
         switch (employeeFilterList) {
             case LINE_MANAGER:
                 return userRepository.getUserLineManager();
@@ -320,4 +335,32 @@ public class UserServiceImpl implements UserService {
         
         return null;
     }
+
+    private String encrypt(String text, boolean encrypt) {
+        if (encrypt) {
+            return EncryptTool.encode(text);
+        } else {
+            return EncryptTool.decode(text);
+        }
+    }
+
+    private void encryptAction(User user, boolean encrypt) {
+        user.setName(encrypt(user.getName(), encrypt));
+        user.setSurname(encrypt(user.getSurname(), encrypt));
+        user.setEmail(encrypt(user.getEmail(), encrypt));
+        user.setPassword(encrypt(user.getPassword(), encrypt));
+    }
+
+    @Override
+    public Boolean encrypt(boolean encrypt) {
+        List<User> userList = userRepository.findAll();
+
+        for (User user : userList) {
+            encryptAction(user, encrypt);
+            userRepository.save(user);
+        }
+
+        return null;
+    }
+
 }

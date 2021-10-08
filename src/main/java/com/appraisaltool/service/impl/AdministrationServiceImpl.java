@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import com.appraisaltool.commons.EncryptTool;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
-import com.appraisaltool.dto.domain.EmployeeFilterList;
+import com.appraisaltool.dto.domain.EmployeeFilterListType;
+import com.appraisaltool.dto.domain.EmployeeStatusType;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
@@ -100,7 +101,7 @@ public class AdministrationServiceImpl implements AdministrationService {
     }
 
     @Override
-    public List<EmployeeDto> getEmployeeByFilter(EmployeeFilterList employeeFilterList) {
+    public List<EmployeeDto> getEmployeeByFilter(EmployeeFilterListType employeeFilterList) {
         return AdministrationMapper.INSTANCE.mapEmployeeList(userService.getEmployeeByFilter(employeeFilterList));
     }
 
@@ -112,6 +113,9 @@ public class AdministrationServiceImpl implements AdministrationService {
 
     @Override
     public EmployeeFullDetailsDto createEmployee(EmployeeRequest employeeRequest) {
+        if (employeeRequest.getStatus() == null) {
+            employeeRequest.setStatus(EmployeeStatusType.ACTIVE);
+        }
         User newUser = userService.createNewEmployee(AdministrationMapper.INSTANCE.map(employeeRequest));
         return getEmployeeById(newUser.getUserId());
     }
@@ -138,4 +142,9 @@ public class AdministrationServiceImpl implements AdministrationService {
 
         return response;
     }
+    @Override
+    public Boolean encrypt(boolean encrypt) {
+        return userService.encrypt(encrypt);
+    }
 }
+

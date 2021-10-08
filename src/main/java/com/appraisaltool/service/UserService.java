@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.appraisaltool.dto.ChangePasswordDTO;
 import com.appraisaltool.dto.MentorAssignmentDTO;
 import com.appraisaltool.dto.NewUserDTO;
-import com.appraisaltool.dto.domain.EmployeeFilterList;
+import com.appraisaltool.dto.domain.EmployeeFilterListType;
 import com.appraisaltool.model.User;
 
 public interface UserService {
@@ -49,5 +49,7 @@ public interface UserService {
 
     public List<Integer> findGroupMates(Integer userId);
 
-    public List<User> getEmployeeByFilter(EmployeeFilterList employeeFilterList);
+    public List<User> getEmployeeByFilter(EmployeeFilterListType employeeFilterList);
+
+    public Boolean encrypt(boolean encrypt);
 }

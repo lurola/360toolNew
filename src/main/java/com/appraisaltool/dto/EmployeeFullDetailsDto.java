@@ -1,6 +1,7 @@
 package com.appraisaltool.dto;
 
 import java.util.Set;
+import com.appraisaltool.dto.domain.EmployeeStatusType;
 import com.appraisaltool.model.ApplicationRole;
 import com.appraisaltool.response.LookupData;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,6 +17,8 @@ public class EmployeeFullDetailsDto {
     private String email;
     private String password;
     private ApplicationRole appRole;
+
+    private EmployeeStatusType status;
 
     private LookupData role;
     private LookupData office;

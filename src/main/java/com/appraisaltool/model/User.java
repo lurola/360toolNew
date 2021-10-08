@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.appraisaltool.dto.domain.EmployeeStatusType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,6 +39,10 @@ public class User {
 	
 	@Column(name = "password", nullable = false)
 	private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private EmployeeStatusType status = EmployeeStatusType.ACTIVE;
 	
     @ManyToOne
     @JoinColumn(name = "roleId", insertable = true, updatable = true)

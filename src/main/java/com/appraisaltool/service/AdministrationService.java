@@ -3,7 +3,7 @@ package com.appraisaltool.service;
 import java.util.List;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
-import com.appraisaltool.dto.domain.EmployeeFilterList;
+import com.appraisaltool.dto.domain.EmployeeFilterListType;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.response.GGResponse;
@@ -25,7 +25,10 @@ public interface AdministrationService {
 
     public List<EmployeeDto> getEmployeeSummaryByOfficeId(Integer officeId);
 
-    public List<EmployeeDto> getEmployeeByFilter(EmployeeFilterList employeeFilterList);
+    public List<EmployeeDto> getEmployeeByFilter(EmployeeFilterListType employeeFilterList);
 
     public GGResponse<EmployeeFullDetailsDto> login(String email, String password);
+
+    public Boolean encrypt(boolean encrypt);
+
 }
