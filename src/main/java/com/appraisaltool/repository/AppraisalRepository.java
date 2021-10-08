@@ -39,5 +39,8 @@ public interface AppraisalRepository  extends JpaRepository<Appraisal, Integer>{
 	
     @Query("SELECT a.appraisalId FROM Appraisal a WHERE a.evaluatedPerson.userId = ?1 and status= ?2")
 	public List<Integer> findAllIdsByEvaluatedPersonIdAndStatus(Integer evalPersonId, Integer status);
+
+    @Query("SELECT count(a) FROM Appraisal a WHERE a.evaluatedPerson.userId = ?1 AND evalDate = ?2")
+    public Integer countAppraisalEvaluatedPersonAndEvalDate(Integer userId, Integer evalDate);
 	
 }

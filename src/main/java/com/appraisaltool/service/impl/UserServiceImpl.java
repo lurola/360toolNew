@@ -344,6 +344,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public List<User> findTeamMatesNoAppraiserBy(User user) {
+        return userRepository.findTeamMatesNoAppariserBy(user.getUserId());
+    }
+
+    @Override
+    public List<User> findGroupMatesNoAppraiserBy(User user) {
+        return userRepository.findGroupMatesNoAppariserBy(user.getUserId());
+    }
+
+
     private void encryptAction(User user, boolean encrypt) {
         user.setName(encrypt(user.getName(), encrypt));
         user.setSurname(encrypt(user.getSurname(), encrypt));

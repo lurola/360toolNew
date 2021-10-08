@@ -43,7 +43,12 @@ public interface UserService {
 
     public List<User> getMentorized(Integer userId);
 
+    @Deprecated
     public List<Integer> findTeamMatesNoGroup(Integer userId);
+
+    public List<User> findTeamMatesNoAppraiserBy(User user);
+
+    public List<User> findGroupMatesNoAppraiserBy(User user);
 
     public List<User> getUsersByTeamAndRole(List<Integer> teamId, Integer role);
 

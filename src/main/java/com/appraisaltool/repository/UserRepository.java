@@ -50,4 +50,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT m FROM User m where (?1 is null or upper(m.name) like concat('%', upper(?1), '%')) AND (?2 is null or upper(m.surname) like concat('%', upper(?2), '%')) AND (?3 is null or m.office.officeId = ?3)")
 	public List<User> getByQuery(String name, String surname, Integer officeId);
 
+    @Query("SELECT u FROM User u INNER JOIN UserTeam ut ON u.userId = ut.userId WHERE u.userId !=?1    AND ut.teamId IN (SELECT ut2.teamId FROM UserTeam ut2 WHERE ut2.userId = ?1) AND NOT EXISTS (SELECT 1 FROM Appraisal a WHERE a.evaluatedPerson.userId = u.userId AND a.appraiser.userId = ?1)")
+    public List<User> findTeamMatesNoAppariserBy(Integer userId);
+
+    @Query("SELECT u FROM User u INNER JOIN UserGroup ug ON u.userId = ug.userId WHERE u.userId !=?1    AND ug.groupId IN (SELECT ug2.groupId FROM UserGroup ug2 WHERE ug2.userId = ?1) AND NOT EXISTS (SELECT 1 FROM Appraisal a WHERE a.evaluatedPerson.userId = u.userId AND a.appraiser.userId = ?1)")
+    public List<User> findGroupMatesNoAppariserBy(Integer userId);
+
 }

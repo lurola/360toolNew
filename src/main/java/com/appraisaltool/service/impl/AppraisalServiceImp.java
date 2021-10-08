@@ -1,9 +1,8 @@
 package com.appraisaltool.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Random;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.dozer.DozerBeanMapper;
@@ -13,6 +12,7 @@ import com.appraisaltool.dto.AppItemDTO;
 import com.appraisaltool.dto.AppraisalDTO;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
 import com.appraisaltool.dto.AppraiserCountDTO;
+import com.appraisaltool.dto.domain.AppraisalTypeType;
 import com.appraisaltool.model.ApplicationRole;
 import com.appraisaltool.model.Appraisal;
 import com.appraisaltool.model.AppraisalAverage;
@@ -39,8 +39,10 @@ import com.appraisaltool.repository.SpecificAppraisalTypeRepository;
 import com.appraisaltool.service.AppraisalService;
 import com.appraisaltool.service.TeamService;
 import com.appraisaltool.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AppraisalServiceImp implements AppraisalService{
 
     @Autowired
@@ -118,7 +120,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		//For each user me call the service that assigns appraiser
 		for (User currentUser :  userList) {
 			if(currentUser != null) {
-                assignAppraiserToUser(currentUser, new Integer(2021));
+                assignAppraiserToUserAsEvaluated(currentUser, new Integer(2021));
 			}
 		}
 	}
@@ -127,7 +129,7 @@ public class AppraisalServiceImp implements AppraisalService{
     public List<Appraisal> assignAppraiserToEmployee(Integer userId, Integer evalDate) {
         User user = userService.getUserByUserId(userId);
 
-        return assignAppraiserToUser(user, evalDate);
+        return assignAppraiserToUserAsEvaluated(user, evalDate);
     }
 
     @Override
@@ -138,74 +140,68 @@ public class AppraisalServiceImp implements AppraisalService{
 
         // For each user me call the service that assigns appraiser
         for (User user : userList) {
-            result.addAll(assignAppraiserToUser(user, evalDate));
+            result.addAll(assignAppraiserToUserAsEvaluated(user, evalDate));
         }
         return result;
     }
 
-	/**
-	 * Assigns the appraisers for a particular user
-	 * 
-	 * @param user
-	 */
-    public List<Appraisal> assignAppraiserToUser(User user, Integer evalDate) {
-		
-        List<Appraisal> result = new ArrayList<>();
+    /**
+     * Assigns the appraisers for a particular user
+     * 
+     * Only it creates the assignAppraiser if the user doesn't have some appraisal
+     * 
+     * @param user
+     */
+    private List<Appraisal> assignAppraiserToUserAsEvaluated(User user, Integer evalDate) {
 
-        List<Integer> appraisersList = new ArrayList<Integer>();
+        List<Appraisal> result = new ArrayList<>();
+        if (appraisalRepo.countAppraisalEvaluatedPersonAndEvalDate(user.getUserId(), evalDate) > 0) {
+            log.warn("The user " + user.getUserId() + " has aprraisal created previously");
+            return result;
+        }
+
 		Boolean alreadyIncluded;
 		
 		//1. First appraiser: YOURSELF
-        result.add(createNewAppraisal(user, user, evalDate, "YOURSELF", 0, null));
-		appraisersList.add(user.getUserId());
+        result.add(createNewAppraisal(user, user, evalDate, AppraisalTypeType.YOURSELF, 0, null));
 		
-        // AÑADIR LIDER OFICINA
-
-        // 2. Second appraiser: MENTOR (discard when the user has the mentor himself)
-        if (user.getUserId().compareTo(user.getMentor().getUserId()) != 0) {
-            appraisersList.add(user.getMentor().getUserId());
-            User mentor = userService.getUserByUserId(user.getMentor().getUserId());
-            result.add(createNewAppraisal(user, mentor, evalDate, "MENTOR", 0, null));
+        // 2-3. Line Manager
+        if (user.getLineManager() != null && user.getUserId().compareTo(user.getLineManager().getUserId()) != 0) {
+            result.add(createNewAppraisal(user, user.getLineManager(), evalDate, AppraisalTypeType.LINE_MANAGER_2_EVALUATED, 0, null));
+            result.add(createNewAppraisal(user.getLineManager(), user, evalDate, AppraisalTypeType.EVALUATED_2_LINE_MANAGER, 0, null));
         }
-		//3. Third appraiser: SCRUM MASTER
-        List<Integer> teamIdList = teamService.getTeamByUserId((user.getUserId()));
-		if(teamIdList != null && teamIdList.size() > 0) {
-			
-            List<User> scrumMaster = userService.getUsersByTeamAndRole(teamIdList, SCRUM_MASTER_ROLE);
-			
-			for (User currentSM : scrumMaster) {
-				alreadyIncluded = !appraisersList.stream().filter(currId -> currId == currentSM.getUserId()).collect(Collectors.toList()).isEmpty();
-				if(!alreadyIncluded) {
-					appraisersList.add(currentSM.getUserId());
-                    result.add(createNewAppraisal(user, currentSM, evalDate, "SCRUM MASTER", 0, null));
-				}
-			}
-		}
 
-		//4. Fourth appraiser: TEAMMATE
-		final Integer teamMateChosenId;
-        // Teammates who don't belong to any group
-        List<Integer> teamMate = userService.findTeamMatesNoGroup(user.getUserId());
-		if(teamMate != null && teamMate.size() != 0) {
-			teamMateChosenId = chooseAppraiserFromList(teamMate, appraisersList);
-			
-			if(teamMateChosenId!= null) {
-				appraisersList.add(teamMateChosenId);
-                result.add(createNewAppraisal(user, userService.getUserByUserId(teamMateChosenId), evalDate, "TEAMMATE_NOGROUP", 0, null));
-			}
+
+        // 3-4: Team Lead
+        if (user.getTeamLead() != null && user.getUserId().compareTo(user.getTeamLead().getUserId()) != 0) {
+            result.add(createNewAppraisal(user, user.getTeamLead(), evalDate, AppraisalTypeType.TEAM_LEAD_2_EVALUATED, 0, null));
+            result.add(createNewAppraisal(user.getTeamLead(), user, evalDate, AppraisalTypeType.EVALUATED_2_TEAM_LEAD, 0, null));
+        }
+
+        // 5-6: Mentor
+        if (user.getMentor() != null && user.getUserId().compareTo(user.getMentor().getUserId()) != 0) {
+            result.add(createNewAppraisal(user, user.getMentor(), evalDate, AppraisalTypeType.MENTOR_2_EVALUATED, 0, null));
+            result.add(createNewAppraisal(user.getMentor(), user, evalDate, AppraisalTypeType.EVALUATED_2_MENTOR, 0, null));
+        }
+
+
+        // 7. Fourth appraiser: TEAMMATE
+        if (!user.getEmployedTeam().isEmpty()) {
+            List<User> teamMateList = userService.findTeamMatesNoAppraiserBy(user);
+
+            Random rand = new Random();
+            User teamUser = teamMateList.get(rand.nextInt(teamMateList.size()));
+            result.add(createNewAppraisal(user, teamUser, evalDate, AppraisalTypeType.TEAMMATE, 0, null));
 		}
 		
-        // 5. Fifth appraiser: GroupMate (it can be of the same team DISCARD TEAMMATES
-		final Integer groupMateChosenId;
-        List<Integer> partner = userService.findGroupMates(user.getUserId());
-		if(partner != null && partner.size() != 0) {
-			groupMateChosenId = chooseAppraiserFromList(partner, appraisersList);
-			
-			if(groupMateChosenId != null) {
-                result.add(createNewAppraisal(user, userService.getUserByUserId(groupMateChosenId), evalDate, "GROUPMATE", 0, null));
-				appraisersList.add(groupMateChosenId);
-			}
-		}
+        // 8. Fourth appraiser: GROUP MATE
+        if (!user.getEmployedTeam().isEmpty()) {
+            List<User> groupMateList = userService.findGroupMatesNoAppraiserBy(user);
+
+            Random rand = new Random();
+            User groupUser = groupMateList.get(rand.nextInt(groupMateList.size()));
+            result.add(createNewAppraisal(user, groupUser, evalDate, AppraisalTypeType.GROUPMATE, 0, null));
+        }
 		
         return result;
 	}
@@ -295,17 +291,18 @@ public class AppraisalServiceImp implements AppraisalService{
 	 * @param appraiserId
 	 * @return
 	 */
-    public Appraisal createNewAppraisal(User evaluatedPerson, User apprasier, Integer evalDate, String type, Integer status, List<AppraisalItem> apprItemList) {
+    public Appraisal createNewAppraisal(User evaluatedPerson, User apprasier, Integer evalDate, AppraisalTypeType type, Integer status, List<AppraisalItem> apprItemList) {
         Appraisal app = new Appraisal(null, evaluatedPerson, apprasier, evalDate, type, status, apprItemList);
+        app.setApprItemList(initializeApprList(app));
 		app = appraisalRepo.save(app);
-		Set<AppraisalItem> appItemSet = initializeApprList(app);
-		appItemRepo.saveAll(appItemSet);
+        // Set<AppraisalItem> appItemSet = ;
+        // appItemRepo.saveAll(appItemSet);
 		return app;
 	}
 	
 	
-	private Set<AppraisalItem> initializeApprList(Appraisal app) {
-		Set<AppraisalItem> appraisalItemList = new HashSet<AppraisalItem>();
+    private List<AppraisalItem> initializeApprList(Appraisal app) {
+        List<AppraisalItem> appraisalItemList = new ArrayList<AppraisalItem>();
 		
 		//  I va a ser el SUBTYPE_ID y va de 1 a 5 todo el rato.
 		// Z va a ser el APPRAISAL_TYPE_ID. 00000,11111,22222,33333 ...hasta 99999
