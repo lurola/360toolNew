@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.model.Appraisal;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.service.AppraisalService;
@@ -33,8 +34,8 @@ public class AppraisalController {
     @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to evaluate an specific employee")
     @RequestMapping(value = "/employee/{employeeId}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<List<Appraisal>>> createAppraisalToEmployee(@PathVariable Integer employeeId, @RequestBody AppraisalRequest appraisalRequest) {
-        return new ResponseEntity<GGResponse<List<Appraisal>>>(new GGResponse<List<Appraisal>>(appraisalService.assignAppraiserToEmployee(employeeId, appraisalRequest
+    public ResponseEntity<GGResponse<Integer>> createAppraisalToEmployee(@PathVariable Integer employeeId, @RequestBody AppraisalRequest appraisalRequest) {
+        return new ResponseEntity<GGResponse<Integer>>(new GGResponse<Integer>(appraisalService.assignAppraiserToEmployee(employeeId, appraisalRequest
                 .getEvalDate()), null, true), HttpStatus.OK);
     }
 
@@ -48,8 +49,18 @@ public class AppraisalController {
     @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to evaluate to all employed from one office")
     @RequestMapping(value = "/office/{officeId}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
-    public ResponseEntity<GGResponse<List<Appraisal>>> createAppraisalToEmployeeFromOffice(@PathVariable Integer officeId, @RequestBody AppraisalRequest appraisalRequest) {
-        return new ResponseEntity<GGResponse<List<Appraisal>>>(new GGResponse<List<Appraisal>>(appraisalService.assignAppraiserToEmployeeFromOffice(officeId, appraisalRequest
+    public ResponseEntity<GGResponse<Integer>> createAppraisalToEmployeeFromOffice(@PathVariable Integer officeId, @RequestBody AppraisalRequest appraisalRequest) {
+        return new ResponseEntity<GGResponse<Integer>>(new GGResponse<Integer>(appraisalService.assignAppraiserToEmployeeFromOffice(officeId, appraisalRequest
                 .getEvalDate()), null, true), HttpStatus.OK);
     }
+
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Get Appraiser Assignement list")
+    @RequestMapping(value = "/appriaser", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<List<AppraiserAssignementDto>>> getAppraiserAssignementList() {
+        return new ResponseEntity<GGResponse<List<AppraiserAssignementDto>>>(new GGResponse<List<AppraiserAssignementDto>>(appraisalService.getAppraiserAssignement(), null, true),
+                HttpStatus.OK);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.appraisaltool.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -11,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.appraisaltool.dto.AppItemDTO;
 import com.appraisaltool.dto.AppraisalDTO;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
+import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.dto.AppraiserCountDTO;
 import com.appraisaltool.dto.domain.AppraisalTypeType;
+import com.appraisaltool.mapper.AppraisalMapper;
 import com.appraisaltool.model.ApplicationRole;
 import com.appraisaltool.model.Appraisal;
 import com.appraisaltool.model.AppraisalAverage;
@@ -30,6 +33,7 @@ import com.appraisaltool.repository.AppraisalAverageRepository;
 import com.appraisaltool.repository.AppraisalItemRepository;
 import com.appraisaltool.repository.AppraisalRepository;
 import com.appraisaltool.repository.AppraisalTypeRepository;
+import com.appraisaltool.repository.AppraiserAssignementRepository;
 import com.appraisaltool.repository.CriteriaNameRepository;
 import com.appraisaltool.repository.GlobalAppraisalTypeRepository;
 import com.appraisaltool.repository.InternalCriteriaSubtypeRepository;
@@ -47,6 +51,9 @@ public class AppraisalServiceImp implements AppraisalService{
 
     @Autowired
     private AppraisalRepository appraisalRepo;
+    @Autowired
+    private AppraiserAssignementRepository appraiserAssignementRepository;
+
     @Autowired
     private AppraisalItemRepository appItemRepo;
     @Autowired
@@ -126,23 +133,28 @@ public class AppraisalServiceImp implements AppraisalService{
 	}
 
     @Override
-    public List<Appraisal> assignAppraiserToEmployee(Integer userId, Integer evalDate) {
+    public Integer assignAppraiserToEmployee(Integer userId, Integer evalDate) {
         User user = userService.getUserByUserId(userId);
 
-        return assignAppraiserToUserAsEvaluated(user, evalDate);
+        return assignAppraiserToUserAsEvaluated(user, evalDate).size();
     }
 
     @Override
-    public List<Appraisal> assignAppraiserToEmployeeFromOffice(Integer officeId, Integer evalDate) {
+    public Integer assignAppraiserToEmployeeFromOffice(Integer officeId, Integer evalDate) {
         List<Appraisal> result = new ArrayList<>();
         // We get the list of all the user in an office
         List<User> userList = userService.getUserSByOfficeId(officeId);
+
+        log.info("Init to assign Appraiser to the office " + officeId);
+
+        Collections.shuffle(userList);
 
         // For each user me call the service that assigns appraiser
         for (User user : userList) {
             result.addAll(assignAppraiserToUserAsEvaluated(user, evalDate));
         }
-        return result;
+        log.info("Finish to assign Appraiser to the office " + officeId + " Created " + result);
+        return result.size();
     }
 
     /**
@@ -189,18 +201,22 @@ public class AppraisalServiceImp implements AppraisalService{
         if (!user.getEmployedTeam().isEmpty()) {
             List<User> teamMateList = userService.findTeamMatesNoAppraiserBy(user);
 
-            Random rand = new Random();
-            User teamUser = teamMateList.get(rand.nextInt(teamMateList.size()));
-            result.add(createNewAppraisal(user, teamUser, evalDate, AppraisalTypeType.TEAMMATE, 0, null));
+            if (teamMateList.size() > 0) {
+                Random rand = new Random();
+                User teamUser = teamMateList.get(rand.nextInt(teamMateList.size()));
+                result.add(createNewAppraisal(teamUser, user, evalDate, AppraisalTypeType.TEAMMATE, 0, null));
+            }
 		}
 		
         // 8. Fourth appraiser: GROUP MATE
-        if (!user.getEmployedTeam().isEmpty()) {
+        if (!user.getEmployedGroup().isEmpty()) {
             List<User> groupMateList = userService.findGroupMatesNoAppraiserBy(user);
 
-            Random rand = new Random();
-            User groupUser = groupMateList.get(rand.nextInt(groupMateList.size()));
-            result.add(createNewAppraisal(user, groupUser, evalDate, AppraisalTypeType.GROUPMATE, 0, null));
+            if (groupMateList.size() > 0) {
+                Random rand = new Random();
+                User groupUser = groupMateList.get(rand.nextInt(groupMateList.size()));
+                result.add(createNewAppraisal(groupUser, user, evalDate, AppraisalTypeType.GROUPMATE, 0, null));
+            }
         }
 		
         return result;
@@ -1065,7 +1081,7 @@ public class AppraisalServiceImp implements AppraisalService{
 		 * 
 		 * @return A list with all the appraisalTypes
 		 */
-		public List<AppraisalType> getAppraisalTypes() {
+    public List<AppraisalType> getAppraisalTypes() {
 			
 			return appTypeRepo.findAll();
 
@@ -1081,5 +1097,10 @@ public class AppraisalServiceImp implements AppraisalService{
 			return criteriaRepo.findAll();
 			
 		}
+
+    @Override
+    public List<AppraiserAssignementDto> getAppraiserAssignement() {
+        return AppraisalMapper.INSTANCE.map(appraiserAssignementRepository.findAll());
+    }
 
 }
