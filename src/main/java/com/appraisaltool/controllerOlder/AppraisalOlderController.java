@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import com.appraisaltool.dto.AppItemDTO;
-import com.appraisaltool.dto.AppraisalDTO;
+import com.appraisaltool.dto.DeprecatedAppItemDTO;
+import com.appraisaltool.dto.DeprecatedAppraisalDTO;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
 import com.appraisaltool.dto.EvaluationsDTO;
 import com.appraisaltool.dto.ManualAssignmentDTO;
@@ -68,7 +68,7 @@ public class AppraisalOlderController {
 	private Integer FINISH = 1;
 	private Integer PENDING = 0;
 	
-	AppItemDTO appItemDto;
+	DeprecatedAppItemDTO appItemDto;
 
 //	private String redirectTo = "";
 	ModelMap model;
@@ -210,7 +210,7 @@ public class AppraisalOlderController {
 	 * @return
 	 */
 	@PostMapping("/finish")
-	public ModelAndView finish(@Valid @ModelAttribute("appItemDto") AppraisalDTO appraisalDto) {
+	public ModelAndView finish(@Valid @ModelAttribute("appItemDto") DeprecatedAppraisalDTO appraisalDto) {
 		
 		Appraisal appraisal = appraisalServ.convertFromDtoToAppraisal(appraisalDto);
 		
@@ -232,7 +232,7 @@ public class AppraisalOlderController {
 	 * @return
 	 */
 	@PostMapping("/saveButNotFinish")
-	public ModelAndView saveButNotFinish(@Valid @ModelAttribute("appItemDto") AppraisalDTO appraisalDto) {
+	public ModelAndView saveButNotFinish(@Valid @ModelAttribute("appItemDto") DeprecatedAppraisalDTO appraisalDto) {
 		
 		Appraisal appraisal = appraisalServ.convertFromDtoToAppraisal(appraisalDto);
 		

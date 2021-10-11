@@ -3,7 +3,7 @@ package com.appraisaltool.dto;
 import lombok.Data;
 
 @Data
-public class AppraisalDTO {
+public class DeprecatedAppraisalDTO {
 	
 	private Integer appraisalId;
 	private Integer evaluatedPersonId;

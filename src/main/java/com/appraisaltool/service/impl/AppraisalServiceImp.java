@@ -10,8 +10,8 @@ import javax.validation.Valid;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.appraisaltool.dto.AppItemDTO;
-import com.appraisaltool.dto.AppraisalDTO;
+import com.appraisaltool.dto.DeprecatedAppItemDTO;
+import com.appraisaltool.dto.DeprecatedAppraisalDTO;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.dto.AppraiserCountDTO;
@@ -276,7 +276,7 @@ public class AppraisalServiceImp implements AppraisalService {
 
     // Ninguna referencia en el código
     @Deprecated
-    public AppItemDTO newOrUpdateAppraisalItem(AppItemDTO appItem) {
+    public DeprecatedAppItemDTO newOrUpdateAppraisalItem(DeprecatedAppItemDTO appItem) {
 
         List<AppraisalItem> appItemList = findAppItemsByAppraisalIdAndAppItemType(appItem.getAppraisalId(), appItem.getCurrentPage());
 
@@ -943,7 +943,7 @@ public class AppraisalServiceImp implements AppraisalService {
 
 
 
-    public Appraisal convertFromDtoToAppraisal(@Valid AppraisalDTO appraisalDto) {
+    public Appraisal convertFromDtoToAppraisal(@Valid DeprecatedAppraisalDTO appraisalDto) {
 
         Appraisal app = appraisalRepo.getAppraisalByAppraisalId(appraisalDto.getAppraisalId());
 
