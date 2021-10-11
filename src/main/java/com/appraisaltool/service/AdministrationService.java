@@ -19,6 +19,8 @@ public interface AdministrationService {
 
     public EmployeeDto getEmployeeSummaryById(Integer id);
 
+    public List<EmployeeDto> getAllEmployee();
+
     public EmployeeFullDetailsDto createEmployee(EmployeeRequest employeeRequest);
 
     public EmployeeFullDetailsDto updateEmployee(EmployeeRequest employeeRequest);

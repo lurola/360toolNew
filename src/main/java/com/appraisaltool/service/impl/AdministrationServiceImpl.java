@@ -112,6 +112,11 @@ public class AdministrationServiceImpl implements AdministrationService {
     }
 
     @Override
+    public List<EmployeeDto> getAllEmployee() {
+        return AdministrationMapper.INSTANCE.mapEmployeeList(userService.getAllUsers());
+    }
+
+    @Override
     public EmployeeFullDetailsDto createEmployee(EmployeeRequest employeeRequest) {
         if (employeeRequest.getStatus() == null) {
             employeeRequest.setStatus(EmployeeStatusType.ACTIVE);

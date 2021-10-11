@@ -1,6 +1,5 @@
 package com.appraisaltool.service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import com.appraisaltool.dto.ChangePasswordDTO;
@@ -15,7 +14,7 @@ public interface UserService {
 
     public Optional<User> getUserByEmail(String email);
 
-    public Collection<User> getAllUsers();
+    public List<User> getAllUsers();
 
     public List<User> getUserSByOfficeId(Integer officeId);
 

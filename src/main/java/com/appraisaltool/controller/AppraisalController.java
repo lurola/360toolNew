@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
         "http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
 @RestController
 @RequestMapping(value = MAPPING_APPRAISAL_TOOL + "/" + TAG_APPRAISAL)
-@Api(value = "Appraisal functions", tags = TAG_APPRAISAL)
+@Api(value = "Appraisal functions", tags = TAG_APPRAISAL, description = "Appraisal functions")
 public class AppraisalController {
 
     @Autowired

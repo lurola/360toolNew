@@ -2,6 +2,7 @@ package com.appraisaltool.controller;
 
 import static com.appraisaltool.commons.Constants.ACCEPT_APPLICATION_JSON;
 import static com.appraisaltool.commons.Constants.MAPPING_APPRAISAL_TOOL;
+import static com.appraisaltool.commons.Constants.TAG_ADMIN;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,16 +23,20 @@ import com.appraisaltool.request.LoginRequest;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.response.LookupDataResults;
 import com.appraisaltool.service.AdministrationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = {
         "http://localhost:4200", "http://localhost:4201"}, maxAge = 3600)
 @RestController
-@RequestMapping(value = MAPPING_APPRAISAL_TOOL + "/admin")
+@RequestMapping(value = MAPPING_APPRAISAL_TOOL + "/" + TAG_ADMIN)
+@Api(value = "Administration and utils functions", tags = TAG_ADMIN, description = "Administration and utils functions")
 public class AdministrationController {
 
     @Autowired
     private AdministrationService administrationService;
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Get Lookups values")
     @RequestMapping(value = "/lookup/{lookupType}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
     public ResponseEntity<GGResponse<LookupDataResults>> getLookup(@PathVariable("lookupType") LookupType lookupType) {
@@ -40,6 +45,7 @@ public class AdministrationController {
         return new ResponseEntity<GGResponse<LookupDataResults>>( new GGResponse<LookupDataResults>(lookupDataResults, null, true), HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Get Lookup value")
     @RequestMapping(value = "/lookup/{lookupType}/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
     public ResponseEntity<GGResponse<LookupDataResults>> getLookupById(@PathVariable("lookupType") LookupType lookupType, @PathVariable("id") Integer id) {
@@ -48,6 +54,7 @@ public class AdministrationController {
         return new ResponseEntity<GGResponse<LookupDataResults>>(new GGResponse<LookupDataResults>(lookupDataResults, null, true), HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Get completed info of employee")
     @RequestMapping(value = "/employee/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
     public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> getEmployeeById(@PathVariable("id") Integer id) {
@@ -60,6 +67,15 @@ public class AdministrationController {
         return new ResponseEntity<GGResponse<EmployeeDto>>(new GGResponse<EmployeeDto>(administrationService.getEmployeeSummaryById(id), null, true), HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Get all the employes")
+    @RequestMapping(value = "/employee", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<List<EmployeeDto>>> geAllEmployee() {
+        return new ResponseEntity<GGResponse<List<EmployeeDto>>>(new GGResponse<List<EmployeeDto>>(administrationService.getAllEmployee(), null, true),
+                HttpStatus.OK);
+    }
+
+    @ApiOperation(tags = TAG_ADMIN, value = "Create Employee")
     @RequestMapping(value = "/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
     public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> createEmployee(@RequestBody EmployeeRequest employeeRequest) {
@@ -67,6 +83,7 @@ public class AdministrationController {
                 HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Update Employee")
     @RequestMapping(value = "/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
     public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> updateEmployee(@RequestBody EmployeeRequest employeeRequest) {
@@ -74,6 +91,7 @@ public class AdministrationController {
                 HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Get employees by filter")
     @RequestMapping(value = "/employee/filterBy/{EmployeeFilterList}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
     public ResponseEntity<GGResponse<List<EmployeeDto>>> getEmployeeByFilter(@PathVariable("EmployeeFilterList") EmployeeFilterListType employeeFilterList) {
@@ -81,6 +99,7 @@ public class AdministrationController {
                 true), HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "Get all employee from a office")
     @RequestMapping(value = "/office/{id}/employee", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
     public ResponseEntity<GGResponse<List<EmployeeDto>>> getEmployeeSummaryByOfficeId(@PathVariable("id") Integer id) {
@@ -88,6 +107,7 @@ public class AdministrationController {
                 HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_ADMIN, value = "login method")
     @RequestMapping(value = "/login", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
     public ResponseEntity<GGResponse<EmployeeFullDetailsDto>> login(@RequestBody LoginRequest loginRequest) {
