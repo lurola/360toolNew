@@ -16,11 +16,13 @@ import javax.persistence.Table;
 import com.appraisaltool.dto.domain.AppraisalTypeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table (name = "APPRAISAL")
 @AllArgsConstructor()
+@NoArgsConstructor
 public class Appraisal {
 	
 	@Id

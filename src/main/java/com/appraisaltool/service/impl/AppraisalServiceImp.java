@@ -1,5 +1,6 @@
 package com.appraisaltool.service.impl;
 
+import static com.appraisaltool.commons.Constants.APPRAISAL_STATUS_NEW;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +41,7 @@ import com.appraisaltool.repository.InternalCriteriaSubtypeRepository;
 import com.appraisaltool.repository.InternalCriteriaTypeRepository;
 import com.appraisaltool.repository.InternalSpecificAppTypeRepository;
 import com.appraisaltool.repository.SpecificAppraisalTypeRepository;
+import com.appraisaltool.request.AppraisalRequest;
 import com.appraisaltool.service.AppraisalService;
 import com.appraisaltool.service.TeamService;
 import com.appraisaltool.service.UserService;
@@ -175,25 +177,25 @@ public class AppraisalServiceImp implements AppraisalService {
         Boolean alreadyIncluded;
 
         // 1. First appraiser: YOURSELF
-        result.add(createNewAppraisal(user, user, evalDate, AppraisalTypeType.YOURSELF, 0, null));
+        result.add(createNewAppraisal(user, user, evalDate, AppraisalTypeType.YOURSELF));
 
         // 2-3. Line Manager
         if (user.getLineManager() != null && user.getUserId().compareTo(user.getLineManager().getUserId()) != 0) {
-            result.add(createNewAppraisal(user, user.getLineManager(), evalDate, AppraisalTypeType.LINE_MANAGER_2_EVALUATED, 0, null));
-            result.add(createNewAppraisal(user.getLineManager(), user, evalDate, AppraisalTypeType.EVALUATED_2_LINE_MANAGER, 0, null));
+            result.add(createNewAppraisal(user, user.getLineManager(), evalDate, AppraisalTypeType.LINE_MANAGER_2_EVALUATED));
+            result.add(createNewAppraisal(user.getLineManager(), user, evalDate, AppraisalTypeType.EVALUATED_2_LINE_MANAGER));
         }
 
 
         // 3-4: Team Lead
         if (user.getTeamLead() != null && user.getUserId().compareTo(user.getTeamLead().getUserId()) != 0) {
-            result.add(createNewAppraisal(user, user.getTeamLead(), evalDate, AppraisalTypeType.TEAM_LEAD_2_EVALUATED, 0, null));
-            result.add(createNewAppraisal(user.getTeamLead(), user, evalDate, AppraisalTypeType.EVALUATED_2_TEAM_LEAD, 0, null));
+            result.add(createNewAppraisal(user, user.getTeamLead(), evalDate, AppraisalTypeType.TEAM_LEAD_2_EVALUATED));
+            result.add(createNewAppraisal(user.getTeamLead(), user, evalDate, AppraisalTypeType.EVALUATED_2_TEAM_LEAD));
         }
 
         // 5-6: Mentor
         if (user.getMentor() != null && user.getUserId().compareTo(user.getMentor().getUserId()) != 0) {
-            result.add(createNewAppraisal(user, user.getMentor(), evalDate, AppraisalTypeType.MENTOR_2_EVALUATED, 0, null));
-            result.add(createNewAppraisal(user.getMentor(), user, evalDate, AppraisalTypeType.EVALUATED_2_MENTOR, 0, null));
+            result.add(createNewAppraisal(user, user.getMentor(), evalDate, AppraisalTypeType.MENTOR_2_EVALUATED));
+            result.add(createNewAppraisal(user.getMentor(), user, evalDate, AppraisalTypeType.EVALUATED_2_MENTOR));
         }
 
 
@@ -204,7 +206,7 @@ public class AppraisalServiceImp implements AppraisalService {
             if (teamMateList.size() > 0) {
                 Random rand = new Random();
                 User teamUser = teamMateList.get(rand.nextInt(teamMateList.size()));
-                result.add(createNewAppraisal(teamUser, user, evalDate, AppraisalTypeType.TEAMMATE, 0, null));
+                result.add(createNewAppraisal(teamUser, user, evalDate, AppraisalTypeType.TEAMMATE));
             }
         }
 
@@ -215,7 +217,7 @@ public class AppraisalServiceImp implements AppraisalService {
             if (groupMateList.size() > 0) {
                 Random rand = new Random();
                 User groupUser = groupMateList.get(rand.nextInt(groupMateList.size()));
-                result.add(createNewAppraisal(groupUser, user, evalDate, AppraisalTypeType.GROUPMATE, 0, null));
+                result.add(createNewAppraisal(groupUser, user, evalDate, AppraisalTypeType.GROUPMATE));
             }
         }
 
@@ -301,18 +303,36 @@ public class AppraisalServiceImp implements AppraisalService {
         return appItem;
     }
 
+    @Override
+    public Integer createAppraisal(AppraisalRequest appraisalRequest) {
+        User evaluatedPerson = userService.getUserByUserId(appraisalRequest.getEvaluatedPersonId());
+        User appraiser = userService.getUserByUserId(appraisalRequest.getAppraiserId());
+        
+        Appraisal appraisal = createNewAppraisal(evaluatedPerson, appraiser, appraisalRequest.getEvalDate(), appraisalRequest.getType());
+        
+        if(appraisal!=null)
+            return 1;
+        return 0;
+    }
+
+    @Override
+    public void deleteAppraisal(Integer appraisalId) {
+
+        Appraisal appraisalToRemove = appraisalRepo.getAppraisalByAppraisalId(appraisalId);
+
+        appraisalRepo.delete(appraisalToRemove);
+    }
+
     /**
      * 
      * @param userId
      * @param appraiserId
      * @return
      */
-    public Appraisal createNewAppraisal(User evaluatedPerson, User apprasier, Integer evalDate, AppraisalTypeType type, Integer status, List<AppraisalItem> apprItemList) {
-        Appraisal app = new Appraisal(null, evaluatedPerson, apprasier, evalDate, type, status, apprItemList);
+    private Appraisal createNewAppraisal(User evaluatedPerson, User apprasier, Integer evalDate, AppraisalTypeType type) {
+        Appraisal app = new Appraisal(null, evaluatedPerson, apprasier, evalDate, type, APPRAISAL_STATUS_NEW, null);
         app.setApprItemList(initializeApprList(app));
         app = appraisalRepo.save(app);
-        // Set<AppraisalItem> appItemSet = ;
-        // appItemRepo.saveAll(appItemSet);
         return app;
     }
 

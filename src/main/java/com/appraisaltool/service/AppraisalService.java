@@ -3,13 +3,19 @@ package com.appraisaltool.service;
 import java.util.List;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.model.Appraisal;
+import com.appraisaltool.request.AppraisalRequest;
 
 public interface AppraisalService {
 
 	public Appraisal getAppraisalById(Integer id);
 	
+    @Deprecated
 	public Appraisal createOrUpdateAppraisal(Appraisal id);
 	
+    public Integer createAppraisal(AppraisalRequest appraisalRequest);
+
+    public void deleteAppraisal(Integer appraisalId);
+
     /**
      * Create a list of appraisal to the evaluatedPerson the userId (if it is not created previosly) with the next algorithm:
      * <ol>

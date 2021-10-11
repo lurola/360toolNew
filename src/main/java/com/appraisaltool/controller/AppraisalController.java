@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.model.Appraisal;
+import com.appraisaltool.request.AppraisalRequest;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.service.AppraisalService;
 import io.swagger.annotations.Api;
@@ -46,6 +47,15 @@ public class AppraisalController {
         return new ResponseEntity<GGResponse<Appraisal>>(new GGResponse<Appraisal>(appraisalService.getAppraisalById(appraisalId), null, true), HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_APPRAISAL, value = "delete specific apraisal")
+    @RequestMapping(value = "/{appraisalId}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.DELETE)
+    public ResponseEntity<GGResponse<String>> deleteAppraisal(@PathVariable Integer appraisalId) {
+        appraisalService.deleteAppraisal(appraisalId);
+
+        return new ResponseEntity<GGResponse<String>>(new GGResponse<String>("Delete sucessful", null, true), HttpStatus.OK);
+    }
+
     @ApiOperation(tags = TAG_APPRAISAL, value = "Create an appraisal assignment to evaluate to all employed from one office")
     @RequestMapping(value = "/office/{officeId}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
@@ -53,6 +63,17 @@ public class AppraisalController {
         return new ResponseEntity<GGResponse<Integer>>(new GGResponse<Integer>(appraisalService.assignAppraiserToEmployeeFromOffice(officeId, appraisalRequest
                 .getEvalDate()), null, true), HttpStatus.OK);
     }
+
+
+    @ApiOperation(tags = TAG_APPRAISAL,
+            value = "Create a manual appraisal. The appraisalType allowed:  YOURSELF, LINE_MANAGER_2_EVALUATED, EVALUATED_2_LINE_MANAGER, TEAM_LEAD_2_EVALUATED, EVALUATED_2_TEAM_LEAD, MENTOR_2_EVALUATED, EVALUATED_2_MENTOR, TEAMMATE, GROUPMATE")
+    @RequestMapping(value = "/appraisal}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.POST)
+    public ResponseEntity<GGResponse<Integer>> createManualAppraisal(@RequestBody AppraisalRequest appraisalRequest) {
+        return new ResponseEntity<GGResponse<Integer>>(new GGResponse<Integer>(appraisalService.createAppraisal(appraisalRequest), null, true), HttpStatus.OK);
+    }
+
+
 
     @ApiOperation(tags = TAG_APPRAISAL, value = "Get Appraiser Assignement list")
     @RequestMapping(value = "/appriaser", produces = {
