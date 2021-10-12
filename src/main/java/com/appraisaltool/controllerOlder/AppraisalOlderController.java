@@ -23,10 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import com.appraisaltool.dto.AppraisalHeaderDTO;
 import com.appraisaltool.dto.DeprecatedAppItemDTO;
 import com.appraisaltool.dto.DeprecatedAppraisalDTO;
-import com.appraisaltool.dto.AppraisalHeaderDTO;
-import com.appraisaltool.dto.EvaluationsDTO;
 import com.appraisaltool.dto.ManualAssignmentDTO;
 import com.appraisaltool.dto.UserAppraisalDTO;
 import com.appraisaltool.encrypting.EncrypterAES;
@@ -79,9 +78,10 @@ public class AppraisalOlderController {
 	 * @return
 	 */
 	@GetMapping("/getAppraisal/{id}")
+    @Deprecated
 	public Appraisal getAppraisalByAppraisalId(@Valid @ModelAttribute("id") Integer id) {
 
-		return appraisalServ.getAppraisalById(id);
+        return null;// appraisalServ.getAppraisalById(id);
 				
 	}
 	
@@ -172,33 +172,33 @@ public class AppraisalOlderController {
 				
 	}
 	
-	@PostMapping("/newAppraisal")
-	public ModelAndView newAppraisal(@Valid @ModelAttribute("idSelected") Integer idSelected) {
-		//Get info of the appraisal if exists
-		//Go to individual appraisal screen
-		Double[] averages;
-		
-		Integer appraisalId = new Integer(idSelected);
-		
-		Appraisal appraisal = appraisalServ.getAppraisalById(appraisalId);
-		
-        CriteriaName[][] criteriaNames = appraisalServ.findAllCriterias(1);
-		
-		//Get all the appItems in order type and subtype
-//		AppraisalItem[][] appItems = appraisalServ.getAppItemsByAppraisalId(appraisalId);
-		AppraisalType[] appType = appraisalServ.findAllAppraisalTypes();
-		
-		List<EvaluationsDTO> evaluationValues = EvaluationsDTO.getAllEvaluations();
-
-		model = new ModelMap();
-		model.addAttribute("appraisal", appraisal);
-		model.addAttribute("appType", appType);
-		model.addAttribute("criteriaNames", criteriaNames);
-		model.addAttribute("evaluationValues", evaluationValues);
-//		model.addAttribute("appItems", appItems);
-
-		return new ModelAndView("complete_appraisal_screen", "model", model);
-	}
+    // @PostMapping("/newAppraisal")
+    // public ModelAndView newAppraisal(@Valid @ModelAttribute("idSelected") Integer idSelected) {
+    // //Get info of the appraisal if exists
+    // //Go to individual appraisal screen
+    // Double[] averages;
+    //
+    // Integer appraisalId = new Integer(idSelected);
+    //
+    // Appraisal appraisal = appraisalServ.getAppraisalById(appraisalId);
+    //
+    // CriteriaName[][] criteriaNames = appraisalServ.findAllCriterias(1);
+    //
+    // //Get all the appItems in order type and subtype
+    //// AppraisalItem[][] appItems = appraisalServ.getAppItemsByAppraisalId(appraisalId);
+    // AppraisalType[] appType = appraisalServ.findAllAppraisalTypes();
+    //
+    // List<EvaluationsDTO> evaluationValues = EvaluationsDTO.getAllEvaluations();
+    //
+    // model = new ModelMap();
+    // model.addAttribute("appraisal", appraisal);
+    // model.addAttribute("appType", appType);
+    // model.addAttribute("criteriaNames", criteriaNames);
+    // model.addAttribute("evaluationValues", evaluationValues);
+    //// model.addAttribute("appItems", appItems);
+    //
+    // return new ModelAndView("complete_appraisal_screen", "model", model);
+    // }
 	
 	
 

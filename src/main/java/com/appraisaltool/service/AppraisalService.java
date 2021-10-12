@@ -1,13 +1,14 @@
 package com.appraisaltool.service;
 
 import java.util.List;
+import com.appraisaltool.dto.AppraisalDto;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.model.Appraisal;
 import com.appraisaltool.request.AppraisalRequest;
 
 public interface AppraisalService {
 
-	public Appraisal getAppraisalById(Integer id);
+    public AppraisalDto getAppraisalById(Integer id);
 	
     @Deprecated
 	public Appraisal createOrUpdateAppraisal(Appraisal id);

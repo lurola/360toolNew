@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.appraisaltool.model.Appraisal;
+import com.appraisaltool.dto.AppraisalDto;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.service.AppraisalService;
 import io.swagger.annotations.Api;
@@ -31,8 +31,8 @@ public class AppraisalController {
     @ApiOperation(tags = TAG_APPRAISAL, value = "Get specific apraisal")
     @RequestMapping(value = "/{appraisalId}", produces = {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
-    public ResponseEntity<GGResponse<Appraisal>> getAppraisal(@PathVariable Integer appraisalId) {
-        return new ResponseEntity<GGResponse<Appraisal>>(new GGResponse<Appraisal>(appraisalService.getAppraisalById(appraisalId), null, true), HttpStatus.OK);
+    public ResponseEntity<GGResponse<AppraisalDto>> getAppraisal(@PathVariable Integer appraisalId) {
+        return new ResponseEntity<GGResponse<AppraisalDto>>(new GGResponse<AppraisalDto>(appraisalService.getAppraisalById(appraisalId), null, true), HttpStatus.OK);
     }
 
     @ApiOperation(tags = TAG_APPRAISAL, value = "delete specific apraisal")

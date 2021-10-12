@@ -10,11 +10,12 @@ import javax.validation.Valid;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.appraisaltool.dto.DeprecatedAppItemDTO;
-import com.appraisaltool.dto.DeprecatedAppraisalDTO;
+import com.appraisaltool.dto.AppraisalDto;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.dto.AppraiserCountDTO;
+import com.appraisaltool.dto.DeprecatedAppItemDTO;
+import com.appraisaltool.dto.DeprecatedAppraisalDTO;
 import com.appraisaltool.dto.domain.AppraisalTypeType;
 import com.appraisaltool.mapper.AppraisalMapper;
 import com.appraisaltool.model.ApplicationRole;
@@ -99,10 +100,10 @@ public class AppraisalServiceImp implements AppraisalService {
     private final Integer SCRUM_MASTER_ROLE = 2;
 
     @Override
-    public Appraisal getAppraisalById(Integer id) {
+    public AppraisalDto getAppraisalById(Integer id) {
 
         Appraisal appraisal = appraisalRepo.getAppraisalByAppraisalId(id);
-        return appraisal;
+        return AppraisalMapper.INSTANCE.map(appraisal);
     }
 
 
@@ -1149,7 +1150,7 @@ public class AppraisalServiceImp implements AppraisalService {
 
     @Override
     public List<AppraiserAssignementDto> getAppraiserAssignement() {
-        return AppraisalMapper.INSTANCE.map(appraiserAssignementRepository.findAll());
+        return AppraisalMapper.INSTANCE.mapAppraiserAssignementList(appraiserAssignementRepository.findAll());
     }
 
 }

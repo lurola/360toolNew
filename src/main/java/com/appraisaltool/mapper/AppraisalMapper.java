@@ -5,7 +5,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import com.appraisaltool.commons.EncryptTool;
+import com.appraisaltool.dto.AppraisalDto;
+import com.appraisaltool.dto.AppraisalItemDto;
 import com.appraisaltool.dto.AppraiserAssignementDto;
+import com.appraisaltool.model.Appraisal;
+import com.appraisaltool.model.AppraisalItem;
 import com.appraisaltool.model.AppraiserAssignement;
 
 @Mapper(imports = {
@@ -48,5 +52,16 @@ public interface AppraisalMapper {
     @Mapping(expression = "java(EncryptTool.decode(appraiserAssignement.getGroupSurname()))", target = "groupMate.surname")
     AppraiserAssignementDto map(AppraiserAssignement appraiserAssignement);
 
-    List<AppraiserAssignementDto> map(List<AppraiserAssignement> appraiserAssignementList);
+    List<AppraiserAssignementDto> mapAppraiserAssignementList(List<AppraiserAssignement> appraiserAssignementList);
+
+    AppraisalItemDto map(AppraisalItem appraisalItem);
+
+    List<AppraisalItemDto> mapAppraisalItemList(List<AppraisalItem> appraisalItemList);
+
+    AppraisalDto map(Appraisal appraisal);
+
+    List<AppraisalDto> mapAppraisalList(List<Appraisal> appraisalList);
+
+
+
 }
