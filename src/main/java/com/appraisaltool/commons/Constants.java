@@ -8,6 +8,7 @@ public class Constants {
 
     public static final String TAG_ADMIN = "admin";
     public static final String TAG_APPRAISAL_ASIG = "appraisal-asignement";
+    public static final String TAG_APPRAISAL = "appraisal";
 
 
     /** The appraisal has been created */
