@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.appraisaltool.dto.AppraisalTypeDto;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
 import com.appraisaltool.dto.domain.EmployeeFilterListType;
@@ -125,4 +126,12 @@ public class AdministrationController {
     // public ResponseEntity<GGResponse<Boolean>> decrypt() {
     // return new ResponseEntity<GGResponse<Boolean>>(new GGResponse<Boolean>(administrationService.encrypt(false), null, true), HttpStatus.OK);
     // }
+
+    @ApiOperation(tags = TAG_ADMIN, value = "Get all the AppraisalType and Criteria Name to evaluate")
+    @RequestMapping(value = "/appraisalType", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<List<AppraisalTypeDto>>> geAllAppraisalType() {
+        return new ResponseEntity<GGResponse<List<AppraisalTypeDto>>>(new GGResponse<List<AppraisalTypeDto>>(administrationService.getAllAppraisalType(), null, true),
+                HttpStatus.OK);
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.commons.EncryptTool;
+import com.appraisaltool.dto.AppraisalTypeDto;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
 import com.appraisaltool.dto.domain.EmployeeFilterListType;
@@ -12,6 +13,7 @@ import com.appraisaltool.dto.domain.EmployeeStatusType;
 import com.appraisaltool.dto.domain.LookupType;
 import com.appraisaltool.mapper.AdministrationMapper;
 import com.appraisaltool.model.User;
+import com.appraisaltool.repository.AppraisalTypeRepository;
 import com.appraisaltool.request.EmployeeRequest;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.response.LookupDataResults;
@@ -39,6 +41,9 @@ public class AdministrationServiceImpl implements AdministrationService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AppraisalTypeRepository appraisalTypeRepository;
 
     @Override
     public LookupDataResults getLookupDataResult(LookupType lookupType) {
@@ -147,9 +152,15 @@ public class AdministrationServiceImpl implements AdministrationService {
 
         return response;
     }
+
     @Override
     public Boolean encrypt(boolean encrypt) {
         return userService.encrypt(encrypt);
+    }
+
+    @Override
+    public List<AppraisalTypeDto> getAllAppraisalType() {
+        return AdministrationMapper.INSTANCE.mapAppraisalTypeList(appraisalTypeRepository.findAll());
     }
 }
 

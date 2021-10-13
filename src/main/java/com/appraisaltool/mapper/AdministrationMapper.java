@@ -7,8 +7,11 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import com.appraisaltool.commons.EncryptTool;
+import com.appraisaltool.dto.AppraisalTypeDto;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
+import com.appraisaltool.model.AppraisalType;
+import com.appraisaltool.model.CriteriaName;
 import com.appraisaltool.model.Group;
 import com.appraisaltool.model.Office;
 import com.appraisaltool.model.Role;
@@ -59,6 +62,19 @@ public interface AdministrationMapper {
     Group mapToGroup(LookupData lookupData);
 
     List<LookupData> mapGroupList(List<Group> groupList);
+
+    @Mapping(source = "criteriaNameId", target = "id")
+    @Mapping(source = "criteriaName", target = "label")
+    LookupData map(CriteriaName criteriaName);
+
+    List<LookupData> mapCriteriaNameList(List<CriteriaName> criteriaNameList);
+
+    @Mapping(source = "appraisalTypeId", target = "id")
+    @Mapping(source = "appraisalTypeName", target = "label")
+    AppraisalTypeDto map(AppraisalType appraisalType);
+
+    List<AppraisalTypeDto> mapAppraisalTypeList(List<AppraisalType> appraisalTypeList);
+
 
     @Mapping(expression = "java(EncryptTool.encode(employeeRequest.getName()))", target = "name")
     @Mapping(expression = "java(EncryptTool.encode(employeeRequest.getSurname()))", target = "surname")

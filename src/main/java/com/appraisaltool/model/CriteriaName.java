@@ -5,8 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import lombok.Data;
 
 @Data
@@ -19,9 +20,10 @@ public class CriteriaName {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer criteriaNameId;
 	
-	@Column
-	private Integer appraisalTypeId;
-	
+    @ManyToOne
+    @JoinColumn(name = "appraisalTypeId", nullable = false)
+    private AppraisalType appraisalType;
+
 	@Column 
 	private Integer subtypeId;
 	

@@ -1,6 +1,7 @@
 package com.appraisaltool.service;
 
 import java.util.List;
+import com.appraisaltool.dto.AppraisalTypeDto;
 import com.appraisaltool.dto.EmployeeDto;
 import com.appraisaltool.dto.EmployeeFullDetailsDto;
 import com.appraisaltool.dto.domain.EmployeeFilterListType;
@@ -32,5 +33,7 @@ public interface AdministrationService {
     public GGResponse<EmployeeFullDetailsDto> login(String email, String password);
 
     public Boolean encrypt(boolean encrypt);
+
+    public List<AppraisalTypeDto> getAllAppraisalType();
 
 }
