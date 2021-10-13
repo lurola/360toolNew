@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,9 +36,15 @@ public class AppraisalController {
         return new ResponseEntity<GGResponse<AppraisalDto>>(new GGResponse<AppraisalDto>(appraisalService.getAppraisalById(appraisalId), null, true), HttpStatus.OK);
     }
 
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Update apraisal value")
+    @RequestMapping( produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
+    public ResponseEntity<GGResponse<String>> updateAppraisalValues(@RequestBody AppraisalDto appraisalDto) {
+        return new ResponseEntity<GGResponse<String>>(new GGResponse<String>(appraisalService.updateAppraisalValues(appraisalDto), null, true), HttpStatus.OK);
+    }
+
     @ApiOperation(tags = TAG_APPRAISAL, value = "delete specific apraisal")
-    @RequestMapping(value = "/{appraisalId}", produces = {
-            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{appraisalId}", produces = {            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.DELETE)
     public ResponseEntity<GGResponse<String>> deleteAppraisal(@PathVariable Integer appraisalId) {
         appraisalService.deleteAppraisal(appraisalId);
 

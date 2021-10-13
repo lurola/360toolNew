@@ -1,5 +1,6 @@
 package com.appraisaltool.service.impl;
 
+import static com.appraisaltool.commons.Constants.APPRAISAL_STATUS_EDITED;
 import static com.appraisaltool.commons.Constants.APPRAISAL_STATUS_NEW;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1153,4 +1154,15 @@ public class AppraisalServiceImp implements AppraisalService {
         return AppraisalMapper.INSTANCE.mapAppraiserAssignementList(appraiserAssignementRepository.findAll());
     }
 
+    @Override
+    public String updateAppraisalValues(AppraisalDto appraisalDto) {
+        Appraisal appraisal = AppraisalMapper.INSTANCE.map(appraisalDto);
+        if (APPRAISAL_STATUS_NEW.compareTo(appraisalDto.getStatus()) == 0) {
+            appraisal.setStatus(APPRAISAL_STATUS_EDITED);
+        }
+
+        appraisalRepo.save(appraisal);
+
+        return "Appraisal values saved";
+    }
 }

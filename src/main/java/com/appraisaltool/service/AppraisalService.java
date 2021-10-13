@@ -45,4 +45,6 @@ public interface AppraisalService {
     public Integer assignAppraiserToEmployeeFromOffice(Integer officeId, Integer evalDate);
 	
     public List<AppraiserAssignementDto> getAppraiserAssignement();
+
+    public String updateAppraisalValues(AppraisalDto appraisalDto);
 }

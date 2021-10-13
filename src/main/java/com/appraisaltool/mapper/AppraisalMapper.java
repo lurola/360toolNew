@@ -13,7 +13,7 @@ import com.appraisaltool.model.AppraisalItem;
 import com.appraisaltool.model.AppraiserAssignement;
 
 @Mapper(imports = {
-        EncryptTool.class})
+        EncryptTool.class}, uses = AppraisalCustomMapper.class)
 public interface AppraisalMapper {
     AppraisalMapper INSTANCE = Mappers.getMapper(AppraisalMapper.class);
 
@@ -62,6 +62,6 @@ public interface AppraisalMapper {
 
     List<AppraisalDto> mapAppraisalList(List<Appraisal> appraisalList);
 
-
+    Appraisal map(AppraisalDto appraisalDto);
 
 }
