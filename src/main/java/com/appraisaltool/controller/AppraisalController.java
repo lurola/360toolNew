@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.appraisaltool.dto.AppraisalDto;
+import com.appraisaltool.dto.AppraisalItemDto;
 import com.appraisaltool.dto.AppraisalsByCriteriaNameDto;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.service.AppraisalService;
@@ -42,6 +43,13 @@ public class AppraisalController {
             MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
     public ResponseEntity<GGResponse<String>> updateAppraisalValues(@RequestBody AppraisalDto appraisalDto) {
         return new ResponseEntity<GGResponse<String>>(new GGResponse<String>(appraisalService.updateAppraisalValues(appraisalDto), null, true), HttpStatus.OK);
+    }
+
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Update apraisal item value")
+    @RequestMapping(value = "/item", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
+    public ResponseEntity<GGResponse<String>> updateAppraisalItemValues(@RequestBody AppraisalItemDto appraisalItemDto) {
+        return new ResponseEntity<GGResponse<String>>(new GGResponse<String>(appraisalService.updateAppraisalItemValue(appraisalItemDto), null, true), HttpStatus.OK);
     }
 
     @ApiOperation(tags = TAG_APPRAISAL, value = "delete specific apraisal")

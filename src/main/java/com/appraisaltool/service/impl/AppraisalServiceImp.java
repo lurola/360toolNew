@@ -1172,6 +1172,31 @@ public class AppraisalServiceImp implements AppraisalService {
     }
 
     @Override
+    public String updateAppraisalItemValue(AppraisalItemDto appraisalItemDto) {
+        AppraisalItem appraisalItem = new AppraisalItem();
+        // note: don't use the maper here
+        appraisalItem.setAppraisalItemId(appraisalItemDto.getAppraisalItemId());
+        appraisalItem.setAppraisal(new Appraisal());
+        appraisalItem.getAppraisal().setAppraisalId(appraisalItemDto.getAppraisalId());
+
+        appraisalItem.setAppraisalTypeId(appraisalItemDto.getAppraisalTypeId());
+        appraisalItem.setSubtypeId(appraisalItemDto.getSubtypeId());
+        appraisalItem.setParamValue(appraisalItemDto.getParamValue());
+        appraisalItemRepo.save(appraisalItem);
+
+        // change the status to the appraisal
+        Appraisal appraisal = appraisalRepo.getOne(appraisalItemDto.getAppraisalId());
+        if (APPRAISAL_STATUS_NEW.compareTo(appraisal.getStatus()) == 0) {
+            appraisal.setStatus(APPRAISAL_STATUS_EDITED);
+
+            appraisalRepo.save(appraisal);
+        }
+
+
+        return "AppraisalItem value saved";
+    }
+
+    @Override
     public AppraisalsByCriteriaNameDto getAppraisalByCriteria(Integer evalDate, Integer appraiserId, Integer appraisalTypeId, Integer criteriaNameId) {
         AppraisalsByCriteriaNameDto response = new AppraisalsByCriteriaNameDto();
         response.setAppraiser(administrationService.getEmployeeSummaryById(appraiserId));
