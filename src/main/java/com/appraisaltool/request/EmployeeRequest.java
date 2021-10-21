@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EmployeeRequest {
+    private Integer userId;
     private String name;
     private String surname;
     private String email;
