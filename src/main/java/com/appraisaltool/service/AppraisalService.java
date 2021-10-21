@@ -2,6 +2,7 @@ package com.appraisaltool.service;
 
 import java.util.List;
 import com.appraisaltool.dto.AppraisalDto;
+import com.appraisaltool.dto.AppraisalsByCriteriaNameDto;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.model.Appraisal;
 import com.appraisaltool.request.AppraisalRequest;
@@ -47,4 +48,6 @@ public interface AppraisalService {
     public List<AppraiserAssignementDto> getAppraiserAssignement();
 
     public String updateAppraisalValues(AppraisalDto appraisalDto);
+
+    public AppraisalsByCriteriaNameDto getAppraisalByCriteria(Integer evalDate, Integer appraiserId, Integer appraisalTypeId, Integer criteriaNameId);
 }

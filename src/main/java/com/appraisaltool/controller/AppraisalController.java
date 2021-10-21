@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.appraisaltool.dto.AppraisalDto;
+import com.appraisaltool.dto.AppraisalsByCriteriaNameDto;
 import com.appraisaltool.response.GGResponse;
 import com.appraisaltool.service.AppraisalService;
 import io.swagger.annotations.Api;
@@ -50,4 +51,15 @@ public class AppraisalController {
 
         return new ResponseEntity<GGResponse<String>>(new GGResponse<String>("Delete sucessful", null, true), HttpStatus.OK);
     }
+
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Get AppraisalItem by criteriaName")
+    @RequestMapping(value = "/{evalDate}/{appraiserId}/{appraisalTypeId}/{criteriaNameId}", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.GET)
+    public ResponseEntity<GGResponse<AppraisalsByCriteriaNameDto>> getAppraisalItemByCriteriaName(@PathVariable Integer evalDate, @PathVariable Integer appraiserId,
+            @PathVariable Integer appraisalTypeId, @PathVariable Integer criteriaNameId) {
+        return new ResponseEntity<GGResponse<AppraisalsByCriteriaNameDto>>(new GGResponse<AppraisalsByCriteriaNameDto>(appraisalService.getAppraisalByCriteria(evalDate,
+                appraiserId, appraisalTypeId, criteriaNameId), null, true), HttpStatus.OK);
+    }
+
+
 }

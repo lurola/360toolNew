@@ -10,6 +10,7 @@ import com.appraisaltool.dto.AppraisalItemDto;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.model.Appraisal;
 import com.appraisaltool.model.AppraisalItem;
+import com.appraisaltool.model.AppraisalItemExtended;
 import com.appraisaltool.model.AppraiserAssignement;
 
 @Mapper(imports = {
@@ -63,5 +64,10 @@ public interface AppraisalMapper {
     List<AppraisalDto> mapAppraisalList(List<Appraisal> appraisalList);
 
     Appraisal map(AppraisalDto appraisalDto);
+
+    @Mapping(source = "evaluatedPersonId", target = "evaluatedPerson.userId")
+    AppraisalItemDto map(AppraisalItemExtended appraisalItemExtended);
+
+    List<AppraisalItemDto> mapAppraisalItemListFromAppraisalItemExtend(List<AppraisalItemExtended> appraisalItemExtendedList);
 
 }

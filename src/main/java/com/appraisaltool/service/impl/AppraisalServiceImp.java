@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.appraisaltool.dto.AppraisalDto;
 import com.appraisaltool.dto.AppraisalHeaderDTO;
+import com.appraisaltool.dto.AppraisalItemDto;
+import com.appraisaltool.dto.AppraisalsByCriteriaNameDto;
 import com.appraisaltool.dto.AppraiserAssignementDto;
 import com.appraisaltool.dto.AppraiserCountDTO;
 import com.appraisaltool.dto.DeprecatedAppItemDTO;
@@ -44,6 +46,7 @@ import com.appraisaltool.repository.InternalCriteriaTypeRepository;
 import com.appraisaltool.repository.InternalSpecificAppTypeRepository;
 import com.appraisaltool.repository.SpecificAppraisalTypeRepository;
 import com.appraisaltool.request.AppraisalRequest;
+import com.appraisaltool.service.AdministrationService;
 import com.appraisaltool.service.AppraisalService;
 import com.appraisaltool.service.TeamService;
 import com.appraisaltool.service.UserService;
@@ -59,7 +62,7 @@ public class AppraisalServiceImp implements AppraisalService {
     private AppraiserAssignementRepository appraiserAssignementRepository;
 
     @Autowired
-    private AppraisalItemRepository appItemRepo;
+    private AppraisalItemRepository appraisalItemRepo;
     @Autowired
     private SpecificAppraisalTypeRepository specificAppTypeRepo;
     @Autowired
@@ -79,6 +82,8 @@ public class AppraisalServiceImp implements AppraisalService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AdministrationService administrationService;
     @Autowired
     private TeamService teamService;
 
@@ -271,7 +276,7 @@ public class AppraisalServiceImp implements AppraisalService {
      * @return
      */
     public List<AppraisalItem> findAppItemsByAppraisalIdAndAppItemType(Integer appId, Integer appItemTypeId) {
-        return appItemRepo.findAppItemsByAppraisalIdAndAppItemType(appId, appItemTypeId);
+        return appraisalItemRepo.findAppItemsByAppraisalIdAndAppItemType(appId, appItemTypeId);
 
     }
 
@@ -284,23 +289,23 @@ public class AppraisalServiceImp implements AppraisalService {
 
         AppraisalItem app01 = appItemList.stream().filter(indApp -> indApp.getSubtypeId() == 1).collect(Collectors.toList()).get(0);
         app01.setParamValue(appItem.getParamValue01());
-        appItemRepo.save(app01);
+        appraisalItemRepo.save(app01);
 
         AppraisalItem app02 = appItemList.stream().filter(indApp -> indApp.getSubtypeId() == 2).collect(Collectors.toList()).get(0);
         app02.setParamValue(appItem.getParamValue02());
-        appItemRepo.save(app02);
+        appraisalItemRepo.save(app02);
 
         AppraisalItem app03 = appItemList.stream().filter(indApp -> indApp.getSubtypeId() == 3).collect(Collectors.toList()).get(0);
         app03.setParamValue(appItem.getParamValue03());
-        appItemRepo.save(app03);
+        appraisalItemRepo.save(app03);
 
         AppraisalItem app04 = appItemList.stream().filter(indApp -> indApp.getSubtypeId() == 4).collect(Collectors.toList()).get(0);
         app04.setParamValue(appItem.getParamValue04());
-        appItemRepo.save(app04);
+        appraisalItemRepo.save(app04);
 
         AppraisalItem app05 = appItemList.stream().filter(indApp -> indApp.getSubtypeId() == 5).collect(Collectors.toList()).get(0);
         app05.setParamValue(appItem.getParamValue05());
-        appItemRepo.save(app05);
+        appraisalItemRepo.save(app05);
 
         return appItem;
     }
@@ -347,7 +352,7 @@ public class AppraisalServiceImp implements AppraisalService {
         // 0 as PARAM_VALUE nota por defecto
 
         for (int appType = 0; appType <= 9; appType++) {
-            for (int subType = 1; subType <= 5; subType++) {
+            for (int subType = 0; subType <= 4; subType++) {
                 appraisalItemList.add(new AppraisalItem(appType, subType, 0, app));
             }
         }
@@ -521,7 +526,7 @@ public class AppraisalServiceImp implements AppraisalService {
     public AppraisalItem[][] getAppItemsByAppraisalId(Integer appraisalId) {
 
         AppraisalItem[][] appItemListGroup = new AppraisalItem[10][5];
-        List<AppraisalItem> appItemList = appItemRepo.findAllByAppraisalOrderByAppraisalTypeIdAscSubtypeIdAsc(appraisalId);
+        List<AppraisalItem> appItemList = appraisalItemRepo.findAllByAppraisalOrderByAppraisalTypeIdAscSubtypeIdAsc(appraisalId);
 
         // Pasamos los items a una matriz para tenerlos en orden y recuperarlo en la pantalla como model["appItems"][0] etc.
         int k = 0;
@@ -649,7 +654,7 @@ public class AppraisalServiceImp implements AppraisalService {
         List<AppraisalAverage> appAvgJobList = appAverageRepo.findAllByAppIdListAndAppraisalType(appraisalList, JOB);
         List<AppraisalAverage> appAvgPotencialList = appAverageRepo.findAllByAppIdListAndAppraisalType(appraisalList, POTENCIAL);
         List<AppraisalAverage> appAvgManList = appAverageRepo.findAllByAppIdListAndAppraisalType(appraisalList, MANAGEMENT);
-        List<AppraisalItem> appComunEnglish = appItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 7, 5);
+        List<AppraisalItem> appComunEnglish = appraisalItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 7, 5);
 
 
         for (int i = 0; i < appAvgIndList.size(); i++) {
@@ -683,11 +688,11 @@ public class AppraisalServiceImp implements AppraisalService {
         Double[] result = new Double[] {
                 0D, 0D, 0D, 0D, 0D};
 
-        List<AppraisalItem> behavImpact = appItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 8, 4);
-        List<AppraisalItem> decisionsAttitude = appItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 1, 1);
-        List<AppraisalItem> manageOrganTeam = appItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 1, 4);
-        List<AppraisalItem> dailyImpact = appItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 8, 2);
-        List<AppraisalItem> leadership = appItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 1, 5);
+        List<AppraisalItem> behavImpact = appraisalItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 8, 4);
+        List<AppraisalItem> decisionsAttitude = appraisalItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 1, 1);
+        List<AppraisalItem> manageOrganTeam = appraisalItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 1, 4);
+        List<AppraisalItem> dailyImpact = appraisalItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 8, 2);
+        List<AppraisalItem> leadership = appraisalItemRepo.findAllByAppraisalIdListAppraisalTypeAndSubtype(appraisalList, 1, 5);
 
 
         for (int i = 0; i < behavImpact.size(); i++) {
@@ -861,7 +866,7 @@ public class AppraisalServiceImp implements AppraisalService {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 5; j++) {
-                appItemRepo.save(paramValue[i][j]);
+                appraisalItemRepo.save(paramValue[i][j]);
             }
         }
 
@@ -1164,5 +1169,24 @@ public class AppraisalServiceImp implements AppraisalService {
         appraisalRepo.save(appraisal);
 
         return "Appraisal values saved";
+    }
+
+    @Override
+    public AppraisalsByCriteriaNameDto getAppraisalByCriteria(Integer evalDate, Integer appraiserId, Integer appraisalTypeId, Integer criteriaNameId) {
+        AppraisalsByCriteriaNameDto response = new AppraisalsByCriteriaNameDto();
+        response.setAppraiser(administrationService.getEmployeeSummaryById(appraiserId));
+        response.setEvalDate(evalDate);
+        response.setApraisalTypeId(appraisalTypeId);
+        response.setCriteriaNameId(criteriaNameId);
+
+        response.setAppraisalItemDtos(AppraisalMapper.INSTANCE.mapAppraisalItemListFromAppraisalItemExtend(appraisalItemRepo.findAppraisalItemsByEvalDateAppraiserAndCriteriaName(
+                evalDate, appraiserId, appraisalTypeId, criteriaNameId)));
+
+        // load the info from the employee
+        for (AppraisalItemDto apItem : response.getAppraisalItemDtos()) {
+            apItem.setEvaluatedPerson(administrationService.getEmployeeSummaryById(apItem.getEvaluatedPerson().getUserId()));
+        }
+
+        return response;
     }
 }
