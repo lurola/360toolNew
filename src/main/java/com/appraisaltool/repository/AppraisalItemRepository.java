@@ -26,7 +26,7 @@ public interface AppraisalItemRepository  extends JpaRepository<AppraisalItem, I
     @Query("SELECT appIt FROM AppraisalItem appIt WHERE appIt.appraisal.appraisalId IN ?1 AND appIt.appraisalTypeId = ?2 AND appIt.subtypeId = ?3 ")
 	public List<AppraisalItem> findAllByAppraisalIdListAppraisalTypeAndSubtype(List<Integer> appIdList, Integer appTypeId, Integer subtype);
 
-    @Query("SELECT new com.appraisaltool.model.AppraisalItemExtended(a.appraisalId , a.evaluatedPerson.userId ,   a.status, ai.appraisalItemId , ai.paramValue)"
+    @Query("SELECT new com.appraisaltool.model.AppraisalItemExtended(a.appraisalId , a.evaluatedPerson.userId , a.type,   a.status, ai.appraisalItemId , ai.paramValue)"
             + "FROM Appraisal a   INNER JOIN AppraisalItem ai ON ai.appraisal.appraisalId = a.appraisalId "
             + "WHERE a.evalDate =?1 AND a.appraiser.userId = ?2 AND ai.appraisalTypeId = ?3 AND ai.subtypeId =?4")
     public List<AppraisalItemExtended> findAppraisalItemsByEvalDateAppraiserAndCriteriaName(Integer evalDate, Integer appraiserId, Integer appraisalType, Integer subtype);

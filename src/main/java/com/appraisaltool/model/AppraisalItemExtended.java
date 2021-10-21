@@ -1,5 +1,6 @@
 package com.appraisaltool.model;
 
+import com.appraisaltool.dto.domain.AppraisalTypeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ public class AppraisalItemExtended {
 
     private Integer evaluatedPersonId;
 
-    // private String type;
+    private AppraisalTypeType type;
 
     private Integer status;
 
