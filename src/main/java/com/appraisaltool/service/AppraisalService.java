@@ -53,4 +53,6 @@ public interface AppraisalService {
     public String updateAppraisalItemValue(AppraisalItemDto appraisalItemDto);
 
     public AppraisalsByCriteriaNameDto getAppraisalByCriteria(Integer evalDate, Integer appraiserId, Integer appraisalTypeId, Integer criteriaNameId);
+
+    public String updateAppraisalItemValues(AppraisalsByCriteriaNameDto appraisalsByCriteriaNameDto);
 }

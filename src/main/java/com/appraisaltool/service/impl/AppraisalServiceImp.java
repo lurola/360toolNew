@@ -1197,6 +1197,18 @@ public class AppraisalServiceImp implements AppraisalService {
     }
 
     @Override
+    public String updateAppraisalItemValues(AppraisalsByCriteriaNameDto appraisalsByCriteriaNameDto) {
+
+        for (AppraisalItemDto appraisalItemDto : appraisalsByCriteriaNameDto.getAppraisalItemDtos()) {
+            appraisalItemDto.setAppraisalTypeId(appraisalsByCriteriaNameDto.getApraisalTypeId());
+            appraisalItemDto.setSubtypeId(appraisalsByCriteriaNameDto.getCriteriaNameId());
+            updateAppraisalItemValue(appraisalItemDto);
+        }
+
+        return "AppraisalItem values saved";
+    }
+
+    @Override
     public AppraisalsByCriteriaNameDto getAppraisalByCriteria(Integer evalDate, Integer appraiserId, Integer appraisalTypeId, Integer criteriaNameId) {
         AppraisalsByCriteriaNameDto response = new AppraisalsByCriteriaNameDto();
         response.setAppraiser(administrationService.getEmployeeSummaryById(appraiserId));

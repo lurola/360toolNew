@@ -70,4 +70,12 @@ public class AppraisalController {
     }
 
 
+    @ApiOperation(tags = TAG_APPRAISAL, value = "Update appraisalItemsByCriteriaName item value")
+    @RequestMapping(value = "/appraisalItemsByCriteriaName", produces = {
+            MediaType.APPLICATION_JSON_VALUE}, headers = ACCEPT_APPLICATION_JSON, method = RequestMethod.PUT)
+    public ResponseEntity<GGResponse<String>> updateappraisalItemsByCriteriaName(@RequestBody AppraisalsByCriteriaNameDto appraisalsByCriteriaNameDto) {
+        return new ResponseEntity<GGResponse<String>>(new GGResponse<String>(appraisalService.updateAppraisalItemValues(appraisalsByCriteriaNameDto), null, true), HttpStatus.OK);
+    }
+
+
 }
